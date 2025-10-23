@@ -1,4 +1,4 @@
-package com.oycm.algorithm.a
+package com.oycm.algorithm.a.basic
 
 /**
  * <p>
