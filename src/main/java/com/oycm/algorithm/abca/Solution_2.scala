@@ -36,9 +36,34 @@ object Solution_2 {
     ans
   }
 
+
+  def method_1(s: String, k: Int): Int = {
+    var ans = 0
+    // 前面暴力解法思路是，以 i = 0 为左端点开始，以 n-1 为有端点的合法字串数
+    /**
+     * 问题也转换成：以 i 为右端点的，求合法字串的数组，子需要知道合法最小左端点
+     * 随着 i 不断右移变大，左端点也需要不断变大 [l ,r] 符合要求，则 r 为右端点的字串数目为  r-l+1
+     */
+    var l = 0
+    val count = Array.fill(2)(0)
+    for (r <- s.indices) {
+      count(s(r) & 1) += 1
+      while (count(0) > k && count(1) > k) {
+        count(s(l) & 1) -= 1
+        l += 1
+      }
+      ans += r - l + 1
+    }
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(countKConstraintSubstrings("10101", 1) == 12)
-    println(countKConstraintSubstrings("1010101",2) == 25)
+    println(countKConstraintSubstrings("1010101", 2) == 25)
     println(countKConstraintSubstrings("11111", 1) == 15)
+
+    println(method_1("10101", 1) == 12)
+    println(method_1("1010101", 2) == 25)
+    println(method_1("11111", 1) == 15)
   }
 }
