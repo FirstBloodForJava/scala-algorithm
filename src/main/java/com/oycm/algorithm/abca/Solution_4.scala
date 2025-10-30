@@ -26,6 +26,7 @@ object Solution_4 {
     val sort = mutable.TreeMap[Int, Int]()
     var l = 0
     for (r <- nums.indices) {
+      // map insert get 的时间复杂度 log n
       sort(nums(r)) = sort.getOrElse(nums(r), 0) + 1
       //
       while (sort.lastKey - sort.firstKey > 2) {
@@ -42,8 +43,52 @@ object Solution_4 {
     ans
   }
 
+  def monotonicQueue(nums: Array[Int]): Long = {
+    /**
+     * 使用单调队列维护 max 和 min
+     * minQ 队列维护最小值 index
+     * maxQ 队列维护最大值 index
+     */
+    var ans = 0L
+    // minQ.head 是最小值索引
+    val minQ = mutable.ArrayDeque[Int]()
+    val maxQ = mutable.ArrayDeque[Int]()
+    var l = 0
+
+    for (r <- nums.indices) {
+      val num = nums(r)
+      // 最大值和最小值 满足 nums(maxQ.head) - nums(minQ.head)
+      while (minQ.nonEmpty && num <= nums(minQ.last)) {
+        minQ.removeLast()
+      }
+      minQ.append(r)
+
+      while (maxQ.nonEmpty && num >= nums(maxQ.last)) {
+        maxQ.removeLast()
+      }
+      maxQ.append(r)
+
+      while (nums(maxQ.head) - nums(minQ.head) > 2) {
+        l += 1
+        if (minQ.head < l) {
+          minQ.removeHead()
+        }
+        if (maxQ.head < l) {
+          maxQ.removeHead()
+        }
+      }
+      ans += r - l + 1
+    }
+
+    ans
+  }
+
+
   def main(args: Array[String]): Unit = {
     println(continuousSubarrays(Array(5, 4, 2, 4)) == 8)
-    println(continuousSubarrays(Array(1,2,3)) == 6)
+    println(continuousSubarrays(Array(1, 2, 3)) == 6)
+
+    println(monotonicQueue(Array(5, 4, 2, 4)) == 8)
+    println(monotonicQueue(Array(1, 2, 3)) == 6)
   }
 }
