@@ -67,6 +67,35 @@ object Solution_3 {
     ans
   }
 
+  def fixedLeft(s: String, k: Int): Int = {
+    /*
+    [l, r] 符合要求
+    */
+    val n = s.length
+    val count = Array.fill(26)(0)
+    var ans = 0
+    var r = 0
+    // 字符 - a
+    var target = 0
+    for (l <- s.indices) {
+      while (r < n && count(target) < k) {
+        count(s(r) - 'a') += 1
+        if (count(s(r) - 'a') >= k) {
+          target = s(r) - 'a'
+        }
+        r += 1
+      }
+      // count(s(r - 1) - 'a') count(target)
+      if (count(target) >= k) {
+        ans += n - r + 1
+      }
+      // 下一轮
+      count(s(l) - 'a') -= 1
+    }
+
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(numberOfSubstrings("abacb", 2) == 4)
     println(numberOfSubstrings("abcde", 1) == 15)
@@ -76,5 +105,8 @@ object Solution_3 {
     println(fixedRight("abcde", 1) == 15)
     println(fixedRight("ajsrhoebe", 2) == 7)
 
+    println(fixedLeft("abacb", 2) == 4)
+    println(fixedLeft("abcde", 1) == 15)
+    println(fixedLeft("ajsrhoebe", 2) == 7)
   }
 }
