@@ -49,9 +49,32 @@ object Solution_3 {
     ans
   }
 
+  def fixedRight(s: String, k: Int): Int = {
+    /*
+    固定右端点，如果 [l, r] 符合要求，不断右移左端点 l，直到 (l, r] 不符合要求，进入下一个右端点计算
+    */
+    val count = Array.fill(26)(0)
+    var ans = 0
+    var l = 0
+    for (r <- s.indices) {
+      count(s(r) - 'a') += 1
+      while (count(s(r) - 'a') >= k) {
+        count(s(l) - 'a') -= 1
+        l += 1
+      }
+      ans += l
+    }
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(numberOfSubstrings("abacb", 2) == 4)
     println(numberOfSubstrings("abcde", 1) == 15)
     println(numberOfSubstrings("ajsrhoebe", 2) == 7)
+
+    println(fixedRight("abacb", 2) == 4)
+    println(fixedRight("abcde", 1) == 15)
+    println(fixedRight("ajsrhoebe", 2) == 7)
+
   }
 }
