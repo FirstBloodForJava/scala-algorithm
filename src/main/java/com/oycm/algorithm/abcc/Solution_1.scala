@@ -17,13 +17,36 @@ object Solution_1 {
    */
   def numSubarraysWithSum(nums: Array[Int], goal: Int): Int = {
     /*
+     题解：解决记录一个最左边出现 1 的问题
      [l, r] 子数组的和，就是子数组中的 1 的个数
      假设以 r 为右端点，[l, r] 子数组的和等于 goal，以 r 为右端点符合要求的子数组 l - l(last_1)(l 左边最后出现的 1 index)
      怎么记录这个值？
+     [l1, r1] 第一次符合要求，则 ans = l1 - 0 + 1
+     [l2, r2] 第一个符合要求，则 ans = l2 - l1（l1不符合要求）
+     sum1 l1 记录慢的 1 的 index
+     sum2 l2 记录快的 1 的 index l2 - l1 就是每次的答案
      */
     var ans = 0
-    val count = Array.fill(2)(0)
+    var sum1 = 0
+    var l1 = 0
+    var sum2 = 0
+    var l2 = 0
+    for (r <- nums.indices) {
+      sum1 += nums(r)
+      // 第一次符合时开始查找：以 r 为右端点第一个 = 1 的 l1 值
+      while (l1 <= r && sum1 > goal) {
+        sum1 -= nums(l1)
+        l1 += 1
+      }
 
+      sum2 += nums(r)
+      while (l2 <= r && sum2 >= goal) {
+        sum2 -= nums(l2)
+        l2 += 1
+      }
+      // k = 2， [0, 0, 1, 1, 0, 1]
+      ans += l2 - l1
+    }
     ans
   }
 
@@ -49,9 +72,15 @@ object Solution_1 {
   }
 
   def main(args: Array[String]): Unit = {
-    println(prefixSum(Array(1, 0, 1, 0, 1), 2))
-    println(prefixSum(Array(0, 0, 0, 0, 0), 0))
-    println(prefixSum(Array(0, 0, 0, 0, 0), 1))
+    println(prefixSum(Array(1, 0, 1, 0, 1), 2) == 4)
+    println(prefixSum(Array(0, 0, 0, 0, 0), 0) == 15)
+    println(prefixSum(Array(0, 0, 0, 0, 0), 1) == 0)
+    println(prefixSum(Array(0, 0, 1, 1, 0, 1), 2) == 7)
+
+    println(numSubarraysWithSum(Array(0, 0, 1, 1, 0, 1), 2) == 7)
+    println(numSubarraysWithSum(Array(1, 0, 1, 0, 1), 2) == 4)
+    println(numSubarraysWithSum(Array(0, 0, 0, 0, 0), 0) == 15)
+    println(numSubarraysWithSum(Array(0, 0, 0, 0, 0), 1) == 0)
   }
 
 }
