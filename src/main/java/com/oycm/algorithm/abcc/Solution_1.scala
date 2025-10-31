@@ -50,6 +50,32 @@ object Solution_1 {
     ans
   }
 
+  def transform(nums: Array[Int], goal: Int): Int = {
+    /*
+    题解：问题转换
+    问题转换成求：连续子数组和小于等于 k 的个数 - 连续子数组和小于等于 (k-1) 的个数
+    固定 r，向右移动 r 的过程中不断移动 l
+    */
+    def count(nums: Array[Int], k: Int): Int = {
+      var ans = 0
+      // [l, r] 子数组和小于等于 k，以 r 为右端，则 ans += r - l + 1
+      // 继续下一轮 [l, r+1] 如果大于 k，则 l 向右移动
+      var l = 0
+      var sum = 0
+      for (r <- nums.indices) {
+        sum += nums(r)
+        while (sum > k && l <= r) {
+          sum -= nums(l)
+          l += 1
+        }
+        ans += r - l + 1
+      }
+      ans
+    }
+
+    count(nums, goal) - count(nums, goal - 1)
+  }
+
   def prefixSum(nums: Array[Int], goal: Int): Int = {
     /*
     题解：
@@ -81,6 +107,11 @@ object Solution_1 {
     println(numSubarraysWithSum(Array(1, 0, 1, 0, 1), 2) == 4)
     println(numSubarraysWithSum(Array(0, 0, 0, 0, 0), 0) == 15)
     println(numSubarraysWithSum(Array(0, 0, 0, 0, 0), 1) == 0)
+
+//    println(transform(Array(0, 0, 1, 1, 0, 1), 2) == 7)
+//    println(transform(Array(1, 0, 1, 0, 1), 2) == 4)
+//    println(transform(Array(0, 0, 0, 0, 0), 1) == 0)
+    println(transform(Array(0, 0, 0, 0, 0), 0) == 15)
   }
 
 }
