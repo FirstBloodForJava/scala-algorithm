@@ -1,4 +1,4 @@
-package com.oycm.algorithm.abca
+package com.oycm.algorithm.abc.max
 
 object Solution_1 {
 
