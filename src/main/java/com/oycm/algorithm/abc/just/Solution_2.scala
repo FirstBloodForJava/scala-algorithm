@@ -1,4 +1,4 @@
-package com.oycm.algorithm.abcc
+package com.oycm.algorithm.abc.just
 
 object Solution_2 {
 
@@ -50,6 +50,7 @@ object Solution_2 {
       }
       ans
     }
+
     count(nums, k) - count(nums, k - 1)
   }
 

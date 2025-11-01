@@ -1,4 +1,4 @@
-package com.oycm.algorithm.abcc
+package com.oycm.algorithm.abc.just
 
 import scala.collection.mutable
 
@@ -108,9 +108,9 @@ object Solution_1 {
     println(numSubarraysWithSum(Array(0, 0, 0, 0, 0), 0) == 15)
     println(numSubarraysWithSum(Array(0, 0, 0, 0, 0), 1) == 0)
 
-//    println(transform(Array(0, 0, 1, 1, 0, 1), 2) == 7)
-//    println(transform(Array(1, 0, 1, 0, 1), 2) == 4)
-//    println(transform(Array(0, 0, 0, 0, 0), 1) == 0)
+    //    println(transform(Array(0, 0, 1, 1, 0, 1), 2) == 7)
+    //    println(transform(Array(1, 0, 1, 0, 1), 2) == 4)
+    //    println(transform(Array(0, 0, 0, 0, 0), 1) == 0)
     println(transform(Array(0, 0, 0, 0, 0), 0) == 15)
   }
 

@@ -1,4 +1,4 @@
-package com.oycm.algorithm.abcc
+package com.oycm.algorithm.abc.just
 
 object Solution_3 {
 
@@ -42,7 +42,7 @@ object Solution_3 {
         while (r < word.length && (kCnt < k || cntMap.size < 5)) {
           val char = word(r)
           if (char == 'a' || char == 'e' || char == 'i' || char == 'o' || char == 'u') {
-            cntMap(char) = cntMap.getOrElse(char, 0 ) + 1
+            cntMap(char) = cntMap.getOrElse(char, 0) + 1
           } else {
             kCnt += 1
           }
