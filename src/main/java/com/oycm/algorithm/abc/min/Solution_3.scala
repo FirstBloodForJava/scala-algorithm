@@ -1,4 +1,4 @@
-package com.oycm.algorithm.abcb
+package com.oycm.algorithm.abc.min
 
 object Solution_3 {
 
