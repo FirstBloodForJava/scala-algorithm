@@ -29,9 +29,37 @@ object Solution_2 {
     ans
   }
 
+  def transform(nums: Array[Int], k: Int): Int = {
+    /*
+    和小于等于 k 子数组数 - 和小于等于 k-1 的子数组数
+    */
+    def count(nums: Array[Int], k: Int): Int = {
+      var ans = 0
+      // 固定 r, [l, r] 小于等于 k 时，则向右移动 r，随着 r 不断右移，l 也会不断右移，答案就是 r - l + 1
+      var l = 0
+      var temp = 0
+      for (r <- nums.indices) {
+        temp += nums(r) % 2
+        while (l <= r && temp > k) {
+          // l 右移
+          temp -= nums(l) % 2
+          l += 1
+        }
+        // r - l + 1 等于0 或者就是 [l, r] 就是答案
+        ans += r - l + 1
+      }
+      ans
+    }
+    count(nums, k) - count(nums, k - 1)
+  }
+
   def main(args: Array[String]): Unit = {
     println(numberOfSubarrays(Array(1, 1, 2, 1, 1), 3) == 2)
     println(numberOfSubarrays(Array(2, 4, 6), 1) == 0)
     println(numberOfSubarrays(Array(2, 2, 2, 1, 2, 2, 1, 2, 2, 2), 2) == 16)
+
+    println(transform(Array(1, 1, 2, 1, 1), 3) == 2)
+    println(transform(Array(2, 4, 6), 1) == 0)
+    println(transform(Array(2, 2, 2, 1, 2, 2, 1, 2, 2, 2), 2) == 16)
   }
 }
