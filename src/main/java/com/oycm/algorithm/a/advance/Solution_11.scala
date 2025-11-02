@@ -121,13 +121,13 @@ object Solution_11 {
   }
 
   def main(args: Array[String]): Unit = {
-    println(checkInclusion("ab", "eidbaooo") == true)
-    println(checkInclusion("ab", "eidboaoo") == false)
+    println(checkInclusion("ab", "eidbaooo"))
+    println(!checkInclusion("ab", "eidboaoo"))
 
-    println(array("ab", "eidbaooo") == true)
-    println(array("ab", "eidboaoo") == false)
+    println(array("ab", "eidola") == true)
+    println(!array("ab", "eidboaoo"))
 
-    println(arrayOptimize("ab", "eidbaooo") == true)
-    println(arrayOptimize("ab", "eidboaoo") == false)
+    println(arrayOptimize("ab", "eidbaooo"))
+    println(!arrayOptimize("ab", "eidboaoo"))
   }
 }
