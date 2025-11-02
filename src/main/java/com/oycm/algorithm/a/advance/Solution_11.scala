@@ -51,8 +51,83 @@ object Solution_11 {
     ans
   }
 
+  def array(s1: String, s2: String): Boolean = {
+    var ans = false
+    if (s1.length > s2.length) {
+      return ans
+    }
+    val s1Cnt = Array.fill(26)(0)
+    for (i <- s1.indices) {
+      s1Cnt(s1(i) - 'a') += 1
+    }
+
+    val s2Cnt = Array.fill(26)(0)
+    for (r <- s2.indices if !ans) {
+      // 入
+      s2Cnt(s2(r) - 'a') += 1
+
+      val l = r - s1.length + 1
+      if (l >= 0) {
+        // 比较 26
+        ans = s1Cnt.toSeq == s2Cnt.toSeq
+        // 出
+        s2Cnt(s2(l) - 'a') -= 1
+      }
+    }
+    ans
+  }
+
+  def arrayOptimize(s1: String, s2: String): Boolean = {
+    /*
+    26n 优化成 n
+    */
+    var ans = false
+    if (s1.length > s2.length) {
+      return ans
+    }
+    val s1Cnt = Array.fill(26)(0)
+    // 记录 s1 中不同字符的数量
+    var kinds = 0
+    for (i <- s1.indices) {
+      if (s1Cnt(s1(i) - 'a') == 0) {
+        kinds += 1
+      }
+      s1Cnt(s1(i) - 'a') += 1
+    }
+
+
+    for (r <- s2.indices if !ans) {
+      // 入
+      // s1Cnt 中记录的是剩余未匹配的
+      s1Cnt(s2(r) - 'a') -= 1
+      if (s1Cnt(s2(r) - 'a') == 0) {
+        kinds -= 1
+      }
+
+      val l = r - s1.length + 1
+      if (l >= 0) {
+        // 比较
+        if (kinds == 0) {
+          ans = true
+        }
+        // 出
+        if (s1Cnt(s2(l) - 'a') == 0) {
+          kinds += 1
+        }
+        s1Cnt(s2(l) - 'a') += 1
+      }
+    }
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
-    println(checkInclusion("ab", "eidbaooo"))
-    println(checkInclusion("ab", "eidboaoo"))
+    println(checkInclusion("ab", "eidbaooo") == true)
+    println(checkInclusion("ab", "eidboaoo") == false)
+
+    println(array("ab", "eidbaooo") == true)
+    println(array("ab", "eidboaoo") == false)
+
+    println(arrayOptimize("ab", "eidbaooo") == true)
+    println(arrayOptimize("ab", "eidboaoo") == false)
   }
 }
