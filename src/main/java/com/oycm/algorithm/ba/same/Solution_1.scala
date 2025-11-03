@@ -112,8 +112,43 @@ object Solution_1 {
     ans
   }
 
+  def enumShortestFixedL(nums: Array[Int]): Int = {
+    /*
+    0 <= a <= b <= c 且 a + b > c
+    枚举最短边：当 a + b <= c 可以对 b 增大 或 c 减小来满足条件，使用双指针无法判断指针的走向
+    将不等式转换成：a > c - b，意味着 b 和 c 直接的查询不能超过 a
+    相当于滑动窗口 l,r 之间不能超过 a
+    同向双指针：r - l 不能超过某个值，ans 就是 固定 r 时的，符合条件的最小 l，[l,r] 就是答案
+    a = k = 0; b = l = k + 1, c = r = k + 2
+    if a == 0 跳过
+    c - b 要 小于 a，随着 c 的增大，b 也要不断增大才能符合要求
+    固定 c, c - b < a，则符合要求的子数组 r - l
+
+    */
+    val n = nums.length
+    val sort = nums.sorted
+    var ans = 0
+    for (k <- 0 until n - 2 if sort(k) > 0) {
+
+      var r = k + 2
+      for (l <- k + 1 until n - 1) {
+        // 求最大 r
+        // 如果 0, 1 相差较大，第一次循环 l++, r 不变
+        // 第二次时 l == r 小于 a(>0), r++，求 1 后面的最大
+        while (r < n && sort(r) - sort(l) < sort(k)) {
+          r += 1
+        }
+        ans += r - l - 1
+      }
+
+    }
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(enumLongestOptimize(Array(2, 2, 3, 4)))
     println(enumShortest(Array(2, 2, 3, 4)))
+    println(enumShortestFixedL(Array(2, 2, 3, 4)) == 3)
+    println(enumShortestFixedL(Array(4, 2, 3, 4)) == 4)
   }
 }
