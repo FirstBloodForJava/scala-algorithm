@@ -32,7 +32,7 @@ object Solution_1 {
     c = k in [2, n-1], a = l = 1, b = r = k-1
     a + b > c, ans += r - l, b--; 否则 l++; l >= r 退出循环
     */
-    var sort = nums.sorted
+    val sort = nums.sorted
     var ans = 0
     for (k <- 2 until nums.length) {
       var l = 0
@@ -48,5 +48,41 @@ object Solution_1 {
     }
 
     ans
+  }
+
+  def enumLongestOptimize(nums: Array[Int]): Int = {
+    /*
+    C(n, r) = n! / (r!)(n-r)!
+    枚举最长边-优化：
+    从 n-1 开始枚举：
+    如果 nums(0) + nums(1) > nums(k)，则 [0, k] 里面的所有三元组合都符合答案，可以直接退出外层循环，答案是 (k+1)*k*(k-1) / 6
+    如果 num(k-2) + nums(k-1) <= nums(k) 跳过内层循环
+    */
+    val sort = nums.sorted
+    var ans = 0
+    var flag = true
+    for (k <- nums.length - 1 to 2 by -1 if flag) {
+      if (sort(0) + sort(1) > sort(k)) {
+        flag = false
+        ans += k * (k + 1) * (k - 1) / 6
+      } else if (sort(k - 2) + sort(k - 1) > sort(k)) {
+        var l = 0
+        var r = k - 1
+        while (l < r) {
+          if (sort(l) + sort(r) > sort(k)) {
+            ans += r - l
+            r -= 1
+          } else {
+            l += 1
+          }
+        }
+      }
+
+    }
+    ans
+  }
+
+  def main(args: Array[String]): Unit = {
+    println(enumLongestOptimize(Array(2, 2, 3, 4)))
   }
 }
