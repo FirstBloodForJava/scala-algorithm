@@ -62,9 +62,36 @@ object Solution_8 {
     ans.toList
   }
 
+  def simple(arr: Array[Int], k: Int, x: Int): List[Int] = {
+    /*
+    题解：l = 0, r = n-1; a = arr(l), b = arr(r)
+    排除距离较远的数，剩下的 k 个数就是答案
+    1.循环条件 r - l + 1 > k，
+    如果 a > b l++; 如果 a <= b r--
+    */
+    var l = 0
+    var r = arr.length - 1
+    // 里面还有 k 多元素
+    while (r - l + 1 > k) {
+      val a = Math.abs(arr(l) - x)
+      val b = Math.abs(arr(r) - x)
+      if (a > b) {
+        l += 1
+      } else {
+        r -= 1
+      }
+    }
+    arr.slice(l, r + 1).toList
+  }
+
   def main(args: Array[String]): Unit = {
     println(findClosestElements(Array(1, 2, 3, 4, 5), 4, 3))
     println(findClosestElements(Array(1, 1, 2, 3, 4, 5), 4, -1))
     println(findClosestElements(Array(0, 1, 2, 2, 2, 3, 6, 8, 8, 9), 5, 9))
+
+    println(simple(Array(1, 2, 3, 4, 5), 4, 3))
+    println(simple(Array(1, 1, 2, 3, 4, 5), 4, -1))
+    println(simple(Array(0, 1, 2, 2, 2, 3, 6, 8, 8, 9), 5, 9))
+    println(simple(Array(0, 1, 2, 2, 2, 3, 6, 8, 8, 9), 1, 9))
   }
 }
