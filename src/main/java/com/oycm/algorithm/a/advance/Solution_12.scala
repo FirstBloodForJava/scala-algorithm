@@ -47,6 +47,16 @@ object Solution_12 {
     ans.toList
   }
 
+  def findAnagramsBy(s: String, p: String): List[Int] = {
+    /*
+    题解：不定长滑动窗口
+    思路：枚举字符串 s 的右端点，如果 字符中出现的次数大于 p 中出现的次数，则右移 s 的左端点
+    s = abcabc, p = ca，如果 r - l + 1 = length，则 l 就是答案
+    */
+    val ans = scala.collection.mutable.ArrayBuffer[Int]()
+    ans.toList
+  }
+
   def main(args: Array[String]): Unit = {
     println(findAnagrams("cbaebabacd", "abc"))
     println(findAnagrams("abab", "ab"))
