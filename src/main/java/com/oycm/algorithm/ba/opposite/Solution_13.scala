@@ -71,6 +71,33 @@ object Solution_13 {
 
       ans
     }
+
+    count(sort, upper) - count(sort, lower - 1)
+  }
+
+  def twoOppositePointer2(nums: Array[Int], lower: Int, upper: Int): Long = {
+    /*
+      题解：两次相向双指针
+      时间复杂度：O(n log n)
+     */
+    val sort = nums.sorted
+
+    def count(nums: Array[Int], upper: Int): Long = {
+      var ans = 0L
+      var l = 0
+      var r = nums.length - 1
+      while (l < r) {
+        if (nums(l) + nums(r) <= upper) {
+          ans += r - l
+          l += 1
+        } else {
+          r -= 1
+        }
+      }
+
+      ans
+    }
+
     count(sort, upper) - count(sort, lower - 1)
   }
 
@@ -80,6 +107,9 @@ object Solution_13 {
 
     println(twoOppositePointer(Array(0, 1, 7, 4, 4, 5), 3, 6))
     println(twoOppositePointer(Array(1, 7, 9, 2, 5), 11, 11))
+
+    println(twoOppositePointer2(Array(0, 1, 7, 4, 4, 5), 3, 6))
+    println(twoOppositePointer2(Array(1, 7, 9, 2, 5), 11, 11))
   }
 
 }
