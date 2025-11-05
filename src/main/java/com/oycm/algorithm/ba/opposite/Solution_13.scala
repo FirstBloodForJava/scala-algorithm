@@ -1,5 +1,7 @@
 package com.oycm.algorithm.ba.opposite
 
+import sun.font.Decoration.Label
+
 object Solution_13 {
 
   /**
@@ -41,9 +43,43 @@ object Solution_13 {
     ans
   }
 
+  def twoOppositePointer(nums: Array[Int], lower: Int, upper: Int): Long = {
+    /*
+      题解：两次相向双指针
+      枚举 l, 当 r > l, 求满足 nums(l) + nums(r) <= upper 的数量, 记为 count(upper)
+      枚举 l, 当 r > l, 求满足 nums(l) + nums(r) < lower 的数量，这个表达式等价：num(l) + nums(r) <= lower - 1,记为 count(lower - 1)
+      l 符合要求的数量：count(upper) - count(lower - 1)
+      怎么求 count(upper) 的数量？
+      nums(l) + nums(r) <= upper, nums(l) <= upper - nums(r)
+      求 两点之和雄安与 upper 的个数
+      遍历 l = 0, r = n-1 开始遍历，且l < r如果 l + r > upper 则 r--
+
+      时间复杂度：O(n log n)
+     */
+    val sort = nums.sorted
+
+    def count(nums: Array[Int], upper: Int): Long = {
+      var ans = 0L
+      var r = nums.length - 1
+      for (l <- nums.indices if l < r) {
+        while (r > l && nums(l) > upper - nums(r)) {
+          r -= 1
+        }
+        ans += r - l
+
+      }
+
+      ans
+    }
+    count(sort, upper) - count(sort, lower - 1)
+  }
+
   def main(args: Array[String]): Unit = {
     println(countFairPairs(Array(0, 1, 7, 4, 4, 5), 3, 6))
     println(countFairPairs(Array(1, 7, 9, 2, 5), 11, 11))
+
+    println(twoOppositePointer(Array(0, 1, 7, 4, 4, 5), 3, 6))
+    println(twoOppositePointer(Array(1, 7, 9, 2, 5), 11, 11))
   }
 
 }
