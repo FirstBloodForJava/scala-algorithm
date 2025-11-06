@@ -64,6 +64,69 @@ object Solution_17 {
     calculate(pow1, p2) + calculate(pow2, p1)
   }
 
+  def optimize(nums1: Array[Int], nums2: Array[Int]): Int = {
+    /*
+    排序后使用双指针
+    时间复杂度 O(n^2)
+    空间复杂度 O(n)
+    */
+
+    def pow(nums: Array[Int]): scala.collection.mutable.Map[Long, Int] = {
+      val map = scala.collection.mutable.Map[Long, Int]()
+      for (num <- nums) {
+        // 注意计算精度丢失问题
+        val temp = Math.pow(num, 2).toLong
+        map(temp) = map.getOrElse(temp, 0) + 1
+      }
+      map
+    }
+
+    def calcualate(pow: scala.collection.mutable.Map[Long, Int], nums: Array[Int]): Int = {
+      var ans = 0
+      for ((k, v) <- pow) {
+
+        var l = 0
+        var r = nums.length - 1
+        while (l < r) {
+          val p = nums(l).toLong * nums(r)
+          if (p == k) {
+            // 排序后相等
+            if (nums(l) == nums(r)) {
+              ans += v * (r - l + 1) * (r - l) / 2
+              l = nums.length
+            } else {
+              // 查询 l 相等数量
+              var m = 1
+              while (l < r && nums(l + 1) == nums(l)) {
+                m += 1
+                l += 1
+              }
+              // 查询 r 相等数量
+              var n = 1
+              while (l < r && nums(r - 1) == nums(r)) {
+                r -= 1
+                n += 1
+              }
+              ans += v * n * m
+              l += 1
+              r -= 1
+            }
+          }
+          else if (p > k) {
+            r -= 1
+          }
+          else {
+            l += 1
+          }
+        }
+      }
+
+      ans
+    }
+
+    calcualate(pow(nums1), nums2.sorted) + calcualate(pow(nums2), nums1.sorted)
+  }
+
   def main(args: Array[String]): Unit = {
     println(numTriplets(Array(7, 4), Array(5, 2, 8, 9)) == 1)
     println(numTriplets(Array(1, 1), Array(1, 1, 1)) == 9)
@@ -71,5 +134,12 @@ object Solution_17 {
     println(numTriplets(Array(4, 7, 9, 11, 23), Array(3, 5, 1024, 12, 18)) == 0)
     println(numTriplets(Array(43024, 99908), Array(1864)) == 0)
     println(numTriplets(Array(100000, 100000, 100000, 100000), Array(100000, 100000, 100000, 100000)) == 48)
+
+    println(optimize(Array(7, 4), Array(5, 2, 8, 9)) == 1)
+    println(optimize(Array(1, 1), Array(1, 1, 1)) == 9)
+    println(optimize(Array(7, 7, 8, 3), Array(1, 2, 9, 7)) == 2)
+    println(optimize(Array(4, 7, 9, 11, 23), Array(3, 5, 1024, 12, 18)) == 0)
+    println(optimize(Array(43024, 99908), Array(1864)) == 0)
+    println(optimize(Array(100000, 100000, 100000, 100000), Array(100000, 100000, 100000, 100000)) == 48)
   }
 }
