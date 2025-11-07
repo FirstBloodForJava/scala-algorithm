@@ -27,8 +27,22 @@ object Solution_2 {
     k
   }
 
+  def removeDuplicatesOptimize(nums: Array[Int]): Int = {
+    var k = 0
+    for (i <- 1 until nums.length) {
+      if (nums(i) > nums(k)) {
+        k += 1
+        nums(k) = nums(i)
+      }
+    }
+    k + 1
+  }
+
   def main(args: Array[String]): Unit = {
     println(removeDuplicates(Array(1, 1, 2)))
     println(removeDuplicates(Array(0,0,1,1,1,2,2,3,3,4)))
+
+    println(removeDuplicatesOptimize(Array(1, 1, 2)))
+    println(removeDuplicatesOptimize(Array(0, 0, 1, 1, 1, 2, 2, 3, 3, 4)))
   }
 }
