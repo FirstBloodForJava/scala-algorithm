@@ -34,9 +34,33 @@ object Solution_3 {
     k
   }
 
+  def removeDuplicatesOptimize(nums: Array[Int]): Int = {
+    var k = 0
+    var time = 1
+    for (i <- 1 until nums.length) {
+      if (nums(i) > nums(k)) {
+        k += 1
+        nums(k) = nums(i)
+        time = 1
+      } else {
+        // 相等
+        if (time <= 1) {
+          time += 1
+          k += 1
+          nums(k) = nums(i)
+        }
+      }
+    }
+    //println(nums.slice(0, k).toSeq)
+    k + 1
+  }
+
   def main(args: Array[String]): Unit = {
 
     println(removeDuplicates(Array(1, 1, 1, 2, 2, 3)))
     println(removeDuplicates(Array(0, 0, 1, 1, 1, 1, 2, 3, 3)))
+
+    println(removeDuplicatesOptimize(Array(1, 1, 1, 2, 2, 3)))
+    println(removeDuplicatesOptimize(Array(0, 0, 1, 1, 1, 1, 2, 3, 3)))
   }
 }
