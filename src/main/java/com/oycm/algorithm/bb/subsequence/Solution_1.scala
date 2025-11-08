@@ -15,6 +15,10 @@ object Solution_1 {
    * @return
    */
   def isSubsequence(s: String, t: String): Boolean = {
+    /*
+    虽然有嵌套循环，里面的循环不会超过 n 次
+    时间复杂度 O(n)
+    */
     var ans = false
     val n = t.length
     val m = s.length
