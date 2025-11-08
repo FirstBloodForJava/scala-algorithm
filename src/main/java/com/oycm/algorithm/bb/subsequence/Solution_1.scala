@@ -38,8 +38,46 @@ object Solution_1 {
     ans
   }
 
+  def moreSIsSubsequence(s: String, t: String): Boolean = {
+    /*
+    加入有多个 s 需要判断 是否 为 t 的子序列，时间复杂度是 s(time) * t.length
+    动态规划优化：
+    初始化一个二维数组 ci[n][26] 记录字符 出现的下标 情况，n 表示 t.length
+    通过遍历 s 是否能查询到 字符的下标
+    ci[i][c] = i 表示 t 字符串，第 i 个 字符的值是 i
+    ci[n] = Array.fill(26)(n)
+
+    时间复杂度 26 n
+    空间复杂度 26 n
+    */
+    val n = t.length
+    val ci = Array.ofDim[Int](n + 1, 26)
+    java.util.Arrays.fill(ci(n), n)
+    // 初始化 ci 数组
+    for (i <- n - 1 to 0 by -1) {
+      ci(i) = ci(i + 1).clone
+      ci(i)(t(i) - 'a') = i
+    }
+    var ans = true
+    var i = -1
+    for (j <- s.indices if ans) {
+      // i 之后查找下个字符
+      i = ci(i + 1)(s(j) - 'a')
+      if (i == n) {
+        ans = false
+      }
+    }
+
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(isSubsequence("abc", "ahbgdc"))
     println(isSubsequence("axc", "ahbgdc"))
+
+    println(moreSIsSubsequence("abc", "ahbgdc"))
+    println(moreSIsSubsequence("axc", "ahbgdc"))
+    println(moreSIsSubsequence("abc", ""))
+    println(moreSIsSubsequence("acb", "ahbgdc"))
   }
 }
