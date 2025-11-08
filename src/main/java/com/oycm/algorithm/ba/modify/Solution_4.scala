@@ -38,8 +38,37 @@ object Solution_4 {
     ans.toList
   }
 
+  def optimizeSpace(words: Array[String]): List[String] = {
+    val n = words.length
+
+    if (n == 1) {
+      return words.toList
+    }
+    var k = 1
+    var preTemp = Array.fill(26)(0)
+    for (i <- words(0).indices) {
+      preTemp(words(0)(i) - 'a') += 1
+    }
+
+    for (i <- 1 until words.length) {
+      val temp = Array.fill(26)(0)
+      for (j <- words(i).indices) {
+        temp(words(i)(j) - 'a') += 1
+      }
+      if (preTemp.toSeq != temp.toSeq) {
+        preTemp = temp
+        words(k) = words(i)
+        k += 1
+      }
+    }
+    words.slice(0, k).toList
+  }
+
   def main(args: Array[String]): Unit = {
     println(removeAnagrams(Array("abba", "baba", "bbaa", "cd", "cd")))
     println(removeAnagrams(Array("a", "b", "c", "d", "e")))
+
+    println(optimizeSpace(Array("abba", "baba", "bbaa", "cd", "cd")))
+    println(optimizeSpace(Array("a", "b", "c", "d", "e")))
   }
 }
