@@ -40,10 +40,33 @@ object Solution_4 {
     ans
   }
 
+  def groupedLoop(s: String, k: Int): Boolean = {
+    var ans = false
+    var cnt = 0
+    val n = s.length
+    for (i <- s.indices) {
+      cnt += 1
+      // 组结束 条件
+      if (i == n - 1 || s(i) != s(i + 1)) {
+        // 更新答案
+        if (cnt == k) {
+          ans = true
+        }
+        cnt = 0
+      }
+    }
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(hasSpecialSubstring("aaabaaa", 3))
     println(hasSpecialSubstring("abc", 2))
     println(hasSpecialSubstring("abc", 1))
     println(hasSpecialSubstring("dii", 1))
+
+    println(groupedLoop("aaabaaa", 3))
+    println(groupedLoop("abc", 2))
+    println(groupedLoop("abc", 1))
+    println(groupedLoop("dii", 1))
   }
 }
