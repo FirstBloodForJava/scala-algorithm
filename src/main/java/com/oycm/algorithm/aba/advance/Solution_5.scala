@@ -65,6 +65,7 @@ object Solution_5 {
 
     时间复杂度 O(n)
     空间复杂度 O(n)
+    scala 运行超时
     */
     var ans = 0
     val map = scala.collection.mutable.Map[Int, scala.collection.mutable.ArrayBuffer[Int]]()
