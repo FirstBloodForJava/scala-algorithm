@@ -45,9 +45,37 @@ object Solution_9 {
     Math.max(maxTOrFSub(answerKey, k, 'T'), maxTOrFSub(answerKey, k, 'F'))
   }
 
+  def optimize(answerKey: String, k: Int): Int = {
+    /*
+    TTTTFTFTF 字符串中 F 出现次数小于等于 k 的最长连续子串
+    FFFFTFTFT 字符串中 T 出现次数小于等于 k 的最长连续子串
+    题解转换：字符串中 T/F 出现次数小于等于 k 的最长连续子串
+    T = 0101 0100
+    F = 0100 0110
+    'T' >> 1 & 1 = 0, 'F' >> 1 & 1 = 1
+     */
+    var ans = 0
+    val cnt = Array.fill(2)(0)
+    var l = 0
+    for (r <- answerKey.indices) {
+      cnt(answerKey(r) >> 1 & 1) += 1
+      while (cnt(0) > k && cnt(1) > k) {
+        cnt(answerKey(l) >> 1 & 1) -= 1
+        l += 1
+      }
+      ans = Math.max(ans, r - l + 1)
+    }
+
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(maxConsecutiveAnswers("TTFF", 2) == 4)
     println(maxConsecutiveAnswers("TFFT", 1) == 3)
     println(maxConsecutiveAnswers("TTFTTFTT", 1) == 5)
+
+    println(optimize("TTFF", 2) == 4)
+    println(optimize("TFFT", 1) == 3)
+    println(optimize("TTFTTFTT", 1) == 5)
   }
 }
