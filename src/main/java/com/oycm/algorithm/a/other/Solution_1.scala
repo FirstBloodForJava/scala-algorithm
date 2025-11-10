@@ -35,9 +35,33 @@ object Solution_1 {
     ans
   }
 
+  def math(num: Int, k: Int): Int = {
+    /*
+    数学解法：
+    初始化 n = num, m = 10^k
+     - mod = n % m 就是右边长为 k 的子串, 更新答案, n = n / 10, 丢弃 n 当前的个位数
+     - 不断循环
+     - 直到 n < m / 10, 退出循环
+     */
+    var ans = 0
+    var n = num
+    val m = Math.pow(10, k).toInt
+    while (n >= m / 10) {
+      val mod = n % m
+      if (mod > 0 && num % mod == 0) {
+        ans += 1
+      }
+      n /= 10
+    }
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(divisorSubstrings(240, 2) == 2)
     println(divisorSubstrings(430043, 2) == 2)
+
+    println(math(240, 2) == 2)
+    println(math(430043, 2) == 2)
   }
 
 
