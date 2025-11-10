@@ -1,6 +1,6 @@
 package com.oycm.algorithm.a.other
 
-object Solution_1 {
+object Solution_2 {
 
   /**
    * 2269. 找到一个数字的 K 美丽值
