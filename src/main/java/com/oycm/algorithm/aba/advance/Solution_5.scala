@@ -90,6 +90,25 @@ object Solution_5 {
     ans
   }
 
+  def answerOptimize(nums: List[Int], k: Int): Int = {
+    var ans = 0
+
+    val map = scala.collection.mutable.Map[Int,Int]()
+    var l = 0
+    for (r <- nums.indices) {
+      // map 记录同值元素数量
+      map(nums(r)) = map.getOrElse(nums(r), 0) + 1
+      // 以 l 为同值元素的 起始点
+      while (r - l + 1 - map(nums(l)) > k) {
+        map(nums(l)) -= 1
+        l += 1
+      }
+      ans = Math.max(ans, map(nums(r)))
+    }
+    ans
+  }
+
+
   def main(args: Array[String]): Unit = {
     println(longestEqualSubarray(Array(4, 4, 2, 2, 4).toList, 1))
     println(longestEqualSubarray(Array(1, 3, 2, 3, 1, 3).toList, 3))
@@ -98,5 +117,9 @@ object Solution_5 {
     println(answer(Array(4, 4, 2, 2, 4).toList, 1) == 2)
     println(answer(Array(1, 3, 2, 3, 1, 3).toList, 2) == 3)
     println(answer(Array(1, 1, 2, 2, 1, 1).toList, 2) == 4)
+
+    println(answerOptimize(Array(4, 4, 2, 2, 4).toList, 1) == 2)
+    println(answerOptimize(Array(1, 3, 2, 3, 1, 3).toList, 2) == 3)
+    println(answerOptimize(Array(1, 1, 2, 2, 1, 1).toList, 2) == 4)
   }
 }
