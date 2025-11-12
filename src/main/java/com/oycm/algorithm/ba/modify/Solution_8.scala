@@ -48,9 +48,40 @@ object Solution_8 {
     nums
   }
 
+  def same(nums: Array[Int]): Array[Int] = {
+    /*
+    同向双指针：
+    i = 0 nums(i) % 2 == 0; i+=2
+    j = 1 nums(j) % 2 == 1; j+=2
+    否则交换 i+=2; j+=2
+     */
+    val n = nums.length
+    var i = 0
+    var j = 1
+    while (i < n) {
+      if (nums(i) % 2 == 0) {
+        i += 2
+      } else if (nums(j) % 2 == 1) {
+        j += 2
+      } else {
+        val temp = nums(i)
+        nums(i) = nums(j)
+        nums(j) = temp
+        i += 2
+        j += 2
+      }
+    }
+
+    nums
+  }
+
   def main(args: Array[String]): Unit = {
     println(sortArrayByParityII(Array(4, 2, 5, 7)).toSeq)
     println(sortArrayByParityII(Array(2, 3)).toSeq)
     println(sortArrayByParityII(Array(2, 1, 0, 1, 1, 2, 0, 3)).toSeq)
+
+    println(same(Array(4, 2, 5, 7)).toSeq)
+    println(same(Array(2, 3)).toSeq)
+    println(same(Array(2, 1, 0, 1, 1, 2, 0, 3)).toSeq)
   }
 }
