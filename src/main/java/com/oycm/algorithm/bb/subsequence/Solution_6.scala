@@ -56,10 +56,46 @@ object Solution_6 {
     ans
   }
 
+  def isSubsequence(nums1: Array[Int], nums2: Array[Int]): Int = {
+    /*
+    题解思路：对数组排序，只能移除 nums1 的 [0, 1, 2] 三个元素
+    只需要判断 nums2 是否为 nums1[0, n), nums1[1, n), nums1[2, n) 的子序列
+    求最小值，nums2 是 nums1[2, n) 则 x 最小，可以从到小枚举，只要 1, 2 有则就是答案，否则 答案就是 s2[2] - s1[0]
+     */
+    val s1 = nums1.sorted
+    val s2 = nums2.sorted
+    var ans = 10000
+    for (i <- 2 until 0 by -1 if ans == 10000) {
+      val x = s2(0) - s1(i)
+      var cnt = 0
+      for (j <- i until nums1.length if ans == 10000) {
+        if (s1(j) + x == s2(cnt)) {
+          cnt += 1
+          if (cnt == nums2.length) {
+            ans = x
+          }
+        }
+      }
+    }
+    if (ans == 10000) {
+      ans = s2(0) - s1(0)
+    }
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
-    println(minimumAddedInteger(Array(4, 20, 16, 12, 8), Array(14, 18, 10)))
-    println(minimumAddedInteger(Array(3, 5, 5, 3), Array(7, 7)))
-    println(minimumAddedInteger(Array(4, 6, 3, 1, 4, 2, 10, 9, 5), Array(5, 10, 3, 2, 6, 1, 9)))
+//    println(minimumAddedInteger(Array(4, 20, 16, 12, 8), Array(14, 18, 10)))
+//    println(minimumAddedInteger(Array(3, 5, 5, 3), Array(7, 7)))
+//    println(minimumAddedInteger(Array(4, 6, 3, 1, 4, 2, 10, 9, 5), Array(5, 10, 3, 2, 6, 1, 9)))
+//    println(minimumAddedInteger(Array(10, 2, 8, 7, 5, 6, 7, 10), Array(5, 8, 5, 3, 8, 4)))
+//
+//    println()
+//
+//    println(isSubsequence(Array(4, 20, 16, 12, 8), Array(14, 18, 10)))
+//    println(isSubsequence(Array(3, 5, 5, 3), Array(7, 7)))
+//    println(isSubsequence(Array(4, 6, 3, 1, 4, 2, 10, 9, 5), Array(5, 10, 3, 2, 6, 1, 9)))
+//    println(isSubsequence(Array(10, 2, 8, 7, 5, 6, 7, 10), Array(5, 8, 5, 3, 8, 4)))
+    println(isSubsequence(Array(3, 8, 8, 3, 9, 10, 4, 4, 10, 7), Array(6, 9, 8, 7, 2, 7, 3, 3)))
   }
 
 }
