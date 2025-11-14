@@ -31,9 +31,40 @@ object Solution_6 {
     //println(nums.toSeq)
   }
 
+  def doublePoint(nums: Array[Int]): Unit = {
+    /*
+    使用额外空间思路，创建一个长为 n 的数组，初始值都为 0，遍历 nums，当元素不为 0 时，赋值给 新数组，i++
+
+    使用双指针，一个遍历当前元素，出现 0 时，和后面的非 0 元素交换，查找下一个 0，这样不好循环
+
+    遍历元素，当 nums(i) == 0 时，查找后面的非0 元素，交换
+
+    时间复杂度 O(n)
+     */
+    val n = nums.length
+    var j = 0
+    for (i <- nums.indices if j < n) {
+      if (nums(i) == 0) {
+        j = i + 1
+        while (j < n && nums(j) == 0) {
+          j += 1
+        }
+        // 交换
+        if (j < n) {
+          nums(i) = nums(j)
+          nums(j) = 0
+        }
+      }
+    }
+    println(nums.toSeq)
+  }
+
   def main(args: Array[String]): Unit = {
-    println(moveZeroes(Array(0, 1, 0, 3, 12)))
-    println(moveZeroes(Array(0)))
+    moveZeroes(Array(0, 1, 0, 3, 12))
+    moveZeroes(Array(0))
+
+    doublePoint(Array(0, 1, 0, 3, 12))
+    doublePoint(Array(0))
   }
 
 }
