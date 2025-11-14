@@ -1,6 +1,6 @@
 package com.oycm.algorithm.bb
 
-class Solution_4 {
+object Solution_4 {
 
   /**
    * 2570. 合并两个二维数组 - 求和法
