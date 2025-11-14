@@ -21,7 +21,7 @@ object Solution_5 {
     固定 r, 匹配时，找 l 的最小值
 
     k 表示 t 的字符数, m 表示 s 的长度, n 表示 t 的长度
-    时间复杂度 O(k * m + t)
+    时间复杂度 O(k * m + n)
 
     */
     def isCover(s: scala.collection.mutable.Map[Char, Int], t: scala.collection.mutable.Map[Char, Int]): Boolean = {
@@ -73,9 +73,59 @@ object Solution_5 {
     }
   }
 
+  def minWindowOptimize(s: String, t: String): String = {
+    /*
+    引入一个 变量 k，记录 t 中 不同字符出现的次数，同时记录 cnt 字符测出现次数
+    遍历过程中，如果 cnt(i) == 0，则 k--
+    移除 l 的过程中，如果 在移除之前 cnt(l) == 0，表示这个 l 恰好时 t 中的字符，因为如果不是 t 中的字符或重复出现的字符 cnt(l) < 0
+    m 表示 s 的长度, n 表示 t 的长度
+    时间复杂度 O(m + n)
+
+    */
+    val cnt = Array.fill(128)(0)
+    var k = 0
+    for (c <- t) {
+      if (cnt(c) == 0) {
+        k += 1
+      }
+      cnt(c) += 1
+    }
+    var mixL = -1
+    var mixR = s.length
+    var l = 0
+    for (r <- s.indices) {
+      val c = s(r)
+      cnt(c) -= 1
+      if (cnt(c) == 0) {
+        k -= 1
+      }
+      while (k == 0) {
+        if (r - l < mixR - mixL) {
+          mixL = l
+          mixR = r
+        }
+        if (cnt(s(l)) == 0) {
+          k += 1
+        }
+        cnt(s(l)) += 1
+        l += 1
+      }
+    }
+
+    if (mixL < 0) {
+      ""
+    } else {
+      s.substring(mixL, mixR + 1)
+    }
+  }
+
   def main(args: Array[String]): Unit = {
     println(minWindow("ADOBECODEBANC", "ABC"))
     println(minWindow("a", "a"))
     println(minWindow("a", "aa"))
+
+    println(minWindowOptimize("ADOBECODEBANC", "ABC"))
+    println(minWindowOptimize("a", "a"))
+    println(minWindowOptimize("a", "aa"))
   }
 }
