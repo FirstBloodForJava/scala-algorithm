@@ -80,6 +80,30 @@ object Solution_6 {
     //println(nums.toSeq)
   }
 
+  def doublePointOptimize(nums: Array[Int]): Unit = {
+    /*
+    遍历当前元素，出现 0 时，和后面的非 0 元素交换
+    记录最先出现的 0 的下标
+    [1, 0, 1, 1, 0]
+    [1, 0, 0, 1]
+    出现 0 时，如果下一个不是 0，下一个最新出现的 0 也是 i++
+    如果下一个就是是 0，下一个最新出现的 0 也是 i++
+     */
+    var i0 = 0
+    for (i <- nums.indices) {
+      if (nums(i) != 0) {
+        // 交换
+        if(i != i0) {
+          val temp = nums(i)
+          nums(i) = nums(i0)
+          nums(i0) = temp
+        }
+        i0 += 1
+      }
+    }
+    println(nums.toSeq)
+  }
+
   def main(args: Array[String]): Unit = {
     moveZeroes(Array(0, 1, 0, 3, 12))
     moveZeroes(Array(0))
@@ -89,6 +113,9 @@ object Solution_6 {
 
     answer_1(Array(0, 1, 0, 3, 12))
     answer_1(Array(0))
+
+    doublePointOptimize(Array(0, 1, 0, 3, 12))
+    doublePointOptimize(Array(0))
   }
 
 }
