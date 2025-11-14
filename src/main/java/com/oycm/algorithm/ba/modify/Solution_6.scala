@@ -56,7 +56,28 @@ object Solution_6 {
         }
       }
     }
-    println(nums.toSeq)
+    //println(nums.toSeq)
+  }
+
+  def answer_1(nums: Array[Int]): Unit = {
+    /*
+    题解思路：用一个栈记录非 0 元素，栈的大小 stackSize，剩余元素补 0 即可
+    可以把 nums 看成 栈，变量 stackSize 记录栈的大小，元素非0，则 nums(stackSize) = nums(i), stackSize++
+    [stackSize, n) 剩余部分补 0 即可
+    时间复杂度 O(n)
+    空间复杂度 O(1)
+     */
+    var idx = 0
+    for (num <- nums) {
+      if (num != 0) {
+        nums(idx) = num
+        idx += 1
+      }
+    }
+    for (i <- idx until nums.length) {
+      nums(i) = 0
+    }
+    //println(nums.toSeq)
   }
 
   def main(args: Array[String]): Unit = {
@@ -65,6 +86,9 @@ object Solution_6 {
 
     doublePoint(Array(0, 1, 0, 3, 12))
     doublePoint(Array(0))
+
+    answer_1(Array(0, 1, 0, 3, 12))
+    answer_1(Array(0))
   }
 
 }
