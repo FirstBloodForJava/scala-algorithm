@@ -11,14 +11,15 @@ object Solution_2 {
    * 如果答案不止一个，返回长度最长且字母序最小的字符串。如果答案不存在，则返回空字符串。
    *
    * @param s          字符串, n 表示字符串长度
-   * @param dictionary 字符串数组, m 表示最长字符长度, k 表示数组长度
+   * @param dictionary 字符串数组, m 表示最长子序列字符长度, k 表示数组长度
    * @return
    */
   def findLongestWord(s: String, dictionary: List[String]): String = {
     /*
     求 dictionary 中 s 的最长子序列，如果相同，则返回 字母序最小的字符串
 
-    时间复杂度 O(n * k * m)
+
+    时间复杂度 O(k * (n + m))
 
      */
     var ans = ""
