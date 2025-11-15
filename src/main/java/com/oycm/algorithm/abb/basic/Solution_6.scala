@@ -50,8 +50,70 @@ object Solution_6 {
     ans
   }
 
+  def answer_2(nums: List[List[Int]]): Array[Int] = {
+    /*
+    题解思路： nums 长度记为 k
+    用一个二维数组 记录 nums(i)(j) 和 i 的关系，问题就转换成了 pairs = Array[Array[Int]] 数组中找到一个最小区间, 包含 [0,k) 所有编号
+    问题就转换成了 76 最小子串覆盖问题
+    要找的区间记为 [l, r]
+    组成的新数组 pairs 的要挑选出 一堆 pairs(i)(1) 包含 [0,k) 所有编号，l 就是里面的最小值，r 就是里面的最大值
+    元素的顺序和 结果没有关系，可以对 pairs 进行排序 当找到 [l, r] 符合要求时，不断缩短 l，不和要求时，不算右移 r，可以使用滑动窗口解决
+
+    用一个长 k = nums.length 数组 cnt 记录次数
+    empty 表示需要多少编号，当为 0 时，则更新答案
+    cnt[i] 减少后等于 0 表示已添加一个编号
+    l 右移过程中 cnt[l] == 1, 表示已有编号被删除了
+
+    记 L 为 nums 所有整数的数量
+    时间复杂度 O(L log L), 在排序
+    空间复杂度 O(L)
+    */
+    var length = 0
+    for (num <- nums) {
+      length += num.size
+    }
+    var pairs = Array.fill(length)(Array.fill(2)(0))
+    var j = 0
+    for (i <- nums.indices) {
+      for (num <- nums(i)) {
+        pairs(j)(0) = num
+        pairs(j)(1) = i
+        j += 1
+      }
+    }
+    pairs = pairs.sortBy(_(0))
+    val ans = Array(pairs(0)(0), pairs(length - 1)(0))
+
+    var empty = nums.size
+    val cnt = Array.fill(empty)(1)
+    var l = 0
+    for (r <- pairs.indices) {
+      cnt(pairs(r)(1)) -= 1
+      if (cnt(pairs(r)(1)) == 0) {
+        empty -= 1
+      }
+      while (empty == 0) {
+        if (pairs(r)(0) - pairs(l)(0) < ans(1) - ans(0)) {
+          ans(0) = pairs(l)(0)
+          ans(1) = pairs(r)(0)
+        }
+        // 出 l
+        cnt(pairs(l)(1)) += 1
+        if (cnt(pairs(l)(1)) == 1) {
+          empty += 1
+        }
+        l += 1
+      }
+    }
+
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(smallestRange(Array(Array(4, 10, 15, 24, 26).toList, Array(0, 9, 12, 20).toList, Array(5, 18, 22, 30).toList).toList).toSeq)
     println(smallestRange(Array(Array(1, 2, 3).toList, Array(1, 2, 3).toList, Array(1, 2, 3).toList).toList).toSeq)
+
+    println(answer_2(Array(Array(4, 10, 15, 24, 26).toList, Array(0, 9, 12, 20).toList, Array(5, 18, 22, 30).toList).toList).toSeq)
+    println(answer_2(Array(Array(1, 2, 3).toList, Array(1, 2, 3).toList, Array(1, 2, 3).toList).toList).toSeq)
   }
 }
