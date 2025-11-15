@@ -22,7 +22,8 @@ object Solution_13 {
     [n-km, n-km+m)...[n-m,n)
     s 移动一次，需要 t 次找出自己的 分割子串，和 words 进行比较次数
 
-    时间复杂度 O(k + k * n)
+    时间复杂度 O(k * m + k * m * (n - k*m))
+              O(t + t * (n -t)
     空间复杂度 O(k)
     */
     val n = s.length
@@ -61,9 +62,61 @@ object Solution_13 {
     ans.toList
   }
 
+  def answer(s: String, words: Array[String]): List[Int] = {
+    /*
+    题解：
+    n = s.length, k = words.length, m = words(0).length
+    在窗口 [0, k) 滑动, 分割截取字符串和 words 的字符数比较
+
+    时间复杂度 O(k*m + m * n) 一个窗口 判断是否符合要求的时间复杂度是 O(n)
+    */
+    val n = s.length
+    val m = words(0).length
+    val t = m * words.length
+    val map = scala.collection.mutable.Map[String, Int]()
+    for (word <- words) {
+      map(word) = map.getOrElse(word, 0) + 1
+    }
+    val ans = scala.collection.mutable.ArrayBuffer[Int]()
+    for (i <- 0 until m) {
+      val cnt = scala.collection.mutable.Map[String, Int]()
+      var over = 0
+      for (j <- i + m to n by m) {
+        val word = s.substring(j - m, j)
+        // 相同次数后再次出现, 达到 t 长度也无法符合要求
+        if (cnt.getOrElse(word, 0) == map.getOrElse(word, 0)) {
+          over += 1
+        }
+        cnt(word) = cnt.getOrElse(word, 0) + 1
+        val left = j - t
+        if (left >= 0) {
+          // 更新答案
+          if (over == 0) {
+            ans.append(left)
+          }
+          // 出窗口 over 怎么变化
+          val outWord = s.substring(left, left + m)
+          cnt(outWord) -= 1
+          // 相同字符删除
+          if (cnt(outWord) == map.getOrElse(outWord, 0)) {
+            over -= 1
+          }
+
+        }
+      }
+
+    }
+
+    ans.toList
+  }
+
   def main(args: Array[String]): Unit = {
     println(findSubstring("barfoothefoobarman", Array("foo", "bar")))
     println(findSubstring("wordgoodgoodgoodbestword", Array("word", "good", "best", "word")))
     println(findSubstring("barfoofoobarthefoobarman", Array("bar", "foo", "the")))
+
+    println(answer("barfoothefoobarman", Array("foo", "bar")))
+    println(answer("wordgoodgoodgoodbestword", Array("word", "good", "best", "word")))
+    println(answer("barfoofoobarthefoobarman", Array("bar", "foo", "the")))
   }
 }
