@@ -23,7 +23,9 @@ object Solution_6 {
     右端点最大值，可以记录第一次的最大值，删除最左边最小值后，新加入的值和其相比，更大则更新
 
     堆中需要知道当前值, nums 下标, 当前所在元素下标, 可以使用长为 3 的数组来维护
-
+    记 n 为 nums 长度, L 为 nums 所有 nums(i) 长度之和
+    时间复杂度 O(n log L)
+    空间复杂度 O(n)
     */
     val heap = scala.collection.mutable.PriorityQueue[Array[Int]]()(Ordering.by(-_ (0)))
     // 最大值 和 小顶堆初始化
