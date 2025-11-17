@@ -33,7 +33,49 @@ object Solution_2 {
     heap.head(0)
   }
 
+  def answer_2(matrix: Array[Array[Int]], k: Int): Int = {
+    /*
+    维护一个 [matrix(0)(0), matrix(n-1)(n-1)] 区间 数组 temp，计算 matrix 中 <= temp(i) 数量
+    找到第一个 k <= temp(i) 的值，就是第 k 小的答案
+
+    利用矩阵的有序性
+
+    时间复杂度 O(n log (r - l))
+    空间复杂度 O(1)
+     */
+    val n = matrix.length
+    var l = matrix(0)(0)
+    var r = matrix(n-1)(n-1)
+
+    while (l <= r) {
+      val mid = l + (r - l) / 2
+      var cnt = 0
+
+      var i = 0
+      var j = n - 1
+      while (i < n && j >= 0) {
+        if (matrix(i)(j) > mid) {
+          j -= 1
+        } else {
+          i += 1
+          cnt += j + 1
+        }
+      }
+      if (cnt >= k) {
+        r = mid - 1
+      } else {
+        l = mid + 1
+      }
+
+    }
+    l
+  }
+
   def main(args: Array[String]): Unit = {
     println(kthSmallest(Array(Array(1, 5, 9), Array(10, 11, 13), Array(12, 13, 15)), 8))
+
+    println(answer_2(Array(Array(1, 5, 9), Array(10, 11, 13), Array(12, 13, 15)), 8))
+    println(answer_2(Array(Array(-5)), 1))
+
   }
 }
