@@ -60,8 +60,47 @@ object Solution_1 {
     ans
   }
 
+
+  def answer_2(points: Array[Array[Int]], s: String): Int = {
+    /*
+    相同的点，要只能有一个点在正方形中，则只能时该字符的最小点在正方形中
+    多个点要在正方形中符合要求，假设有 点 aMin1, aMin2, bMin1, bMin2
+    正方形要包含不同的 a 和 b 则必须满足 aMin1 和 aMin2 < min(aMin2, bMin2)
+    所以要找出所有字符的最小点，和 次小点，min < min(min2) 的点 是正方形中能包含最多的点
+
+    要在遍历的过程中，维护最小点和 所有字符的次小点
+
+    时间复杂度 O(n)
+    空间复杂度 O(26)
+     */
+    val min = Array.fill(26)(Int.MaxValue)
+    var min2 = Int.MaxValue
+    for (i <- points.indices) {
+      val c = s(i) - 'a'
+      val d = Math.max(Math.abs(points(i)(0)), Math.abs(points(i)(1)))
+      if (d < min(c)) {
+        // 距离小于当前最小值
+        min2 = Math.min(min(c), min2)
+        min(c) = d
+      } else {
+        // 更新次小点
+        min2 = Math.min(min2, d)
+      }
+    }
+    var ans = 0
+    for(i <- points.indices) {
+      if (Math.max(Math.abs(points(i)(0)), Math.abs(points(i)(1))) < min2) {
+        ans += 1
+      }
+    }
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(maxPointsInsideSquare(Array(Array(1, 1), Array(-2, -2), Array(-2, 2)), "abb"))
     println(maxPointsInsideSquare(Array(Array(1, 1), Array(-1, -1), Array(2, -2)), "ccd"))
+
+    println(answer_2(Array(Array(1, 1), Array(-2, -2), Array(-2, 2)), "abb"))
+    println(answer_2(Array(Array(1, 1), Array(-1, -1), Array(2, -2)), "ccd"))
   }
 }
