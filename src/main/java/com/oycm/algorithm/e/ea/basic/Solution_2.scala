@@ -33,10 +33,33 @@ object Solution_2 {
     ans
   }
 
+  def optimize(nums: Array[Int]): Int = {
+    /*
+    数组中 两数之和为 0 的最大正整数
+
+    时间复杂度 O(n)
+    空间复杂度 O(m) 负数的个数
+     */
+    var ans = -1
+    val set = scala.collection.mutable.Set[Int]()
+    for (num <- nums) {
+      if (set.contains((-num))) {
+        ans = Math.max(ans, Math.abs(num))
+      }
+      set.add(num)
+    }
+
+    ans
+  }
+
   def main(args: Array[String]): Unit = {
     println(findMaxK(Array(-1, 2, -3, 3)))
     println(findMaxK(Array(-1, 10, 6, 7, -7, 1)))
     println(findMaxK(Array(-10, 8, 6, 7, -2, -3)))
+
+    println(optimize(Array(-1, 2, -3, 3)))
+    println(optimize(Array(-1, 10, 6, 7, -7, 1)))
+    println(optimize(Array(-10, 8, 6, 7, -2, -3)))
 
   }
 }
