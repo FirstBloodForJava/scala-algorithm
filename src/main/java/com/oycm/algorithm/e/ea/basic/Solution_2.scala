@@ -38,7 +38,7 @@ object Solution_2 {
     数组中 两数之和为 0 的最大正整数
 
     时间复杂度 O(n)
-    空间复杂度 O(m) 负数的个数
+    空间复杂度 O(n) 负数的个数
      */
     var ans = -1
     val set = scala.collection.mutable.Set[Int]()
