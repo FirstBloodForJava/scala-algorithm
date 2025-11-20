@@ -46,10 +46,42 @@ object Solution_2 {
     (ans % 1000000007).toInt
   }
 
+  def answer(nums: Array[Int]): Int = {
+    /*
+    题解思路：问题拆分
+    枚举 k，计算 有多少对 (i, j) 满足 nums(k) == nums(i) == nums(j) * 2
+
+    计算 (i, j) 的对数，求 j 左边 nums(i) == nums(j) * 2 的个数
+
+    */
+    var ans = 0L
+    val cntIJ = scala.collection.mutable.Map[Int, Long]()
+    val cntI = scala.collection.mutable.Map[Int, Int]()
+
+    for (x <- nums) {
+      // 找 nums(k) == x (i, j) 的对数
+      if (x % 2 == 0) {
+        ans += cntIJ.getOrElse(x / 2, 0L)
+      }
+
+      // nums(j) 求 nums(j) * 2 == nums(i) 的对数
+      cntIJ(x) = cntIJ.getOrElse(x, 0L) + cntI.getOrElse(x * 2, 0)
+      // nums(i) 的计数
+      cntI(x) = cntI.getOrElse(x, 0) + 1
+    }
+
+    (ans % 1000000007).toInt
+  }
+
+
   def main(args: Array[String]): Unit = {
     println(specialTriplets(Array(6, 3, 6)))
     println(specialTriplets(Array(0, 1, 0, 0)))
     println(specialTriplets(Array(8, 4, 2, 8, 4)))
+
+    println(answer(Array(6, 3, 6)))
+    println(answer(Array(0, 1, 0, 0)))
+    println(answer(Array(8, 4, 2, 8, 4)))
   }
 
 }
