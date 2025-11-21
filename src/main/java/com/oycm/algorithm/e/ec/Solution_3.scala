@@ -56,6 +56,15 @@ object Solution_3 {
     mat
   }
 
+
+  def optimize(mat: Array[Array[Int]]): Array[Array[Int]] = {
+    /*
+    可优化：在一条对角线上的点满足 i - j = 固定值
+    */
+
+    mat
+  }
+
   def main(args: Array[String]): Unit = {
     diagonalSort(Array(
       Array(11, 25, 66, 1, 69, 7),
