@@ -6,6 +6,7 @@ object Solution_5 {
    * 350. 两个数组的交集 II
    * https://leetcode.cn/problems/intersection-of-two-arrays-ii/description/
    *
+   * 返回两数组的交集, 出现次数要一致
    * @param nums1
    * @param nums2
    * @return
