@@ -30,4 +30,8 @@ object Solution_2 {
     sum
   }
 
+  /**
+   * todo: 差分数组解法
+   */
+
 }
