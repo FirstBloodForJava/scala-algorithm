@@ -1,4 +1,4 @@
 /**
- * 枚举左维护右
+ * 枚举右维护左
  */
 package com.oycm.algorithm.e.ea;
