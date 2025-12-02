@@ -1,6 +1,8 @@
 package com.oycm.datastructure.stack;
 
 
+import java.util.Stack;
+
 public class Solution_6 {
 
     /**
@@ -49,6 +51,19 @@ public class Solution_6 {
         }
 
         return true;
+    }
+
+    public static boolean validateStackSequences_1(int[] pushed, int[] popped) {
+        Stack<Integer> stack = new Stack<>();
+        for (int i = 0, j = 0; i < pushed.length; i++) {
+            stack.push(pushed[i]);
+            while (!stack.isEmpty() && stack.peek() == popped[j]) {
+                stack.pop();
+                j++;
+            }
+        }
+
+        return stack.isEmpty();
     }
 
     public static void main(String[] args) {
