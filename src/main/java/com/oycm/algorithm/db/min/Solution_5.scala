@@ -22,6 +22,7 @@ object Solution_5 {
     由于工人是有限的，且同时工作，时间 和 工人能降低山的高度 成正比，可间接查询 >= mountainHeight 的第一个 index
     最大时间 max(workerTime) * h * (h+1) / 2
     怎么求 h * (h + 1) / 2 * workerTime <= time 这个表达式 h 的最大值，可二分
+    开区间写法
      */
     var max = 0
     var l = 0L
@@ -35,7 +36,8 @@ object Solution_5 {
       var h = 0L
       for (num <- nums) {
         var left = 0L
-        var right = time * 2 / num
+        // 不处理会溢出
+        var right = Math.sqrt(time * 2 / num).toLong + 1
         while (left + 1 < right) {
           val mid = left + (right - left) / 2
           if (mid * (mid + 1) / 2 * num <= time) {
@@ -64,9 +66,9 @@ object Solution_5 {
   }
 
   def main(args: Array[String]): Unit = {
-    //    println(minNumberOfSeconds(4, Array(2, 1, 1)))
-    //    println(minNumberOfSeconds(10, Array(3, 2, 2, 4)))
-    //    println(minNumberOfSeconds(5, Array(1)))
+    println(minNumberOfSeconds(4, Array(2, 1, 1)))
+    println(minNumberOfSeconds(10, Array(3, 2, 2, 4)))
+    println(minNumberOfSeconds(5, Array(1)))
     println(minNumberOfSeconds(100000, Array(1)))
   }
 }
