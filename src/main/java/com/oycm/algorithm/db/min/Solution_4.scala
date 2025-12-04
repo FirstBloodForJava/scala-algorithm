@@ -1,6 +1,6 @@
 package com.oycm.algorithm.db.min
 
-class Solution_4 {
+object Solution_4 {
 
   /**
    * 875. 爱吃香蕉的珂珂 1766
