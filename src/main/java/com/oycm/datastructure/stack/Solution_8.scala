@@ -28,7 +28,7 @@ object Solution_8 {
       if (!p.equals(".")) {
         if (stack.isEmpty) {
           stack.push(p)
-        } else if (!p.equals("..") && stack.top.equals("..")){
+        } else if (!p.equals("..") && stack.top.equals("..")) {
           stack.pop()
         } else {
           stack.push(p)
@@ -46,6 +46,22 @@ object Solution_8 {
       ans = scala.collection.mutable.StringBuilder("/")
     }
     ans.toString()
+  }
+
+  def optimize(path: String): String = {
+    /*
+    可以使用栈的思路，但是不使用栈
+    */
+    val list = scala.collection.mutable.ArrayBuffer[String]()
+    for (p <- path.split("/") if p.nonEmpty && !p.equals(".")) {
+      if (!p.equals("..")) {
+        list.addOne(p)
+      } else if (list.nonEmpty) {
+        list.remove(list.size - 1)
+      }
+    }
+
+    "/" + list.mkString("/")
   }
 
   def main(args: Array[String]): Unit = {
