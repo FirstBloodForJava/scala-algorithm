@@ -1,4 +1,4 @@
-package src.main.java.com.oycm.datastructure.stack
+package com.oycm.datastructure.stack
 
 object Solution_7 {
 

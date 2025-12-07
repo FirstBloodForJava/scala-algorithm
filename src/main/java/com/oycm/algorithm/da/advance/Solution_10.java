@@ -1,4 +1,4 @@
-package src.main.java.com.oycm.algorithm.da.advance;
+package com.oycm.algorithm.da.advance;
 
 import java.util.*;
 

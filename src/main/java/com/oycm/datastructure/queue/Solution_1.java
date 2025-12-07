@@ -1,4 +1,4 @@
-package src.main.java.com.oycm.datastructure.queue;
+package com.oycm.datastructure.queue;
 
 import java.util.Deque;
 import java.util.ArrayDeque;

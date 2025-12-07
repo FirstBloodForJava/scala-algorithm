@@ -1,4 +1,4 @@
-package src.main.java.com.oycm.algorithm.db.min
+package com.oycm.algorithm.db.min
 
 object Solution_6 {
 

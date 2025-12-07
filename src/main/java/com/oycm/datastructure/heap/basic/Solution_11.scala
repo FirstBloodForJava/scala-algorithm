@@ -1,4 +1,4 @@
-package src.main.java.com.oycm.datastructure.heap.basic
+package com.oycm.datastructure.heap.basic
 
 object Solution_11 {
 
