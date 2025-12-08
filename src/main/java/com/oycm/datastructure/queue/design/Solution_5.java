@@ -41,6 +41,8 @@ public class Solution_5 {
 /**
  * 622. <a href="https://leetcode.cn/problems/design-circular-queue/description/">设计循环队列</a>
  * 注意点：当队列为空时 front == rear; 当队列满了时 front == rear(n-1 移动到 0)
+ * 留空一个元素用来组成环
+ * k = 3, 添加 3 次后, rear = 3, 当 deQueue 一次是 rear 能添加元素 rear % capacity, 当队列满了时，数组中始终存在一个元素不被使用 front = 1, rear = 3, front = 2, rear = 4 % 4
  */
 class MyCircularQueue {
     int[] q;
