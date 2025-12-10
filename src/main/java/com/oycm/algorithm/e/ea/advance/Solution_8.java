@@ -1,8 +1,5 @@
 package com.oycm.algorithm.e.ea.advance;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Solution_8 {
 
     /**
@@ -55,6 +52,27 @@ public class Solution_8 {
         }
         return r;
 
+    }
+
+    public int answer(int[] prizePositions, int k) {
+        /*
+        题解，使用双指针解决
+        知道一条线段的最多礼物，再查询前面一条线段的最多礼物
+         */
+        int ans = 0;
+        int n = prizePositions.length;
+        int[] cnt = new int[n + 1];
+        int l = 0, r = 0;
+        while (r < n) {
+            while (prizePositions[r] - prizePositions[l] > k) {
+                l++;
+            }
+            ans = Math.max(ans, r - l + 1 + cnt[l]);
+            cnt[r + 1] = Math.max(cnt[r], r - l + 1);
+            r++;
+        }
+
+        return ans;
     }
 
     public static void main(String[] args) {
