@@ -1,7 +1,10 @@
 package com.oycm;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.List;
 
 /**
  * @author ouyangcm
@@ -18,6 +21,14 @@ public class DataCreateUtils {
     public static int[][] twoDimensionInts(String str) {
         try {
             return mapper.readValue(str, int[][].class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<List<String>> twoDimensionListStings(String str) {
+        try {
+            return mapper.readValue(str, new TypeReference<List<List<String>>>() {});
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
