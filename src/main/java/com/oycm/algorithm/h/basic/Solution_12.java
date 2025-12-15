@@ -48,4 +48,18 @@ public class Solution_12 {
 
         return ans;
     }
+    public int[] answer(int[] A, int[] B) {
+        /*
+        A B 分别往 a b 集合中添加元素，求其中交集的数量，就是前 i 个相同元素的数量
+         */
+        long a = 0;
+        long b = 0;
+        for (int i = 0; i < A.length; i++) {
+            a |= 1L << A[i];
+            b |= 1L << B[i];
+            A[i] = Long.bitCount(a & b);
+        }
+        return A;
+    }
+
 }
