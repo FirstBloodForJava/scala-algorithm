@@ -38,4 +38,28 @@ public class Solution_7 {
 
         return ans;
     }
+
+    public long answer(int n, int x) {
+        /*
+        题解思路: 需要从 x 的最低位 0 开始填, 可以将 x 反转, 找 x 的最低位的 1 填 n 的比特
+        x = 100100, ~x = 011011, n = 6, n-- = 101
+        lowbit = 1,
+        只要 n 的第 j 个比特是 1 就 加上 lowbit,可以使用 乘法代替 if else
+         */
+        n--;
+        long ans = x;
+        long rev = ~ans;
+        long lowbit = rev & -rev;
+        int j = 0;
+        while (n >> j > 0) {
+            ans |= ((n >> j & 1) * lowbit);
+            // 去掉 lowbit
+            rev ^= lowbit;
+            // 更新 lowbit
+            lowbit = rev & -rev;
+            j++;
+        }
+
+        return ans;
+    }
 }
