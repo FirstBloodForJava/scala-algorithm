@@ -89,6 +89,49 @@ public class Solution_1 {
         return ans;
     }
 
+    public int stackOptimize(int[] nums, int k) {
+        /*
+        随着子数组越来越长 or 值会越来越大，是具有单调性的，可以使用滑动窗口解决
+        关键是怎么移除 nums[l]
+        构建一个 栈, 当 nums[l, r] or > k 时, 构建一个栈
+        i = r - 1;i > l
+        nums[i] |= nums[i+1]
+        nums[1] 是栈顶表示 [1,r] 的 or 值
+        nums[2] 表示 [2, r] 的 or 值
+        当 nums[r] > k 时, 需要清空栈, 该怎么处理, 此时 l > right, 重新循环
+
+         */
+        int ans = Integer.MAX_VALUE;
+        // 记录栈右边的 or 值
+        int rightOr = 0;
+        int n = nums.length, l = 0;
+        // 表示上次构建的栈底
+        int bottom = 0;
+        for (int r = 0; r < n; r++) {
+            rightOr |= nums[r];
+            while (l <= r && (nums[l] | rightOr) > k) {
+                ans = Math.min(ans, (nums[l] | rightOr) - k);
+                l++;
+                // 重新构建栈
+                if (l > bottom) {
+                    for (int i = r - 1; i >= l; i--) {
+                        nums[i] |= nums[i + 1];
+                    }
+                    // 栈顶更新
+                    bottom = r;
+                    // 清空右边 or 值
+                    rightOr = 0;
+                }
+            }
+            if (l <= r) {
+                // 或值小于等于 k
+                ans = Math.min(ans, k - (nums[l] | rightOr));
+            }
+        }
+
+        return ans;
+    }
+
     public static void main(String[] args) {
         minimumDifference(new int[]{1, 3, 1, 3}, 2);
     }
