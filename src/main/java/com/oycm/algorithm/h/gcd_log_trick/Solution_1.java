@@ -1,6 +1,9 @@
 package com.oycm.algorithm.h.gcd_log_trick;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Solution_1 {
 
     /**
@@ -66,6 +69,48 @@ public class Solution_1 {
                 if (gcd == k) {
                     ans++;
                 }
+            }
+        }
+        return ans;
+    }
+
+    public int gcdOptimize(int[] nums, int k) {
+        // todo 不太懂
+        int ans = 0;
+        // 存储 [GCD，相同 GCD 区间的右端点]
+        List<int[]> a = new ArrayList<>();
+        int i0 = -1;
+
+        for (int i = 0; i < nums.length; i++) {
+            int x = nums[i];
+            // 保证后续求的 GCD 都是 k 的倍数
+            if (x % k != 0) {
+                a.clear();
+                i0 = i;
+                continue;
+            }
+
+            a.add(new int[]{x, i});
+            // 原地去重，因为相同的 GCD 都相邻在一起
+            int j = 0;
+            for (int idx = 0; idx < a.size(); idx++) {
+                int[] p = a.get(idx);
+                p[0] = gcd(p[0], x);
+                if (a.get(j)[0] != p[0]) {
+                    j++;
+                    a.set(j, p);
+                } else {
+                    a.get(j)[1] = p[1];
+                }
+            }
+
+            // 删除多余的元素
+            while (a.size() > j + 1) {
+                a.remove(a.size() - 1);
+            }
+
+            if (a.get(0)[0] == k) { // a[0][0] >= k
+                ans += a.get(0)[1] - i0;
             }
         }
         return ans;
