@@ -41,13 +41,34 @@ public class Solution_1 {
     }
 
     public static int gcd(int a, int b) {
-        // a > b > 0;
+        // a > 0, b > 0;
         while (b != 0) {
             int temp = b;
             b = a % b;
             a = temp;
         }
         return a;
+    }
+
+    public int violenceOptimize(int[] nums, int k) {
+        /*
+        题解：暴力优化 gcd 不是 k 的 倍数, 提前结束循环
+         */
+        int ans = 0;
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int gcd = 0;
+            for (int j = i; j >= 0 ; j--) {
+                gcd = gcd(gcd, nums[j]);
+                if (gcd % k > 0) {
+                    break;
+                }
+                if (gcd == k) {
+                    ans++;
+                }
+            }
+        }
+        return ans;
     }
 
     public static void main(String[] args) {
