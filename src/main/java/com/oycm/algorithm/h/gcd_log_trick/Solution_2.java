@@ -1,6 +1,9 @@
 package com.oycm.algorithm.h.gcd_log_trick;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Solution_2 {
 
     /**
@@ -47,7 +50,7 @@ public class Solution_2 {
         return ans;
     }
 
-    public int gcd(int a, int b) {
+    public static int gcd(int a, int b) {
         // a >= 0, b >= 0;
         while (b != 0) {
             int temp = b;
@@ -56,4 +59,39 @@ public class Solution_2 {
         }
         return a;
     }
+
+    public static int gcdOptimize(int[] nums) {
+        int n = nums.length, gcdAll = 0, cnt = 0;
+        for (int x : nums) {
+            gcdAll = gcd(gcdAll, x);
+            if (x == 1) cnt++;
+        }
+        if (gcdAll > 1) return -1;
+        if (cnt > 0) return n - cnt;
+
+        int minSize = n;
+        // 记录 [GCD，相同 GCD 闭区间的右端点]
+        List<int[]> g = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            g.add(new int[]{nums[i], i});
+            // 原地去重，因为相同的 GCD 都相邻在一起
+            int j = 0;
+            for (int[] p : g) {
+                p[0] = gcd(p[0], nums[i]);
+                if (g.get(j)[0] == p[0])
+                    g.get(j)[1] = p[1]; // 合并相同值，下标取最大的
+                else g.set(++j, p);
+            }
+            g.subList(j + 1, g.size()).clear();
+            if (g.get(0)[0] == 1)
+                // 这里本来是 i-g.get(0)[1]+1，把 +1 提出来合并到 return 中
+                minSize = Math.min(minSize, i - g.get(0)[1]);
+        }
+        return minSize + n - 1;
+    }
+
+    public static void main(String[] args) {
+        gcdOptimize(new int[]{2, 6, 3, 4});
+    }
+
 }
