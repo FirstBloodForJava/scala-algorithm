@@ -19,15 +19,17 @@ public class Solution_4 {
         当 a = 0, (0 & b) ^ (a & c) == 0 == 0 & (b ^ c)
         当 a = 1, (1 & b) ^ (1 & c) == b ^ c == 1 & (b ^ c)
         arr1[0] & (xor(arr2)) ^ arr1[1] & (xor(arr2))
+        可简化为
+        xor(arr1) & xor(arr2)
          */
-        int ans = 0;
-        int xor = 0;
-        for (int i = 0; i < arr2.length; i++) {
-            xor ^= arr2[i];
-        }
+        int xor1 = 0;
+        int xor2 = 0;
         for (int i = 0; i < arr1.length; i++) {
-            ans ^= arr1[i] & xor;
+            xor1 ^= arr1[i];
         }
-        return ans;
+        for (int i = 0; i < arr2.length; i++) {
+            xor2 ^= arr2[i];
+        }
+        return xor1 & xor2;
     }
 }
