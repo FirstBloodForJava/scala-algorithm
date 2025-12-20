@@ -19,4 +19,8 @@ public class Solution_5 {
         return ans;
     }
 
+    /**
+     * todo 思考题: nums 的 每个子数组, 计算 evenNumberBitwiseORs 的和;
+     */
+
 }
