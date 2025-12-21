@@ -7,6 +7,7 @@
  *     <li>log_trick LogTrick</li>
  *     <li>gcd_log_trick GCD logTrick 最大公约数</li>
  *     <li>disposition 拆位/贡献法</li>
+ *     <li>fill 试填法</li>
  * </ol>
  */
 package com.oycm.algorithm.h;
