@@ -9,6 +9,7 @@
  *     <li>disposition 拆位/贡献法</li>
  *     <li>fill 试填法</li>
  *     <li>identical_equation 恒等式</li>
+ *     <li>mind 思维题</li>
  * </ol>
  */
 package com.oycm.algorithm.h;
