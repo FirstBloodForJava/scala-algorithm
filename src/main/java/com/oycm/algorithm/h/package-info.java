@@ -8,6 +8,7 @@
  *     <li>gcd_log_trick GCD logTrick 最大公约数</li>
  *     <li>disposition 拆位/贡献法</li>
  *     <li>fill 试填法</li>
+ *     <li>identical_equation 恒等式</li>
  * </ol>
  */
 package com.oycm.algorithm.h;
