@@ -36,6 +36,32 @@ public class Solution_2 {
         return nums;
     }
 
+    public int[] answer(int[] nums) {
+        /*
+        题解思路: 
+        nums 数组的异或和 某个 为 1 的比特位, 其中一个数 肯定是 1, 另外一个也肯定为 0
+        再次遍历的时 将 lowbit 是 1 的数分为 1组, 为 0 的数分为一组, 这样最终的异或和就是 答案
+        问题转换成了 136
+         */
+        if (nums.length == 2) {
+            return nums;
+        }
+        int xor1 = 0;
+        for (int num : nums) {
+            xor1 ^= num;
+        }
+        int lowbit = xor1 & -xor1;
+        int xor2 = xor1;
+        // 这里也可以调整重新计算异或和
+        for (int num : nums) {
+            if ((lowbit & num) > 0) {
+                xor1 ^= num;
+            }
+        }
+
+        return new int[]{xor1, xor1 ^ xor2};
+    }
+
     public static void main(String[] args) {
         singleNumber(new int[]{7, 1, 7, 2, 6, 6, 3, 1});
     }
