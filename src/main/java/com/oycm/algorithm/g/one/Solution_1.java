@@ -1,4 +1,4 @@
-package com.oycm.algorithm.g;
+package com.oycm.algorithm.g.one;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.oycm.algorithm.g;
+package com.oycm.algorithm.g.one;
 
 public class Solution_2 {
 
