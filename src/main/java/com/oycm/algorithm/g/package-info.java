@@ -1,7 +1,8 @@
 /**
  * 差分
  * <ol>
- *     <li>one 基础</li>
+ *     <li>one 一维差分基础</li>
+ *     <li>two 二维差分</li>
  * </ol>
  */
 package com.oycm.algorithm.g;
