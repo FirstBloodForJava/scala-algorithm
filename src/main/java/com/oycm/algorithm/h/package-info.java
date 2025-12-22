@@ -11,6 +11,7 @@
  *     <li>identical_equation 恒等式</li>
  *     <li>mind 思维题</li>
  *     <li>other 其他</li>
+ *     <li>线性基 todo 待学</li>
  * </ol>
  */
 package com.oycm.algorithm.h;
