@@ -61,8 +61,11 @@ public class Solution_2 {
         /*
         s 中出现次数最多的 字母 记为 m 次, n = s.length();
             当 m > n - m 时, n - m = n/2 才能填满
-
-
+            n 为奇数时 m 的次数可以多出现一次 n = 7, m 最大可以 4
+            8 - 5 + 1
+            m > n - m + 1
+            5 > 7 - 5 + 1, m >= 5 的肯定不行
+            5 > 8 - 5 + 1
          */
         int[] cnt = new int[26];
         int m = 0;
@@ -84,6 +87,7 @@ public class Solution_2 {
             m--;
             ans[i] = mc;
             i += 2;
+            cnt[mc - 'a']--;
         }
 
         for (int j = 0; j < cnt.length; j++) {
