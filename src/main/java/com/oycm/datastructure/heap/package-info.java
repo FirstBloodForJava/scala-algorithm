@@ -4,6 +4,7 @@
  *     <li>basic 基础题</li>
  *     <li>advance 进阶</li>
  *     <li>k 第 k 小/大</li>
+ *     <li>rearrange 重排元素</li>
  * </ol>
  */
 package com.oycm.datastructure.heap;
