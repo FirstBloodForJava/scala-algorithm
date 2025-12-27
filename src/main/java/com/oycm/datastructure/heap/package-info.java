@@ -7,6 +7,7 @@
  *     <li>rearrange 重排元素</li>
  *     <li>regret 反悔堆</li>
  *     <li>lazy 懒删除堆</li>
+ *     <li>opposite 对顶堆</li>
  * </ol>
  */
 package com.oycm.datastructure.heap;
