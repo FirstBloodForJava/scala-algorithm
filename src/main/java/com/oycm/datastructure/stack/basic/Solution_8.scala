@@ -1,5 +1,4 @@
-package com.oycm.datastructure.stack
-
+package com.oycm.datastructure.stack.basic
 
 object Solution_8 {
 
