@@ -40,4 +40,64 @@ public class Solution_1 {
         return new String(ans);
     }
 
+    public String answer_1(String s) {
+        /*
+        相同字符的下标记录到一个 List 集合, 遇到 * 弹出前面不为空的最后一个元素, 最后把所有下标添加到集合排序后有序拼接即可
+         */
+        List<Integer>[] stacks = new ArrayList[26];
+        Arrays.setAll(stacks, o -> new ArrayList<>());
+        char[] cs = s.toCharArray();
+        for (int i = 0; i < s.length(); i++) {
+            if (cs[i] != '*') {
+                stacks[cs[i] - 'a'].add(i);
+                continue;
+            }
+            for (List<Integer> stack : stacks) {
+                if (!stack.isEmpty()) {
+                    stack.remove(stack.size() - 1);
+                    break;
+                }
+            }
+        }
+        List<Integer> all = new ArrayList<>();
+        for (List<Integer> stack : stacks) {
+            all.addAll(stack);
+        }
+        Collections.sort(all);
+        StringBuilder ans = new StringBuilder(all.size());
+        for (Integer i : all) {
+            ans.append(cs[i]);
+        }
+        return ans.toString();
+    }
+
+    public String answer_2(String s) {
+        /*
+        把要删除的 最小字符 标记为 *, 重新遍历 cs 原地修改即可
+         */
+        int n = s.length();
+        List<Integer>[] stacks = new ArrayList[26];
+        Arrays.setAll(stacks, o -> new ArrayList<>());
+        char[] cs = s.toCharArray();
+        for (int i = 0; i < n; i++) {
+            if (cs[i] != '*') {
+                stacks[cs[i] - 'a'].add(i);
+                continue;
+            }
+            for (List<Integer> stack : stacks) {
+                if (!stack.isEmpty()) {
+                    cs[stack.remove(stack.size() - 1)] = '*';
+                    break;
+                }
+            }
+        }
+        int idx = 0;
+        for (int i = 0; i < n; i++) {
+            if (cs[i] != '*') {
+                cs[idx++] = cs[i];
+            }
+        }
+        return new String(cs, 0, idx);
+    }
+
 }
