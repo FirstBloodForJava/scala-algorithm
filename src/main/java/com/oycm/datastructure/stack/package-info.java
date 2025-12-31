@@ -7,6 +7,7 @@
  *     <li>rbs 合法括号字符串</li>
  *     <li>parse 表达式解析</li>
  *     <li>opposite 对顶栈</li>
+ *     <li>monotonic 单调栈</li>
  * </ol>
  */
 package com.oycm.datastructure.stack;
