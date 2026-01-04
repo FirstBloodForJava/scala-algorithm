@@ -28,10 +28,41 @@ public class DataCreateUtils {
 
     public static List<List<String>> twoDimensionListStings(String str) {
         try {
-            return mapper.readValue(str, new TypeReference<List<List<String>>>() {});
+            return mapper.readValue(str, new TypeReference<List<List<String>>>() {
+            });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static ListNode buildListNode(int[] arr) {
+        if (arr == null || arr.length == 0) {
+            return null;
+        }
+        // 哨兵节点
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+
+        for (int val : arr) {
+            cur.next = new ListNode(val);
+            cur = cur.next;
+        }
+
+        return dummy.next;
+    }
+
+    public static String listNodeToString(ListNode node) {
+        if (node == null) {
+            return null;
+        }
+        StringBuilder ans = new StringBuilder("[");
+        while (node != null) {
+            ans.append(node.val).append(", ");
+            node = node.next;
+        }
+        ans.setLength(ans.length() - 2);
+        ans.append("]");
+        return ans.toString();
     }
 
     public static void main(String[] args) {
