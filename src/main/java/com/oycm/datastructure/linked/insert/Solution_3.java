@@ -60,4 +60,38 @@ public class Solution_3 {
         return head;
     }
 
+
+    public ListNode answer(ListNode head, int insertVal) {
+        ListNode node = new ListNode(insertVal);
+        if (head == null) {
+            node.next = node;
+            return node;
+        }
+        if (head.next == head) {
+            head.next = node;
+            node.next = head;
+            return head;
+        }
+        ListNode cur = head, next = cur.next;
+        while (head != next) {
+            // 处于中间
+            if (insertVal >= cur.val && insertVal <= next.val) {
+                break;
+            }
+            // 大于最大值 || 小于最小值
+            if (cur.val > next.val) {
+                // 大于最大值, 小于最小值
+                if (insertVal > cur.val || insertVal < next.val) {
+                    break;
+                }
+            }
+            cur = cur.next;
+            next = next.next;
+        }
+        // 退出循环, 所有元素都相等
+        cur.next = node;
+        node.next = next;
+        return head;
+    }
+
 }
