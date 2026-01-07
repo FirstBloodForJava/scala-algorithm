@@ -46,4 +46,28 @@ public class Solution_2 {
         return dummy.next;
     }
 
+    public ListNode answer(ListNode head, int k) {
+        if (k == 0 || head == null || head.next == null) {
+            return head;
+        }
+        int n = 1;
+        ListNode next = head;
+        while (next.next != null) {
+            next = next.next;
+            n++;
+        }
+        int mov = n - k % n;
+        if (mov == n) {
+            return head;
+        }
+        // 构成环
+        next.next = head;
+        while (mov-- > 0) {
+            next = next.next;
+        }
+        ListNode ans = next.next;
+        next.next = null;
+        return ans;
+    }
+
 }
