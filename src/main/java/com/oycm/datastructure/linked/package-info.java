@@ -10,6 +10,7 @@
  *     <li>double_point 双指针</li>
  *     <li>merge 合并链表</li>
  *     <li>divide_rule 分治</li>
+ *     <li>integrate 综合应用</li>
  * </ol>
  */
 package com.oycm.datastructure.linked;
