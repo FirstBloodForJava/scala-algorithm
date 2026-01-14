@@ -11,6 +11,7 @@
  *     <li>merge 合并链表</li>
  *     <li>divide_rule 分治</li>
  *     <li>integrate 综合应用</li>
+ *     <li>other 其它</li>
  * </ol>
  */
 package com.oycm.datastructure.linked;
