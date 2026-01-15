@@ -1,4 +1,4 @@
-package com.oycm.algorithm.db.indirect
+package com.oycm.algorithm.d.binary_search_ans_indirect
 
 object Solution_1 {
 
