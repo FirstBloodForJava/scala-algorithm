@@ -1,4 +1,4 @@
-package com.oycm.algorithm.da.advance;
+package com.oycm.algorithm.d.binary_search.advance;
 
 
 import com.oycm.DataCreateUtils;

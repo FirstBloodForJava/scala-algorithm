@@ -1,4 +1,4 @@
-package com.oycm.algorithm.da
+package com.oycm.algorithm.d.binary_search.basic
 
 object Solution_1 {
 
