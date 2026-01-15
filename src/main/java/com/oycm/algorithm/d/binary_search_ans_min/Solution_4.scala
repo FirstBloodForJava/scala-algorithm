@@ -1,4 +1,4 @@
-package com.oycm.algorithm.db.min
+package com.oycm.algorithm.d.binary_search_ans_min
 
 object Solution_4 {
 
