@@ -1,4 +1,4 @@
-package com.oycm.algorithm.de
+package com.oycm.algorithm.d.binary_search_first_k
 
 object Solution_2 {
 
