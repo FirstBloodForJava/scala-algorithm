@@ -4,7 +4,7 @@ package com.oycm.algorithm.d.binary_search_first_k;
 public class Solution_4 {
 
     /**
-     * 878. <a href="https://leetcode.cn/problems/nth-magical-number/description/">第 N 个神奇数字</a>
+     * 878. <a href="https://leetcode.cn/problems/nth-magical-number/description/">第 N 个神奇数字</a> 1897
      * <p>
      * 神奇数字: 正整数能被 a 或 b 整除
      *
