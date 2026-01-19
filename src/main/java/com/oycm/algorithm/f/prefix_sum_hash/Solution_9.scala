@@ -1,4 +1,4 @@
-package com.oycm.algorithm.f.hash
+package com.oycm.algorithm.f.prefix_sum_hash
 
 object Solution_9 {
 

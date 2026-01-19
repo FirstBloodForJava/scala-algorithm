@@ -1,4 +1,4 @@
-package com.oycm.algorithm.f.two;
+package com.oycm.algorithm.f.prefix_sum_two;
 
 import java.util.Arrays;
 

@@ -1,4 +1,4 @@
-package com.oycm.algorithm.f.other;
+package com.oycm.algorithm.f.prefix_sum_other;
 
 
 public class Solution_1 {

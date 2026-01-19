@@ -1,4 +1,4 @@
-package com.oycm.algorithm.f.basic
+package com.oycm.algorithm.f.prefix_sum_basic
 
 class Solution_1 {
 

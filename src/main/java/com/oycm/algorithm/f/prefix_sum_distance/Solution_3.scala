@@ -1,4 +1,4 @@
-package com.oycm.algorithm.f.distance
+package com.oycm.algorithm.f.prefix_sum_distance
 
 object Solution_3 {
 
