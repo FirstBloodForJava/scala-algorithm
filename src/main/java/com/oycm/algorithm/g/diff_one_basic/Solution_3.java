@@ -1,4 +1,4 @@
-package com.oycm.algorithm.g.one;
+package com.oycm.algorithm.g.diff_one_basic;
 
 public class Solution_3 {
 
