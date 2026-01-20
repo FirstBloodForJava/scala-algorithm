@@ -1,4 +1,4 @@
-package com.oycm.datastructure.stack.monotonic;
+package com.oycm.datastructure.stack.monotonic.basic;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
