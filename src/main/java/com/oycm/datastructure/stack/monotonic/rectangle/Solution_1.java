@@ -1,6 +1,9 @@
 package com.oycm.datastructure.stack.monotonic.rectangle;
 
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class Solution_1 {
 
     /**
@@ -20,7 +23,30 @@ public class Solution_1 {
             长为 (right - 1) - (left + 1) + 1 = right - left - 1;
         问题变成怎么快速计算: heights[i] 的 left 和 right
          */
+        int n = heights.length;
         int ans = 0;
+        Deque<Integer> stack = new ArrayDeque<>();
+        // heights[i] 左边最近小于 heights[i] 的下标
+        int[] left = new int[n];
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && heights[i] <= heights[stack.peek()]) {
+                stack.pop();
+            }
+            left[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(i);
+        }
+        stack.clear();
+        int[] right = new int[n];
+        for (int i = n-1; i >= 0 ; i--) {
+            while (!stack.isEmpty() && heights[i] <= heights[stack.peek()]) {
+                stack.pop();
+            }
+            right[i] = stack.isEmpty() ? n : stack.peek();
+            stack.push(i);
+        }
+        for (int i = 0; i < n; i++) {
+            ans = Math.max(ans, heights[i] * (right[i] - left[i] - 1));
+        }
 
         return ans;
     }
