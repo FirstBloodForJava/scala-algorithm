@@ -13,6 +13,7 @@
  *         <li>advance 进阶</li>
  *         <li>rectangle 矩形</li>
  *         <li>contribution_approach 贡献法</li>
+ *         <li>minimum_dic 最小字典序</li>
  *     </ol>
  *     </li>
  *     <li>monotonic.</li>
