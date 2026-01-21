@@ -2,6 +2,7 @@ package com.oycm.datastructure.stack.monotonic.rectangle;
 
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 
 public class Solution_1 {
@@ -46,6 +47,50 @@ public class Solution_1 {
         }
         for (int i = 0; i < n; i++) {
             ans = Math.max(ans, heights[i] * (right[i] - left[i] - 1));
+        }
+
+        return ans;
+    }
+
+    public int largestRectangleArea2n(int[] heights) {
+        int n = heights.length;
+        int ans = 0;
+        Deque<Integer> stack = new ArrayDeque<>();
+        // left[i] 表示 i 左边最近小于 heights[i] 的下标
+        int[] left = new int[n];
+        // right[i] 表示 i 右边最近小于等于 height[i] 的下标
+        int[] right = new int[n];
+        Arrays.fill(right, n);
+        for (int i = 0; i < n; i++) {
+            while (!stack.isEmpty() && heights[i] <= heights[stack.peek()]) {
+                right[stack.pop()] = i;
+            }
+            left[i] = stack.isEmpty() ? -1 : stack.peek();
+            stack.push(i);
+        }
+
+        for (int i = 0; i < n; i++) {
+            ans = Math.max(ans, heights[i] * (right[i] - left[i] - 1));
+        }
+
+        return ans;
+    }
+
+    public int largestRectangleArea1n(int[] heights) {
+        int n = heights.length;
+        int ans = 0;
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.push(-1);
+        for (int right = 0; right <= n; right++) {
+            int h = right < n ? heights[right] : -1;
+            while (stack.size() > 1 && h <= heights[stack.peek()]) {
+                // 更新答案
+                int i = stack.poll();
+                int left = stack.peek();
+                ans = Math.max(ans, heights[i] * (right - left - 1));
+            }
+
+            stack.push(right);
         }
 
         return ans;
