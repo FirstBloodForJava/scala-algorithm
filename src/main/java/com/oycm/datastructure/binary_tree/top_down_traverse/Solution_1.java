@@ -13,14 +13,22 @@ public class Solution_1 {
      */
     public int maxDepth(TreeNode root) {
         /*
-        可以转换成子问题: 左子树/右子树 的 最大长度, 加 1 就是 当前子树的最大深度
+        自顶向下的过程, 每次更新答案
          */
-        if (root == null) {
-            return 0;
+        dfs(root, 0);
+        return ans;
+    }
+
+    int ans = 0;
+
+    public void dfs(TreeNode node, int depth) {
+        if (node == null) {
+            return;
         }
-        int left = maxDepth(root.left);
-        int right= maxDepth(root.right);
-        return Math.max(left, right) + 1;
+        depth++;
+        ans = Math.max(ans, depth);
+        dfs(node.left, depth);
+        dfs(node.right, depth);
     }
 
 }
