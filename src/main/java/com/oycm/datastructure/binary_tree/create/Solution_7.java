@@ -3,6 +3,8 @@ package com.oycm.datastructure.binary_tree.create;
 import com.oycm.TreeNode;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Solution_7 {
 
@@ -37,5 +39,37 @@ public class Solution_7 {
                 return i;
             }
         }
+    }
+
+    public TreeNode buildTree1(int[] preorder, int[] inorder) {
+        int n = inorder.length;
+        Map<Integer,Integer> index = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            index.put(inorder[i], i);
+        }
+        return dfs(0, n, 0, preorder, index);
+    }
+
+    /**
+     *
+     * @param preL preorder 左闭区间
+     * @param preR preorder 右开区间
+     * @param inL inorder 左闭区间
+     * @param preorder
+     * @param index
+     * @return
+     */
+    public TreeNode dfs(int preL, int preR, int inL, int[] preorder, Map<Integer,Integer> index) {
+        /*
+        preorder [根, 左子树前序遍历结果, 右子树前序遍历结果]
+        inorder  [左子树中序遍历结果, 根, 右子树中序遍历结果]
+        preorder 根节点 在 inorder 中找位置, 该位置表示左子树边界
+         */
+        if (preL == preR) return null;
+        // 左子树大小
+        int leftSize = index.get(preorder[preL]) - inL;
+        TreeNode left = dfs(preL + 1, preL + 1 + leftSize, inL, preorder, index);
+        TreeNode right = dfs(preL + 1 + leftSize, preR, inL + 1 + leftSize, preorder, index);
+        return new TreeNode(preorder[preL], left, right);
     }
 }

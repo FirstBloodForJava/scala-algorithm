@@ -3,6 +3,8 @@ package com.oycm.datastructure.binary_tree.create;
 import com.oycm.TreeNode;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Solution_8 {
 
@@ -39,5 +41,25 @@ public class Solution_8 {
         }
     }
 
+    public TreeNode buildTree1(int[] inorder, int[] postorder) {
+        /*
+        inorder   [左子树中序遍历结果, 根, 右子树中序遍历结果]
+        postorder [左子树后序遍历结果, 右子树后序遍历结果, 根]
+         */
+        int n = inorder.length;
+        Map<Integer, Integer> index = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            index.put(inorder[i], i);
+        }
+        return dfs(0, n, 0, postorder, index);
+    }
+
+    public TreeNode dfs(int postL, int postR, int inL, int[] postorder, Map<Integer, Integer> index) {
+        if (postL == postR) return null;
+        int leftSize = index.get(postorder[postR - 1]) - inL;
+        TreeNode left = dfs(postL, postL + leftSize, inL, postorder, index);
+        TreeNode right = dfs(postL + leftSize + 1, postR - 1,  leftSize + inL + 1, postorder, index);
+        return new TreeNode(postorder[postR - 1], left, right);
+    }
 
 }
