@@ -58,7 +58,7 @@ public class Solution_8 {
         if (postL == postR) return null;
         int leftSize = index.get(postorder[postR - 1]) - inL;
         TreeNode left = dfs(postL, postL + leftSize, inL, postorder, index);
-        TreeNode right = dfs(postL + leftSize + 1, postR - 1,  leftSize + inL + 1, postorder, index);
+        TreeNode right = dfs(postL + leftSize, postR - 1,  leftSize + inL + 1, postorder, index);
         return new TreeNode(postorder[postR - 1], left, right);
     }
 
