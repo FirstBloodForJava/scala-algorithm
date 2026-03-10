@@ -12,7 +12,7 @@ public class Solution_10 {
      */
     public int numberOfStableArrays(int zero, int one, int limit) {
         /*
-        题解
+        每日一题-题解
          */
         final int MOD = 1_000_000_007;
         int[][][] f = new int[zero + 1][one + 1][2];
