@@ -1,5 +1,7 @@
 package com.oycm;
 
+import java.util.List;
+
 public class Node {
     public int val;
     public Node next;
@@ -7,6 +9,8 @@ public class Node {
 
     public Node left;
     public Node right;
+
+    public List<Node> children;
 
     public Node(){
     }
@@ -22,5 +26,10 @@ public class Node {
         this.val = val;
         this.left = left;
         this.right = right;
+    }
+
+    public Node(int val, List<Node> children) {
+        this.val = val;
+        this.children = children;
     }
 }

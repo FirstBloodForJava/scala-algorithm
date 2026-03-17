@@ -15,6 +15,7 @@
  *     <li>dp 树形 dp</li>
  *     <li>bfs 遍历 dp</li>
  *     <li>linked_and_tree 链表和二叉树</li>
+ *     <li>n_tree N 叉树</li>
  * </ol>
  */
 package com.oycm.datastructure.binary_tree;
