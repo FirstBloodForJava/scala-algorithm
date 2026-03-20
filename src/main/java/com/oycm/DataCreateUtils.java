@@ -65,6 +65,14 @@ public class DataCreateUtils {
         return ans.toString();
     }
 
+    public static List<String> toListString(String str) {
+        try {
+            return mapper.readValue(str, List.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) {
     }
 }
