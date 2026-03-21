@@ -14,7 +14,12 @@ public class Solution_3 {
      * @return 判断链表是否为 回文链表
      */
     public boolean isPalindrome(ListNode head) {
-
+        /*
+        先找到中间节点
+        1 -> 2 -> 1 中间节点 2
+        1 -> 2 -> 2 -> 1 中间节点是 第二个 2
+        反转中间节点之后的节点, 反转后的节点和 头节点一起遍历
+         */
         ListNode slow = head;
         ListNode fast = head;
         while (fast != null && fast.next != null) {
