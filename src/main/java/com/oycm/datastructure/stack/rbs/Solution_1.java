@@ -15,6 +15,9 @@ public class Solution_1 {
      * @return
      */
     public boolean isValid(String s) {
+        /*
+        括号左边入栈, 括号右边弹出匹配的
+         */
         if (s.length() % 2 != 0) {
             return false;
         }
