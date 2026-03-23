@@ -1,68 +1,42 @@
-package com.oycm;
+package com.oycm.datastructure.binary_tree.other;
 
+import com.oycm.TreeNode;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
-public class TreeNode {
+public class Solution_7 {
 
-    public int val;
-    public TreeNode left;
-    public TreeNode right;
-
-    public TreeNode() {
-    }
-
-    public TreeNode(int val) {
-        this.val = val;
-    }
-
-    public TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-
+    /**
+     * 297. 二叉树的序列化与反序列化
+     *
+     * @param root
+     * @return
+     */
     public static String serialize(TreeNode root) {
         /*
         层序遍历序列化
          */
         if (root == null) return "[]";
-        List<String> path = new ArrayList<>();
+        StringBuilder data = new StringBuilder("[");
         Queue<TreeNode> q = new LinkedList<>();
         q.add(root);
         while (!q.isEmpty()) {
             TreeNode node = q.poll();
             if (node == null) {
                 // null 后续的节点能够省略
-                path.add("null");
+                data.append("null,");
             } else {
-                path.add(String.valueOf(node.val));
+                data.append(node.val).append(",");
                 q.add(node.left);
                 q.add(node.right);
             }
         }
-        // 去掉结尾的 null
-        int end = path.size();
-        for (int i = end - 1; i >= 0; i--) {
-            String s = path.get(i);
-            if (!s.equals("null")) {
-                break;
-            } else {
-                end--;
-            }
-        }
-
-        return "[" + String.join(",", path.subList(0, end)) + "]";
+        data.deleteCharAt(data.length() - 1);
+        data.append("]");
+        return data.toString();
     }
 
-    /**
-     * 字符串序列号为 二叉树
-     * @param data
-     * @return
-     */
     public static TreeNode deserialize(String data) {
         System.out.println(data);
         if (data.equals("[]")) return null;
@@ -72,7 +46,7 @@ public class TreeNode {
         Queue<TreeNode> q = new LinkedList<>();
         q.offer(root);
         int i = 1;
-        while (!q.isEmpty() && i < arr.length) {
+        while (!q.isEmpty()) {
             TreeNode node = q.poll();
             if (!arr[i].equals("null")) {
                 node.left = new TreeNode(Integer.parseInt(arr[i]));
@@ -87,6 +61,11 @@ public class TreeNode {
         }
 
         return root;
+    }
+
+    public static void main(String[] args) {
+        TreeNode root = deserialize("[1,2,3,4,null,5,6,null,null,null,7,8,null,null,null,null,null]");
+        System.out.println(serialize(root));
     }
 
 }
