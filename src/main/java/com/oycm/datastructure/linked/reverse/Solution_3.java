@@ -1,7 +1,7 @@
 package com.oycm.datastructure.linked.reverse;
 
 
-import com.oycm.DataCreateUtils;
+import com.oycm.utils.DataCreateUtils;
 import com.oycm.ListNode;
 
 public class Solution_3 {

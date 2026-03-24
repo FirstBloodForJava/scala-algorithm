@@ -1,6 +1,6 @@
 package com.oycm.datastructure.binary_tree.create;
 
-import com.oycm.DataCreateUtils;
+import com.oycm.utils.DataCreateUtils;
 import com.oycm.TreeNode;
 
 import java.util.HashMap;

@@ -1,8 +1,9 @@
-package com.oycm;
+package com.oycm.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.oycm.ListNode;
 
 import java.util.List;
 

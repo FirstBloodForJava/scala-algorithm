@@ -1,7 +1,7 @@
 package com.oycm.algorithm.f.prefix_sum_two;
 
 
-import com.oycm.DataCreateUtils;
+import com.oycm.utils.DataCreateUtils;
 
 public class Solution_6 {
 

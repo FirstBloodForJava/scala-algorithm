@@ -1,6 +1,6 @@
 package com.oycm.datastructure.heap.advance;
 
-import com.oycm.DataCreateUtils;
+import com.oycm.utils.DataCreateUtils;
 
 import java.util.Arrays;
 import java.util.Comparator;

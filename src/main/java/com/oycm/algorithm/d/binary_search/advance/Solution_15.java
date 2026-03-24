@@ -1,7 +1,7 @@
 package com.oycm.algorithm.d.binary_search.advance;
 
 
-import com.oycm.DataCreateUtils;
+import com.oycm.utils.DataCreateUtils;
 
 public class Solution_15 {
 

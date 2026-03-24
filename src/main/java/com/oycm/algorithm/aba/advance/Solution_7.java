@@ -1,6 +1,6 @@
 package com.oycm.algorithm.aba.advance;
 
-import com.oycm.DataCreateUtils;
+import com.oycm.utils.DataCreateUtils;
 
 import java.util.Arrays;
 import java.util.Comparator;

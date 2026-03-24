@@ -1,6 +1,6 @@
 package com.oycm.datastructure.trie.basic;
 
-import com.oycm.DataCreateUtils;
+import com.oycm.utils.DataCreateUtils;
 
 import java.util.List;
 

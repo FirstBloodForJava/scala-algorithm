@@ -1,7 +1,7 @@
 package com.oycm.datastructure.linked.integrate;
 
 
-import com.oycm.DataCreateUtils;
+import com.oycm.utils.DataCreateUtils;
 import com.oycm.ListNode;
 
 import java.util.HashMap;

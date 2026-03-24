@@ -1,6 +1,6 @@
 package com.oycm.week.No491;
 
-import com.oycm.DataCreateUtils;
+import com.oycm.utils.DataCreateUtils;
 
 public class Solution_3 {
 
