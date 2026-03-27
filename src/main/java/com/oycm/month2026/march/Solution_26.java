@@ -3,6 +3,7 @@ package com.oycm.month2026.march;
 import com.oycm.utils.DataCreateUtils;
 import com.oycm.utils.ReadFileUtils;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -111,7 +112,7 @@ public class Solution_26 {
         return false;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.out.println(new Solution_26().canPartitionGrid(DataCreateUtils.twoDimensionInts(ReadFileUtils.readFile("data/data.txt"))));
     }
 
