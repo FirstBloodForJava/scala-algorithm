@@ -1,8 +1,6 @@
 package com.oycm.datastructure.trie.advance;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Solution_4 {
 
@@ -38,65 +36,52 @@ public class Solution_4 {
         int n = wordsQuery.length, m = wordsContainer.length;
         int[] ans = new int[n];
         Trie trie = new Trie();
-        // 空前缀的答案
-        long empty = Long.MAX_VALUE;
+
         trie.end = true;
         for (int i = 0; i < m; i++) {
             trie.insert(wordsContainer[i], m, i);
-            empty = Math.min(empty, (long) m * wordsContainer[i].length() + i);
         }
-        trie.val = empty;
-        Map<String, Integer> map = new HashMap<>();
 
         for (int i = 0; i < n; i++) {
-            String word = wordsQuery[i];
+            char[] cs = wordsQuery[i].toCharArray();
             Trie cur = trie;
-            int j = word.length() - 1;
-            while (j >= 0 && cur.son.containsKey(word.charAt(j))) {
-                cur = cur.son.get(word.charAt(j));
-                j--;
+            for (int j = cs.length - 1; j >= 0 && cur.son[cs[j] - 'a'] != null; j--) {
+                cur = cur.son[cs[j] - 'a'];
             }
-            if (map.containsKey(word.substring(j + 1))) {
-                ans[i] = map.get(word.substring(j + 1));
-            } else {
-                ans[i] = (int) (dfsMin(cur, Long.MAX_VALUE) % m);
-                map.put(word.substring(j + 1), ans[i]);
-            }
-
+            ans[i] = cur.i;
         }
 
         return ans;
-
     }
 
-    public long dfsMin(Trie cur, long val) {
-        if (cur.end) {
-            return Math.min(cur.val, val);
-        }
-        long minVal = val;
-        for (Trie next : cur.son.values()) {
-            minVal = Math.min(minVal, dfsMin(next, val));
-        }
-        return minVal;
-
-    }
 
     static class Trie {
-        long val;
+        // 该路径的最小 val = length * m + i
+        //long val = Long.MAX_VALUE;
+        // 从做遍历到右相同长度的前缀, 小 i 肯定是先出现
+        int minL = Integer.MAX_VALUE;
+        int i;
         boolean end;
-        Map<Character, Trie> son = new HashMap<>();
+        Trie[] son = new Trie[26];
 
         public void insert(String word, int n, int i) {
             Trie cur = this;
+            int l = word.length();
+            if (l < cur.minL) {
+                cur.minL = l;
+                cur.i = i;
+            }
             char[] cs = word.toCharArray();
             for (int j = cs.length - 1; j >= 0; j--) {
-                cur = cur.son.computeIfAbsent(cs[j], o -> new Trie());
+                int c = cs[j] - 'a';
+                if (cur.son[c] == null) cur.son[c] = new Trie();
+                cur = cur.son[c];
+                if (l < cur.minL) {
+                    cur.minL = l;
+                    cur.i = i;
+                }
             }
-            cur.end = true;
-            // wordsContainer 存在相同字符情况
-            if (cur.val == 0) {
-                cur.val = (long) word.length() * n + i;
-            }
+
         }
     }
 
