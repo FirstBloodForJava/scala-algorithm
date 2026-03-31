@@ -1,5 +1,5 @@
 /**
- * 堆
+ * 二叉树
  * <ol>
  *     <li>traverse 遍历二叉树</li>
  *     <li>top_down_traverse 自顶向下 DFS(先序遍历)</li>
