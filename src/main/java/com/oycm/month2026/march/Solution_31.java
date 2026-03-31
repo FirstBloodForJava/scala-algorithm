@@ -28,13 +28,11 @@ public class Solution_31 {
         ans [0, n + m - 1], ans[i] == 0
             0 <= i <= m - 1, 则 i [0, min(n, m) - 1] str1[i] == 'F'
             i >= m, [(i - m + 1), i] str1[j] == 'F'
+        题解思路：把未填的字符先都填 'a', 如果 'F' 开始的子串是相等, 则把最后可改位置改为 b
          */
-
         int n = str1.length(), m = str2.length();
         char[] cs1 = str1.toCharArray(), cs2 = str2.toCharArray();
         char[] ans = new char[n + m - 1];
-        int[] same = new int[n];
-        int[] notV = new int[n];
         for (int i = 0; i < n; i++) {
             if (cs1[i] == 'T') {
                 for (int j = 0; j < m; j++) {
@@ -47,58 +45,27 @@ public class Solution_31 {
 
                 }
             }
-
         }
-        // ans[] 下标 i 开始, [i, i + m - 1] 相同字符数量
-
-        // 未填的字符串，是否能填 'a'
-        for (int k = 0; k < ans.length; k++) {
-            if (k < n && cs1[k] == 'F') {
-                for (int i = k; i < k + m; i++) {
-                    if (ans[i] == 0) {
-                        notV[k]++;
-                    } else if (ans[i] == cs2[i - k]) {
-                        same[k]++;
-                    } else {
-                        same[k] = -1;
+        char[] oldAns = ans.clone();
+        for (int i = 0; i < ans.length; i++) {
+            if (ans[i] == 0) ans[i] = 'a';
+        }
+        for (int i = 0; i < n; i++) {
+            if (cs1[i] == 'F' && new String(ans, i, m).equals(str2)) {
+                boolean flag = false;
+                for (int j = i + m - 1; j >= i; j--) {
+                    if (oldAns[j] == 0) {
+                        ans[j] = 'b';
+                        flag = true;
                         break;
                     }
                 }
-                // F 标记字符串都相等
-                if (same[k] == m) return "";
-
-                // 未填字符, 这里只 根据 k 向后看，如果 k 前面有 'F', 需要校验 [k - m + 1, k] 的情况是否符合要求
-                if (ans[k] == 0) {
-                    if (same[k] < 0 || notV[k] > 1) {
-                        ans[k] = 'a';
-                        if (cs2[0] != 'a') {
-                            same[k] = -1;
-                        }
-                    } else {
-                        // 后面字符串都相等,
-                        ans[k] = cs2[0] == 'a' ? 'b' : 'a';
-                    }
-                    notV[k]--;
+                if (!flag) {
+                    return "";
                 }
-
             }
-
-            if (ans[k] == 0) {
-                // 填 a 不相等标记 -1
-                if (same[n - 1] < 0 || notV[n - 1] > 1) {
-                    ans[k] = 'a';
-                    if (cs2[k - n + 1] != ans[k]) {
-                        same[n - 1] = -1;
-                    }
-                } else {
-                    // 后面字符串都相等,
-                    ans[k] = cs2[k - n + 1] == 'a' ? 'b' : 'a';
-                }
-                notV[n - 1]--;
-            }
-
-
         }
+
 
         return new String(ans);
     }
