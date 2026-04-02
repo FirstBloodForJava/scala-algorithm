@@ -74,6 +74,14 @@ public class DataCreateUtils {
         }
     }
 
+    public static List<Boolean> toListBoolean(String str) {
+        try {
+            return mapper.readValue(str, List.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) {
     }
 }
