@@ -3,7 +3,7 @@ package com.oycm.week.No495;
 public class Solution_3 {
 
     /**
-     * 3886. <a href="https://leetcode.cn/problems/sum-of-sortable-integers/description/">可排序整数求和</a>
+     * 3886. <a href="https://leetcode.cn/problems/sum-of-sortable-integers/description/">可排序整数求和</a> 1999
      *
      * @param nums
      * @return 所有 可排序整数 k 的和

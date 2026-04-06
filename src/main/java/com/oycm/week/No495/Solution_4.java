@@ -2,6 +2,13 @@ package com.oycm.week.No495;
 
 public class Solution_4 {
 
+    /**
+     * 3886. <a href="https://leetcode.cn/problems/incremental-even-weighted-cycle-queries/">增量偶权环查询</a> 2128
+     *
+     * @param n
+     * @param edges
+     * @return
+     */
     public int numberOfEdgesAdded(int n, int[][] edges) {
         parent = new int[n];
         parity = new int[n];

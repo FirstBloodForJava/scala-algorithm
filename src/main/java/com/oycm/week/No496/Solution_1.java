@@ -3,7 +3,7 @@ package com.oycm.week.No496;
 public class Solution_1 {
 
     /**
-     * <a href="https://leetcode.cn/problems/mirror-frequency-distance/">镜像频次距离</a>
+     * 3889. <a href="https://leetcode.cn/problems/mirror-frequency-distance/">镜像频次距离</a>
      *
      * @param s 由小写英文字母和数字组成的字符串
      * @return 这些 不同的镜像对 的绝对差之和

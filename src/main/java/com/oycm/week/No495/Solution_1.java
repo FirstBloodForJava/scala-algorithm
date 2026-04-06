@@ -2,6 +2,12 @@ package com.oycm.week.No495;
 
 public class Solution_1 {
 
+    /**
+     * 3884. <a href="https://leetcode.cn/problems/first-matching-character-from-both-ends/description/">双端字符匹配</a> 1161
+     *
+     * @param s
+     * @return 最小的下标 i，使得 s[i] == s[n - i - 1]
+     */
     public int firstMatchingIndex(String s) {
         /*
         6 = 12 / 2
