@@ -27,8 +27,68 @@ public class Solution_6 {
             [0, 1], [-1, 0], [0, -1], [1, 0], [0, 1]
             dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]]
             k = 0;
-            commands[i] == -1, dir = dirs[++k];
-            commands[i] == -2, dir = dirs[(commands[i] + 3) % 4]
+            commands[i] == -1, k = (k + 1) % 4; dir = dirs[k];
+            commands[i] == -2, k = (k + 3) % 4; dir = dirs[k]
+        2. 怎么看当前移动时是否有障碍物
+            将坐标转换为一个 int 值 6e4 二进制长度为 16 位, 将 x,y 都加上 3e4, x' 左移 16 位, 这样依次移动, 判断是否存在障碍物
+         */
+        int x = 0, y = 0;
+        int ans = 0;
+        int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int k = 0;
+        int offset = (int) 3e4;
+        Set<Integer> set = new HashSet<>();
+        for (int[] obstacle : obstacles) {
+            set.add((obstacle[0] + offset) << 16 | (obstacle[1] + offset));
+        }
+        for (int command : commands) {
+            if (command > 0) {
+                while (command-- > 0) {
+                    int nx = x + dirs[k][0];
+                    int ny = y + dirs[k][1];
+                    if (set.contains((nx + offset) << 16 | (ny + offset))) {
+                        break;
+                    }
+                    x = nx;
+                    y = ny;
+                }
+                ans = Math.max(ans, x * x + y * y);
+            } else if (command == -1) {
+                k = (k + 1) % 4;
+            } else {
+                k = (k + 3) % 4;
+
+            }
+        }
+
+        return ans;
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(new Solution_6().robotSim(new int[]{6, -1, -1, 6},
+                DataCreateUtils.twoDimensionInts("[[0,0]]")));
+    }
+
+}
+
+class Solution_6_1 {
+    public int robotSim(int[] commands, int[][] obstacles) {
+        /*
+        机器人在一个无限大小的 XY 网格平面上行走，从点 (0, 0) 处开始出发，面向 北方。
+        机器人可以接收以下三种类型的命令 commands：
+            -2 ：向左转 90 度
+            -1 ：向右转 90 度
+            1 <= x <= 9 ：向前移动 x 个单位长度
+        机器人无法走到障碍物上，它将会停留在障碍物的前一个网格方块上，并继续执行下一个命令。原点可能有障碍物
+         */
+        /*
+        1. 怎么表示移动的方向, 当 commands[i] > 0 时， 坐标 x,y 的值怎么变化
+            [0, 1], [-1, 0], [0, -1], [1, 0], [0, 1]
+            dirs = [[0, 1], [1, 0], [0, -1], [-1, 0]]
+            k = 0;
+            commands[i] == -1, k = (k + 1) % 4; dir = dirs[k];
+            commands[i] == -2, k = (k + 3) % 4; dir = dirs[k]
         2. 怎么看当前移动时是否有障碍物
             obstacles 构建成两个 的 map
                 key = x, value = y 的有序集合
@@ -64,8 +124,8 @@ public class Solution_6 {
                 }
                 ans = Math.max(ans, x * x + y * y);
             } else if (command == -1) {
-                k++;
-                dir = dirs[k % 4];
+                k = (k + 1) % 4;
+                dir = dirs[k];
             } else {
                 k = (k + 3) % 4;
                 dir = dirs[k];
@@ -97,10 +157,4 @@ public class Solution_6 {
         // 对起始点障碍物特殊处理
         return r == list.size() ? newValue : Math.min(newValue, list.get(r) - 1);
     }
-
-    public static void main(String[] args) {
-        System.out.println(new Solution_6().robotSim(new int[]{6, -1, -1, 6},
-                DataCreateUtils.twoDimensionInts("[[0,0]]")));
-    }
-
 }
