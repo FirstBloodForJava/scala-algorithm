@@ -10,6 +10,29 @@ public class Solution_8 {
      * @return
      */
     public boolean isZeroArray(int[] nums, int[][] queries) {
+        int n = nums.length;
+        int[] diff = new int[n + 1];
+        for (int[] q : queries) {
+            diff[q[0]]++;
+            diff[q[1] + 1]--;
+        }
+        int sumD = 0;
+        for (int i = 0; i < n; i++) {
+            sumD += diff[i];
+            // 当前 nums[i] 减少的值不够到 0
+            if (nums[i] > sumD) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+}
+
+class Solution_8_Self {
+
+    public boolean isZeroArray(int[] nums, int[][] queries) {
         /*
         每个查询 queries[i]
             在 nums 的下标范围 [l, r] 内选择一个下标 子集(区间中任意挑选一些元素操作)
@@ -48,3 +71,4 @@ public class Solution_8 {
     }
 
 }
+
