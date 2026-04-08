@@ -1,5 +1,7 @@
 package com.oycm.datastructure.tree.dfs_timestamp;
 
+import com.oycm.utils.DataCreateUtils;
+
 import java.util.*;
 
 public class Solution_1 {
@@ -28,6 +30,7 @@ public class Solution_1 {
         int[] out = new int[n + 1];
         dfs(1, 0, g, in, out);
 
+        // weight[i] 表示 cur -> i 这条边的初始权重
         int[] weight = new int[n + 1];
         FenwickTree diff = new FenwickTree(n);
 
@@ -48,6 +51,14 @@ public class Solution_1 {
 
     private int clock = 0;
 
+    /**
+     * <img src = "http://47.101.155.205/image-20260408215127891.png" alt = "dfs 过程说明">
+     * @param cur
+     * @param fa
+     * @param g
+     * @param in
+     * @param out
+     */
     private void dfs(int cur, int fa, List<Integer>[] g, int[] in, int[] out) {
         in[cur] = ++clock; // 进来的时间
         for (int next : g[cur]) {
@@ -65,9 +76,17 @@ public class Solution_1 {
         }
         int d = w - weight[next]; // 边权的增量
         weight[next] = w;
-        // 把子树 y 中的最短路长度都增加 d（用差分树状数组维护）
+        // 把子树 cur 中的最短路长度都增加 d（用差分树状数组维护）
         diff.update(in[next], d);
         diff.update(out[next] + 1, -d);
+    }
+
+    public static void main(String[] args) {
+        Solution_1 solution = new Solution_1();
+        solution.treeQueries(8,
+                DataCreateUtils.twoDimensionInts("[[1,8,1], [1,5,1], [8,4,1], [8,6,1], [4,2,1], [6,3,1], [5,7,1]]"),
+                DataCreateUtils.twoDimensionInts("[[2,2],[2,4]]")
+        );
     }
 
 }
@@ -80,7 +99,7 @@ class FenwickTree {
         tree = new int[n + 1]; // 使用下标 1 到 n
     }
 
-    // a[i] 增加 val
+    // a[i] 增加 val, 这里为什么时 i 的 lowbit 增加 val
     // 1 <= i <= n
     public void update(int i, int val) {
         for (; i < tree.length; i += i & -i) {
