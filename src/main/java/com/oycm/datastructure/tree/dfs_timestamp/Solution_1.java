@@ -52,7 +52,7 @@ public class Solution_1 {
     private int clock = 0;
 
     /**
-     * <img src = "http://47.101.155.205/image-20260408215127891.png" alt = "dfs 过程说明">
+     * <img src = "http://47.101.155.205/image-20260408215127891.png" alt = "">
      * @param cur
      * @param fa
      * @param g
@@ -69,6 +69,16 @@ public class Solution_1 {
         out[cur] = clock; // 离开的时间
     }
 
+    /**
+     * <img src = "http://47.101.155.205/image-20260409173015414.png" alt = "">
+     * @param cur
+     * @param next
+     * @param w
+     * @param in
+     * @param out
+     * @param weight
+     * @param diff
+     */
     private void update(int cur, int next, int w, int[] in, int[] out, int[] weight, FenwickTree diff) {
         // 保证 next 是 cur 的儿子
         if (in[cur] > in[next]) {
@@ -84,7 +94,7 @@ public class Solution_1 {
     public static void main(String[] args) {
         Solution_1 solution = new Solution_1();
         solution.treeQueries(8,
-                DataCreateUtils.twoDimensionInts("[[1,8,1], [1,5,1], [8,4,1], [8,6,1], [4,2,1], [6,3,1], [5,7,1]]"),
+                DataCreateUtils.twoDimensionInts("[[1,8,1], [1,5,2], [8,4,3], [8,6,4], [4,2,5], [6,3,6], [5,7,7]]"),
                 DataCreateUtils.twoDimensionInts("[[2,2],[2,4]]")
         );
     }
@@ -102,6 +112,9 @@ class FenwickTree {
     // a[i] 增加 val, 这里为什么时 i 的 lowbit 增加 val
     // 1 <= i <= n
     public void update(int i, int val) {
+        /*
+        tree[i, i + lowbit(i), i + lowbit(i) + lowbit(i + lowbit(i)), ... ] 都加上 val
+         */
         for (; i < tree.length; i += i & -i) {
             tree[i] += val;
         }
@@ -111,6 +124,10 @@ class FenwickTree {
     // 1 <= i <= n
     public int pre(int i) {
         int res = 0;
+        /*
+        res 等于以下 tree 元素之和
+        [i, i - lowbit(i), i - lowbit(i) - lowbit(i - lowbit(i)), ...]
+         */
         for (; i > 0; i &= i - 1) {
             res += tree[i];
         }
