@@ -5,7 +5,7 @@ public class Solution_10 {
     /**
      * 3740. <a href="https://leetcode.cn/problems/minimum-distance-between-three-equal-elements-i/description/">三个相等元素之间的最小距离 I</a> 1288
      *
-     * @param nums
+     * @param nums nums.length = [1, 100]
      * @return 有效三元组 的 最小 可能距离, 不存在 有效三元组 ，返回 -1
      */
     public int minimumDistance(int[] nums) {
