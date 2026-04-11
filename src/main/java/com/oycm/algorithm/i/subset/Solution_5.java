@@ -13,7 +13,26 @@ public class Solution_5 {
         找出 nums 子集 按位或 可能得到的 最大值
         选中的元素下标位置不一样，则认为两个子集 不同(不看元素, 看下标)
          */
-        return 0;
+
+        // 最大值
+        int max = 0;
+        for (int x : nums) {
+            max |= x;
+        }
+        dfs(0, 0, nums, max);
+        return cnt;
+    }
+
+    int cnt = 0;
+
+    public void dfs(int i, int xor, int[] nums, int max) {
+        if (i == nums.length) {
+            if (xor == max) cnt++;
+            return;
+        }
+        dfs(i + 1, xor, nums, max);
+        // 作为参数玩下传, 不用恢复现场
+        dfs(i + 1, xor | nums[i], nums, max);
     }
 
 }
