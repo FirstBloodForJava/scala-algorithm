@@ -56,11 +56,7 @@ class Solution_11_Self {
         int ans = Integer.MAX_VALUE;
         Map<Integer, int[]> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {
-            int[] idxes = map.get(nums[i]);
-            if (idxes == null) {
-                idxes = new int[4];
-                map.put(nums[i], idxes);
-            }
+            int[] idxes = map.computeIfAbsent(nums[i], k -> new int[4]);
             idxes[idxes[3]++] = i;
             if (idxes[3] == 3) {
                 // 更新答案
@@ -70,8 +66,6 @@ class Solution_11_Self {
                 idxes[3] = 2;
             }
         }
-
-
         return ans == Integer.MAX_VALUE ? -1 : ans * 2;
     }
 }
