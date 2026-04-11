@@ -26,8 +26,12 @@ public class Solution_5 {
     int cnt = 0;
 
     public void dfs(int i, int xor, int[] nums, int max) {
+        // 已经是最大了, 后面不管是选/不选 都不能变大
+        if (xor == max) {
+            cnt += 1 << (nums.length - i);
+            return;
+        }
         if (i == nums.length) {
-            if (xor == max) cnt++;
             return;
         }
         dfs(i + 1, xor, nums, max);
