@@ -17,15 +17,35 @@ public class Solution_16 {
         j 距离最小值为 min(abs(j - queries[i]), n - abs(j - queries[i]))
          */
         /*
-        定义 left[i] 表示 i = queries[j] 左边最近的下标
+        定义 left[i] 表示 i = queries[j] 左边最近的下标，遍历 [-n, n), i >= 0 时，先更新 left[i], 再更新 nums[i] 位置
+        定义 right[i] 表示 i = queries[j] 右边最近的下标，遍历 [2n - 1, 0], i < n 时，先更新 left[i], 再更新 nums[i] 位置
          */
         List<Integer> ans = new ArrayList<>();
-        Map<Integer,Integer> pos = new HashMap<>();
+        Map<Integer, Integer> pos = new HashMap<>();
         int n = nums.length;
         int[] left = new int[n];
-
-
+        for (int i = -n; i < n; i++) {
+            if (i >= 0) {
+                left[i] = pos.get(nums[i]);
+            }
+            pos.put(nums[(i + n) % n], i);
+        }
+        pos.clear();
         int[] right = new int[n];
+        for (int i = 2 * n - 1; i >= 0; i--) {
+            if (i < n) {
+                right[i] = pos.get(nums[i]);
+            }
+            pos.put(nums[i % n], i);
+        }
+        for (int i : queries) {
+            int d = Math.min(i - left[i], right[i] - i);
+            if (d == n) {
+                ans.add(-1);
+            } else {
+                ans.add(d);
+            }
+        }
 
         return ans;
     }
