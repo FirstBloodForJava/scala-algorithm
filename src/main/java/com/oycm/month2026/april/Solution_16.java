@@ -17,6 +17,32 @@ public class Solution_16 {
         j 距离最小值为 min(abs(j - queries[i]), n - abs(j - queries[i]))
          */
         /*
+        定义 left[i] 表示 i = queries[j] 左边最近的下标
+         */
+        List<Integer> ans = new ArrayList<>();
+        Map<Integer,Integer> pos = new HashMap<>();
+        int n = nums.length;
+        int[] left = new int[n];
+
+
+        int[] right = new int[n];
+
+        return ans;
+    }
+
+    public static void main(String[] args) {
+        Solution_16 solution = new Solution_16();
+
+        solution.solveQueries(new int[]{1, 3, 1, 4, 1, 3, 2}, new int[]{0, 3, 5});
+    }
+
+}
+
+class Solution_16_Binary {
+
+    public List<Integer> solveQueries(int[] nums, int[] queries) {
+
+        /*
         map 记录相同值的有序下标
         queries[i] 计算的普通数组的最小距离, 最小距离为 queries[i] 前后两点, pre, queries[i], next, queries[i] 记为 k, 最小距离为 min(k - pre, next - k)。
             如果 k = 0, 或 k = n-1，可以增加两个哨兵节点
@@ -62,11 +88,4 @@ public class Solution_16 {
 
         return ans;
     }
-
-    public static void main(String[] args) {
-        Solution_16 solution = new Solution_16();
-
-        solution.solveQueries(new int[]{1, 3, 1, 4, 1, 3, 2}, new int[]{0, 3, 5});
-    }
-
 }
