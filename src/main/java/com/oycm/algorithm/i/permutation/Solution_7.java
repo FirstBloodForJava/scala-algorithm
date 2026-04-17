@@ -1,5 +1,9 @@
 package com.oycm.algorithm.i.permutation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Solution_7 {
 
     /**
@@ -17,11 +21,77 @@ public class Solution_7 {
         序列里面两个数 a[i] 和 a[j] 之间的 距离 ，我们定义为它们下标绝对值之差 |j - i| 。
          */
         /*
-        构造这个答案，每次选最大的数
+        构造这个答案，每次选最大的数，如果能构造答案，则返回，不能构造答案，则选次大的数，下一个数放在哪个位置？
          */
         int[] ans = new int[2 * n - 1];
-
+        List<Integer> enable = new ArrayList<>();
+        for (int i = n; i > 0; i--) {
+            enable.add(i);
+        }
+        dfs(enable, ans);
         return ans;
     }
+
+
+    public boolean dfs(List<Integer> enable, int[] ans) {
+
+        if (enable.isEmpty()) {
+            return true;
+        }
+
+        for (Integer x : enable) {
+            int j = x == 1 ? 0 : x;
+            // 错误这样选，不能保证前面的位置选到较大的数
+            for (int i = 0; i < ans.length; i++) {
+                if (ans[i] == 0 && i + j < ans.length && ans[i + j] == 0) {
+                    ans[i] = ans[i + j] = x;
+                    List<Integer> next = new ArrayList<>(enable);
+                    next.remove(x);
+                    if (dfs(next, ans)) {
+                        return true;
+                    }
+                    ans[i] = ans[i + j] = 0;
+
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean dfs(int idx, boolean[] enable, int[] ans, int n) {
+        // 更早的位置填大数
+        while (idx < ans.length && ans[idx] != 0) {
+            idx++;
+        }
+        if (idx == ans.length) {
+            return true;
+        }
+        for (int x = n; x > 0; x--) {
+            int j = x == 1 ? idx : idx + x;
+            // 被使用
+            if (enable[x]) {
+                continue;
+            }
+            if (j < ans.length && ans[j] == 0) {
+                ans[idx] = ans[j] = x;
+                enable[x] = true;
+                // 找到的第一个最大
+                if (dfs(idx + 1, enable, ans, n)) {
+                    return true;
+                }
+                // 未找到回溯
+                ans[idx] = ans[j] = 0;
+                enable[x] = false;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Solution_7 solution = new Solution_7();
+        System.out.println(Arrays.toString(solution.constructDistancedSequence(5)));
+    }
+
 
 }
