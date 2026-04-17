@@ -21,19 +21,17 @@ public class Solution_5 {
         (3,0), (3,1), (3,2), (3,3)
         ↘这条斜向 坐标差是不变的; ↗这条斜向上的和是不变的
          */
-        // 皇后的位置 (i, queens[i])
-        int[] queens = new int[n];
 
         boolean[] col = new boolean[n];
         boolean[] diag1 = new boolean[n * 2 - 1];
         boolean[] diag2 = new boolean[n * 2 - 1];
-        dfs(0, queens, col, diag1, diag2);
+        dfs(0, col, diag1, diag2);
         return ans;
     }
 
     int ans = 0;
 
-    public void dfs(int i, int[] queens, boolean[] enable, boolean[] diag1, boolean[] diag2) {
+    public void dfs(int i, boolean[] enable, boolean[] diag1, boolean[] diag2) {
         int n = enable.length;
         if (i == n) {
             ans++;
@@ -45,9 +43,8 @@ public class Solution_5 {
             int rc = i - j + n - 1;
             // 判断能否放皇后
             if (!enable[j] && !diag1[i + j] && !diag2[rc]) {
-                queens[i] = j;
                 enable[j] = diag1[i + j] = diag2[rc] = true; // 皇后占用了 c 列和两条斜线
-                dfs(i + 1, queens, enable, diag1, diag2);
+                dfs(i + 1, enable, diag1, diag2);
                 // 恢复现场
                 enable[j] = diag1[i + j] = diag2[rc] = false;
             }
