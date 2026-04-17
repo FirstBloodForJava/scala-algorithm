@@ -22,6 +22,9 @@ public class Solution_3 {
             打开第 i 把锁，剑的能量需要到达 至少 strength[i] 。
             打开一把锁以后，剑的能量会变回 0 ，X 的值会增加一个给定的值 K 。
          */
+        // todo 其它解法
+        // 状压 DP
+        // 最小费用流
         dfs(0, 1, k, strength, 0, new boolean[strength.size()]);
         return ans;
     }
