@@ -20,6 +20,7 @@ public class Solution_6 {
         考虑 所有 grid[i][j] = 0 从 grid[i'][j'] > 1 的地方移动过来 abs(i' - i) + abs(j' - j)
         枚举还剩哪些 0 可以选哪些 grid[i][j] > 1 可选
          */
+        // todo 最小费用最大流
         List<Integer> zero = new ArrayList<>();
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
