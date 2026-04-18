@@ -92,6 +92,134 @@ public class Solution_8 {
 
     public static void main(String[] args) {
         Solution_8 solution = new Solution_8();
-        System.out.println(solution.isSolvable(new String[]{"FIA","EDEBC"}, "FCJIFJ"));
+        System.out.println(solution.isSolvable(new String[]{"SIX","SEVEN","SEVEN"}, "TWENTY"));
+
+        Solution_8_1 solution1 = new Solution_8_1();
+        System.out.println(solution1.isSolvable(new String[]{"SIX","SEVEN","SEVEN"}, "TWENTY"));
     }
 }
+
+class Solution_8_1 {
+
+    class LetterCoefficient {
+        private char letter;
+        private int coefficient;
+
+        public LetterCoefficient(char letter, int coefficient) {
+            this.letter = letter;
+            this.coefficient = coefficient;
+        }
+
+        public char getLetter() {
+            return letter;
+        }
+
+        public int getCoefficient() {
+            return coefficient;
+        }
+    }
+
+    Set<Character> leading = new HashSet<>();
+    boolean[] used = new boolean[10];
+    Map<Character, Integer> coefficients = new HashMap<>();
+    int positiveCount, negativeCount;
+    List<LetterCoefficient> positiveList = new ArrayList<>();
+    List<LetterCoefficient> negativeList = new ArrayList<>();
+    List<Integer> positiveBounds = new ArrayList<>();
+    List<Integer> negativeBounds = new ArrayList<>();
+
+    public boolean isSolvable(String[] words, String result) {
+        for (String word : words) {
+            handleNum(word, 1);
+        }
+        handleNum(result, -1);
+        Set<Map.Entry<Character, Integer>> entries = coefficients.entrySet();
+        for (Map.Entry<Character, Integer> entry : entries) {
+            char letter = entry.getKey();
+            int coefficient = entry.getValue();
+            LetterCoefficient lc = new LetterCoefficient(letter, coefficient);
+            if (coefficient > 0) {
+                positiveList.add(lc);
+            } else if (coefficient < 0) {
+                negativeList.add(lc);
+            }
+        }
+        positiveCount = positiveList.size();
+        negativeCount = negativeList.size();
+        // 字母系数按 绝对值 从大到小 排序
+        positiveList.sort((a, b) -> b.getCoefficient() - a.getCoefficient());
+        negativeList.sort(Comparator.comparingInt(LetterCoefficient::getCoefficient));
+        // 不看符号 能取的最大值
+        preBounds(positiveBounds, positiveList);
+        preBounds(negativeBounds, negativeList);
+        return backtrack(0, 0, 0);
+    }
+
+    public void preBounds(List<Integer> bounds, List<LetterCoefficient> letterCoefficientList) {
+        for (int i = 0; i < letterCoefficientList.size(); i++) {
+            int bound = 0;
+            for (int j = i, val = 9; j < letterCoefficientList.size(); j++, val--) {
+                bound += letterCoefficientList.get(j).getCoefficient() * val;
+            }
+            bounds.add(bound);
+        }
+        bounds.add(0);
+    }
+
+    public void handleNum(String word, int sign) {
+        int wordLength = word.length();
+        if (wordLength > 1) {
+            leading.add(word.charAt(0));
+        }
+        for (int i = wordLength - 1, unit = sign; i >= 0; i--, unit *= 10) {
+            char letter = word.charAt(i);
+            coefficients.put(letter, coefficients.getOrDefault(letter, 0) + unit);
+        }
+    }
+
+    public boolean backtrack(int total, int positiveIndex, int negativeIndex) {
+        if (positiveIndex == positiveCount && negativeIndex == negativeCount) {
+            return total == 0;
+        }
+        // 当前先选那边的数 正数还是负数
+        boolean positive;
+        if (negativeIndex == negativeCount) {
+            if (total > 0) {
+                return false;
+            }
+            positive = true;
+        } else if (positiveIndex == positiveCount) {
+            if (total < 0) {
+                return false;
+            }
+            positive = false;
+        } else {
+            positive = positiveList.get(positiveIndex).getCoefficient() + negativeList.get(negativeIndex).getCoefficient() >= 0;
+        }
+        List<LetterCoefficient> currList = positive ? positiveList : negativeList;
+        int currIndex = positive ? positiveIndex : negativeIndex;
+        List<Integer> bounds = positive ? negativeBounds : positiveBounds;
+        int boundIndex = positive ? negativeIndex : positiveIndex;
+        int positiveIncrease = positive ? 1 : 0;
+        int negativeIncrease = positive ? 0 : 1;
+        LetterCoefficient lc = currList.get(currIndex);
+        char letter = lc.getLetter();
+        int coefficient = lc.getCoefficient();
+        int currBound = -bounds.get(boundIndex) - total;
+        int minVal = leading.contains(letter) ? 1 : 0;
+        int maxVal = Math.min(currBound / coefficient, 9);
+        for (int i = minVal; i <= maxVal; i++) {
+            if (!used[i]) {
+                used[i] = true;
+                int newTotal = total + coefficient * i;
+                if (backtrack(newTotal, positiveIndex + positiveIncrease, negativeIndex + negativeIncrease)) {
+                    return true;
+                }
+                used[i] = false;
+            }
+        }
+        return false;
+    }
+
+}
+
