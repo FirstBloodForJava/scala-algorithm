@@ -17,7 +17,8 @@ public class Solution_10 {
         int ans = 0;
 
         for (String t : words) {
-            if (expand(s, t)) {
+            if (isLongPressedName(s, t)) {
+                System.out.println(t);
                 ans++;
             }
         }
@@ -54,10 +55,49 @@ public class Solution_10 {
         return i == s.length() && j == t.length();
     }
 
+    public boolean isLongPressedName(String typed, String name) {
+        /*
+        遍历 typed name,
+            如果 typed[j] == name[i] 都自增；
+            如果不相等，看 typed[j] 是不是和前一个字符多次输入，如果不是，则就是不匹配
+        最后看 是否完全遍历所有 name 字符
+         */
+        int n = name.length(), m = typed.length();
+        int i = 0, j = 0;
+        // 是否扩张
+        boolean expend = false;
+        int same = 0;
+        while (j < m) {
+            if (i < n && name.charAt(i) == typed.charAt(j)) {
+                if (expend) {
+                    expend = false;
+                    if (same < 3) {
+                        return false;
+                    }
+                }
+                // 和前面字符相同
+                if (i > 0 && name.charAt(i) == name.charAt(i - 1)) {
+                    same++;
+                } else {
+                    same = 1;
+                }
+                i++;
+                j++;
+            } else if (j > 0 && typed.charAt(j) == typed.charAt(j - 1)) {
+                j++;
+                expend = true;
+                same++;
+            } else {
+                return false;
+            }
+        }
+        return i == n && (!expend || same >= 3);
+    }
+
 
     public static void main(String[] args) {
         Solution_10 solution = new Solution_10();
-        System.out.println(solution.expressiveWords("heeellooo", new String[]{"helo"}));
+        System.out.println(solution.expressiveWords("dddiiiinnssssssoooo", new String[]{"dinnssoo","ddiinnso","ddiinnssoo"}));
     }
 
 
