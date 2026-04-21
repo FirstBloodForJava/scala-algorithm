@@ -26,6 +26,12 @@ public class Solution_3 {
         if (path.size() > 1) {
             ans.add(new ArrayList<>(path));
         }
+        /*
+        set 判断前面是否不选过，和前面 j > i, nums[j] = nums[j-1] 是等价的
+        ? ...? x, x ? ...
+        第一个 x 选, 会有第二个 x 不选的 所有情况
+        第一个 x 不选, 第二个 x 选时，和 前面的结果会重复
+         */
         // 记录前面选过的数字
         Set<Integer> set = new HashSet<>();
         for (int j = i; j < nums.length; j++) {
