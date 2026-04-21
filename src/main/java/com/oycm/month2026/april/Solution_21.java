@@ -60,3 +60,68 @@ public class Solution_21 {
     }
 
 }
+
+class Solution_1202 {
+
+    /**
+     * 1202. <a href="https://leetcode.cn/problems/smallest-string-with-swaps/description/">交换字符串中的元素</a> 1855
+     *
+     * @param s 字符串, s.length [1, 1e5]
+     * @param pairs pairs[i] = [a, b]
+     * @return
+     */
+    public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+        /*
+        可以 任意多次交换 在 pairs 中任意一对索引处的字符。
+        返回在经过若干次交换后，s 可以变成的按字典序最小的字符串
+         */
+        /*
+        pairs 可以表示多个 无向图，
+            如果只有一个无向图，答案就是 s 转换成字符数组排序后的结果
+        对每个 无向图 中的字符从小到达排序，排序后的字符依次设置到这些下标中
+        // todo 可用并查集优化
+         */
+        int n = s.length();
+        List<Integer>[] g = new List[n];
+        Arrays.setAll(g, l -> new ArrayList<>());
+        for (List<Integer> pair : pairs) {
+            Integer x = pair.get(0);
+            Integer y = pair.get(1);
+            g[x].add(y);
+            g[y].add(x);
+        }
+        char[] ans = new char[n];
+        boolean[] vis = new boolean[n];
+
+        for (int cur = 0; cur < n; cur++) {
+            Set<Integer> set = new TreeSet<>();
+            List<Character> path = new ArrayList<>();
+            if (!vis[cur]) {
+                dfs(cur, g, vis, path, set, s.toCharArray());
+                Collections.sort(path);
+                int i = 0;
+                for (int idx  : set) {
+                    ans[idx] = path.get(i++);
+                }
+            }
+        }
+
+        return new String(ans);
+    }
+
+    public void dfs(int cur, List<Integer>[] g, boolean[] vis, List<Character> path, Set<Integer> set, char[] cs) {
+        path.add(cs[cur]);
+        set.add(cur);
+        vis[cur] = true;
+        for (int next : g[cur]) {
+            if (!vis[next]) {
+                dfs(next, g, vis, path, set, cs);
+            }
+        }
+    }
+
+}
+
+class Solution_3695 {
+
+}
