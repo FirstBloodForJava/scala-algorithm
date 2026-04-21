@@ -7,6 +7,7 @@
  *     <li>combination 组合型回溯</li>
  *     <li>permutation 排列型回溯</li>
  *     <li>backtracking_with_duplicate_elements 有重复元素的回溯</li>
+ *     <li>search 搜索</li>
  * </ol>
  */
 package com.oycm.algorithm.i;
