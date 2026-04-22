@@ -17,27 +17,22 @@ public class Solution_20 {
     public List<String> validStrings(int n) {
         /*
         字符串中连续 0 的数量不能 大于等于 2
-        题解思路：回溯
+         */
+        /*
+        [0, 1 << n] 数字对应的二进制，有效位连续零小于等于 1
+        把里面对应的数字取反，记为 x, 看 x 是否有连续 1， 是否等于 0，等于 0 则没有连续 1
+        可以枚举取反后的值，如果 (x & (x > 1)) == 0
          */
         List<String> ans = new ArrayList<>();
-        char[] cs = new char[n];
-        dfs(0, n, cs, ans);
+        int mask = (1 << n) - 1;
+        for (int x = 0; x < (1 << n); x++) {
+            if ((x & (x >> 1)) == 0) {
+                int i = x ^ mask;
+                ans.add(Integer.toBinaryString((1 << n) | i).substring(1));
+            }
+        }
         return ans;
     }
 
-    private void dfs(int i, int n, char[] cs, List<String> ans) {
-        if (i == n) {
-            ans.add(new String(cs));
-            return;
-        }
-        // 填 1
-        cs[i] = '1';
-        dfs(i + 1, n, cs, ans);
 
-        // 填 0
-        if (i == 0 || cs[i - 1] == '1') {
-            cs[i] = '0';
-            dfs(i + 1, n, cs, ans);
-        }
-    }
 }
