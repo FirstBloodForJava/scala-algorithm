@@ -19,11 +19,11 @@ public class Solution_4 {
         for (int num : nums) {
             path.add(num);
         }
-        permute(0, 0, path, ans);
+        permute(0, path, ans);
         return ans;
     }
 
-    private void permute(int size, int start, List<Integer> nums, List<List<Integer>> ans) {
+    private void permute( int start, List<Integer> nums, List<List<Integer>> ans) {
         if (start == nums.size()) {
             ans.add(new ArrayList<>(nums));
         }
@@ -34,7 +34,7 @@ public class Solution_4 {
                 continue;
             }
             swap(nums, i, start);
-            permute(i + 1, start + 1, nums, ans);
+            permute( start + 1, nums, ans);
             swap(nums, i, start);
         }
     }
