@@ -1,11 +1,13 @@
 package com.oycm.algorithm.i.backtracking_with_duplicate_elements;
 
+import java.util.*;
+
 public class Solution_6 {
 
     /**
      * 3646. <a href="https://leetcode.cn/problems/next-special-palindrome-number/description/">下一个特殊回文数</a> 2445
      *
-     * @param n [1, 1e15]
+     * @param n [0, 1e15]
      * @return 严格 大于 n 的 最小 特殊数
      */
     public long specialPalindrome(long n) {
@@ -119,7 +121,99 @@ public class Solution_6 {
     public static void main(String[] args) {
         Solution_6 solution = new Solution_6();
         solution.specialPalindrome(23670);
+        System.out.println(Collections.binarySearch(Solution_3646.ans, 1L));
+        System.out.println(Solution_3646.ans.size());
     }
 
 
+}
+
+class Solution_3646 {
+
+    public long specialPalindrome(long n) {
+        /*
+        枚举 [1, 16] 长度子集的所有全排列答案，再二分查找
+         */
+        int idx = Collections.binarySearch(ans, n);
+        if (idx > 0) {
+            return ans.get(idx + 1);
+        }
+        return ans.get(~idx);
+    }
+
+    public static final int oddMask = 0x155;
+    public static final int u = 9;
+    public static final int[] size = new int[1 << 9];
+
+    public static final List<Long> ans = new ArrayList<>();
+
+    static {
+        for (int mask = 1; mask < size.length; mask++) {
+            int t = mask & oddMask;
+            if ((t & (t - 1)) > 0) {
+                continue;
+            }
+            // 计算子集的对应的字符串长度
+            for (int i = 0; i < u; i++) {
+                if ((mask >> i & 1) != 0) {
+                    // 下标从 0 开始，0 表示元素 1
+                    size[mask] += i + 1;
+                }
+            }
+            int length = size[mask];
+            if (length > 16) {
+                continue;
+            }
+
+            int[] perm = new int[length / 2];
+            int idx = 0;
+            int odd = 0; // 表示集合中的奇数
+            for (int i = 1; i <= u; i++) {
+                if ((mask >> (i - 1) & 1) > 0) {
+                    for (int k = 0; k < i / 2; k++) {
+                        perm[idx++] = i;
+                    }
+                    if (i % 2 != 0) {
+                        odd = i;
+                    }
+                }
+            }
+            dfs(0, 0, perm, odd);
+        }
+
+        Collections.sort(ans);
+    }
+
+    public static void dfs(int start, long res, int[] perm, int odd) {
+        if (start == perm.length) {
+            long v = res;
+            // 奇数居中
+            if (odd > 0) {
+                res = res * 10 + odd;
+            }
+            // 反转得到后半段回文串
+            while (v > 0) {
+                res = res * 10 + v % 10;
+                v /= 10;
+            }
+            ans.add(res);
+        }
+
+        Set<Integer> set = new HashSet<>();
+        for (int i = start; i < perm.length; i++) {
+            // 重复元素，跳过
+            if (!set.add(perm[i])) {
+                continue;
+            }
+            swap(perm, i, start);
+            dfs(start + 1, res * 10 + perm[start], perm, odd);
+            swap(perm, i, start);
+        }
+    }
+
+    public static void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
 }
