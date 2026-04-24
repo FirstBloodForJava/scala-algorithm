@@ -93,19 +93,3 @@ class Solution_3669 {
         return ans;
     }
 }
-
-class Solution_1735 {
-
-    /**
-     * 1735. <a href="https://leetcode.cn/problems/count-ways-to-make-array-with-product/description/">生成乘积数组的方案数</a> 2500
-     *
-     * @param queries queries[i] = [n, k], 第 i 个查询 queries[i] 要求构造长度为 n，每个元素都是正整数的数组，且满足所有元素的乘积为 k，找出有多少种可行的方案，对 1e9 + 7 取模。
-     * @return
-     */
-    public int[] waysToFillArray(int[][] queries) {
-        int[] ans = new int[queries.length];
-
-        return ans;
-    }
-
-}
