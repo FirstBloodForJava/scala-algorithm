@@ -57,3 +57,52 @@ public class Solution_12 {
     }
 
 }
+
+class Solution_698 {
+
+    /**
+     * 698. <a href="https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/description/">划分为k个相等的子集</a>
+     *
+     * @param nums
+     * @param k
+     * @return
+     */
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        int sum = 0;
+        for (int x : nums) {
+            sum += x;
+        }
+        if (sum % k != 0) {
+            return false;
+        }
+        Arrays.sort(nums);
+        for (int l = 0, r = nums.length - 1; l < r; l++, r--) {
+            int temp = nums[l];
+            nums[l] = nums[r];
+            nums[r] = temp;
+        }
+        return dfs(0, nums, new int[k], sum / k);
+    }
+
+    public boolean dfs(int i, int[] nums, int[] path, int target) {
+        if (i == nums.length) {
+            // 前面已经判断过总合，能进到之类，说明已经分好了
+            return true;
+        }
+        for (int j = 0; j < path.length; j++) {
+            /*
+            优化：如果当前桶的值和前一个一样，前面选如果符合要求就不会到这里，所以这里再选也是无效的
+             */
+            if (j > 0 && path[j] == path[j - 1]) continue;
+
+            if (path[j] + nums[i] > target) continue;
+            path[j] += nums[i];
+            if (dfs(i + 1, nums, path, target)) {
+                return true;
+            }
+            path[j] -= nums[i];
+        }
+
+        return false;
+    }
+}
