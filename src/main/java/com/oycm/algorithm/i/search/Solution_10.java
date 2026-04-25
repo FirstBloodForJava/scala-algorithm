@@ -1,9 +1,6 @@
 package com.oycm.algorithm.i.search;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Solution_10 {
 
@@ -82,14 +79,93 @@ public class Solution_10 {
 
 class Solution_3669 {
 
-
     public int[] minDifference(int n, int k) {
         /*
         20 [1, 20, 2, 10, 4, 5]
         拆分 n 一对因子，20 = [1, 20]
+        可以预处理因子，枚举因子做法
          */
-        int[] ans = new int[k];
-
+        int[] path = new int[k];
+        dfs(0, Integer.MAX_VALUE, Integer.MIN_VALUE, n, path);
         return ans;
     }
+
+    private int minDiff = Integer.MAX_VALUE;
+    private int[] ans;
+
+    public void dfs(int i, int min, int max, int n, int[] path) {
+        if (i == path.length - 1) {
+            // 最后一个数是 n
+            int d = Math.max(n, max) - Math.min(n, min);
+            if (d < minDiff) {
+                path[i] = n;
+                minDiff = d;
+                ans = Arrays.copyOfRange(path, 0, path.length);
+            }
+            return;
+        }
+        for (int p = 1; p <= n; p++) {
+            if (n % p == 0) {
+                path[i] = p;
+                dfs(i + 1, Math.min(min, p), Math.max(max, p), n / p, path);
+            }
+        }
+    }
+
+}
+
+class Solution_3669_1 {
+
+    private static final int MX = 100_001;
+    private static final List<Integer>[] divisors = new ArrayList[MX];
+    private static boolean initialized = false;
+
+    private void init() {
+        if (initialized) {
+            return;
+        }
+        initialized = true;
+
+        // 预处理每个数的因子
+        Arrays.setAll(divisors, l -> new ArrayList<>());
+        for (int i = 1; i < MX; i++) {
+            for (int j = i; j < MX; j += i) { // 枚举 i 的倍数 j
+                divisors[j].add(i); // i 是 j 的因子
+            }
+        }
+    }
+
+    private int minDiff = Integer.MAX_VALUE;
+    private int[] ans;
+
+    public int[] minDifference(int n, int k) {
+        init();
+        int[] path = new int[k];
+        dfs(0, n, path);
+        return ans;
+    }
+
+    private void dfs(int i, int n, int[] path) {
+        if (i == path.length - 1) {
+            // path[0] 最小，n 最大
+            if (n - path[0] < minDiff) {
+                minDiff = n - path[0];
+                path[i] = n;
+                ans = path.clone();
+            }
+            return;
+        }
+        int maxD = (int) Math.sqrt(n);
+        for (int d : divisors[n]) { // 枚举 n 的因子 d
+            // 剪枝
+            if (d > maxD || i > 0 && d - path[0] >= minDiff) {
+                break;
+            }
+            if (i == 0 || d >= path[i - 1]) {
+                path[i] = d;
+                dfs(i + 1, n / d, path);
+            }
+        }
+    }
+
 }
