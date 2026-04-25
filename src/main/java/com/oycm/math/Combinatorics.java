@@ -69,4 +69,73 @@ public class Combinatorics {
             }
         }
     }
+
+    public static final int maxN = 10013;
+    public static final int maxK = 10001;
+
+    public static final long[] F = new long[maxN];
+    // 1/i!
+    public static final long[] INV_F = new long[maxN];
+    // lpf[i] 表示 i 的最小质因子
+    public static final int[] lpf = new int[maxK];
+
+    static {
+        F[0] = 1;
+        for (int i = 1; i < F.length; i++) {
+            F[i] = F[i - 1] * i % mod;
+        }
+        INV_F[maxN - 1] = pow(F[maxN - 1], mod - 2);
+        for (int i = maxN - 1; i > 0; i--) {
+            INV_F[i - 1] = INV_F[i] * i % mod;
+        }
+        /*
+        埃氏筛法
+        https://oi-wiki.org/math/number-theory/sieve/
+         */
+        for (int i = 2; i < lpf.length; i++) {
+            if (lpf[i] == 0) {
+                for (int j = i; j < lpf.length; j += i) {
+                    if (lpf[j] == 0) {
+                        lpf[j] = i;
+                    }
+                }
+            }
+        }
+    }
+
+    public static long pow(long x, int n) {
+        long res = 1;
+        for (; n > 0; n /= 2) {
+            if (n % 2 > 0) {
+                res = res * x % mod;
+            }
+            x = x * x % mod;
+        }
+        return res;
+    }
+
+    public static long comb(int n, int m) {
+        return F[n] * INV_F[m] % mod * INV_F[n - m] % mod;
+    }
+
+    public int[] waysToFillArray_2(int[][] queries) {
+        int m = queries.length;
+        int[] ans = new int[m];
+        for (int i = 0; i < m; i++) {
+            int n = queries[i][0];
+            int k = queries[i][1];
+            long res = 1;
+            while (k > 1) {
+                int p = lpf[k];
+                int e = 1;
+                for (k /= p; k % p == 0; k /= p) {
+                    e++;
+                }
+                res = res * comb(n + e - 1, e) % mod;
+            }
+            ans[i] = (int) res;
+        }
+
+        return ans;
+    }
 }
