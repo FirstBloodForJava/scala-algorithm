@@ -8,6 +8,7 @@
  *     <li>permutation 排列型回溯</li>
  *     <li>backtracking_with_duplicate_elements 有重复元素的回溯</li>
  *     <li>search 搜索</li>
+ *     <li>halved 折半枚举</li>
  * </ol>
  */
 package com.oycm.algorithm.i;
