@@ -23,6 +23,11 @@ public class Solution_28 {
         最小操作次数对于的单值能确定吗？
             最小距离和定理
             排序后的中位数
+            a0, a1, a2, ... an
+            x 选在 a0, an 之间，两者的距离是固定的 |x - a0| + |an - x| == an - a0 值是固定的
+            选 a1, a(n-1), 距离为 a(n-1) - a1
+            ...
+            如果中间只剩一位，则选它，中间两位选任意一位即可
          */
         int m = grid.length, n = grid[0].length;
         int[] nums = new int[m * n];
