@@ -1,6 +1,7 @@
 package com.oycm.month2026.may;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class Solution_2 {
             }
         }
     }
+
     private boolean isGood(int x) {
         int temp = x;
         int spin = 0;
@@ -69,4 +71,64 @@ public class Solution_2 {
         return x != spin;
     }
 
+}
+
+class Solution_2376 {
+
+    /**
+     * 2376. <a href="https://leetcode.cn/problems/count-special-integers/description/">统计特殊整数</a> 2120
+     *
+     * @param n
+     * @return 返回区间 [1, n] 之间特殊整数的数目。
+     */
+    public int countSpecialNumbers(int n) {
+        /*
+        如果一个正整数每一个数位都是 互不相同 的，我们称它是 特殊整数 。
+         */
+        /*
+        题解思路：将 n 转换成字符串，定义 dfs(i, mask, isLimit, isNum) 表示构造第 i 位后及其之后数位的合法方案数
+            mask 表示前面选过的集合，数位 [0, 9]，选的第 i 位不能在 mask 中；
+            isLimit 表示当前是否收到 n 的约束（构造的数不能超过 n）。
+                若为 true，表示当前填入的数字至多是 s[i]，否则至多是 9；
+                如果在约束的情况下填了 s[i]，后续填入的数字也会受到约束；
+            isNum 表示前面的数位是否填了数字。
+                若为 false，可以跳过，或者填入的数字至少为 1；
+                如果 true，如果没有限制，至多可以填 9，否则至多填 s[i]
+         */
+        String s = n + "";
+        int[][] memo = new int[s.length()][1 << 10];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+        return dfs(0, 0, true, false, s.toCharArray(), memo);
+    }
+
+    public int dfs(int i, int mask, boolean isLimit, boolean isNum, char[] cs, int[][] memo) {
+        if (i == cs.length) {
+            return isNum ? 1 : 0;
+        }
+        /*
+        为什么这样记忆化？
+
+         */
+        if (!isLimit && isNum && memo[i][mask] != -1) {
+            return memo[i][mask];
+        }
+        int res = 0;
+        if (!isNum) {
+            res = dfs(i + 1, mask, false, false, cs, memo);
+        }
+        int up = isLimit ? cs[i] - '0' : 9;
+        for (int d = isNum ? 0 : 1; d <= up; d++) {
+            // 前面不存在当前 d
+            if ((mask >> d & 1) == 0) {
+                res += dfs(i + 1, mask | (1 << d), isLimit && d == up, true, cs, memo);
+            }
+        }
+        if (!isLimit && isNum) {
+            memo[i][mask] = res;
+        }
+
+        return res;
+    }
 }
