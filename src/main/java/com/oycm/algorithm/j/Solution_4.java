@@ -46,5 +46,37 @@ public class Solution_4 {
         return null;
     }
 
+}
+
+class Solution_4_1 {
+
+    public String decodeAtIndex(String s, int k) {
+        // 表示当前解码后的长度
+        int n = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c)) {
+                int cnt = c - '0';
+                /*
+                k 在当前解码的长度之后，当前解码长度 cnt * n，idx = 0, k = 1
+                idx = k - 1 < cnt * n 表示在当前解码中去寻找位置
+                避免 cnt * n  溢出问题，使用除法判断
+                 */
+                if ((k - 1) / cnt >= n) {
+                    n *= cnt;
+                } else {
+                    // k 在当前解码后长为 n 中, [1, n] 位置
+                    return decodeAtIndex(s, (k - 1) % n + 1);
+                }
+            } else {
+                if (++n == k) {
+                    return String.valueOf(c);
+                }
+            }
+        }
+
+        return "";
+    }
 
 }
