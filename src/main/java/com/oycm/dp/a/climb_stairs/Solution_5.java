@@ -23,16 +23,16 @@ public class Solution_5 {
         /*
         和 377 类似，可以转换成爬楼梯，两种步长爬楼梯，爬到 [low, high] 台阶的方案数
         题解思路：f(i) 表示爬楼梯 zero, one 步的方案数
+        // todo 还可 gcd 优化
          */
         int[] dp = new int[high + 1];
-        int ans = 0;
-        dp[0] = 1;
-        for (int i = 1; i <= high; i++) {
-            if (i >= zero) dp[i] += dp[i - zero];
-            if (i >= one) dp[i] = (dp[i] + dp[i - one]) % mod;
-            if (i >= low) ans = (ans + dp[i]) % mod;
+
+        for (int i = high; i >= 0; i--) {
+            if (i >= low && i <= high) dp[i] = 1;
+            if (i + zero <= high) dp[i] += dp[i + zero];
+            if (i + one <= high) dp[i] = (dp[i] + dp[i + one]) % mod;
         }
-        return ans;
+        return dp[0];
     }
 
     public int dfs(int i, int zero, int one, int[] memo) {
