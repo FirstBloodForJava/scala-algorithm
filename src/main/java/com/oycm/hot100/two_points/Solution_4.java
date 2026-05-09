@@ -40,4 +40,30 @@ public class Solution_4 {
         return ans;
     }
 
+    public int towPointsTrap(int[] height) {
+        /*
+        相向双指针：
+            维护前缀最大值及下标
+            维护后缀最大值及下标
+            原理和前后缀一致
+         */
+        int ans = 0;
+        int preMax = 0;
+        int sufMax = 0;
+        int left = 0;
+        int right = height.length - 1;
+        while (left < right) {
+            preMax = Math.max(preMax, height[left]);
+            sufMax = Math.max(sufMax, height[right]);
+            if (preMax < sufMax) {
+                ans += preMax - height[left];
+                left++;
+            } else {
+                ans += sufMax - height[right];
+                right--;
+            }
+        }
+        return ans;
+    }
+
 }
