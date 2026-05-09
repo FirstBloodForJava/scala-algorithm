@@ -161,42 +161,32 @@ class Solution_2007 {
         for (int x : changed) {
             map.merge(x, 1, Integer::sum);
         }
+        // 0 特殊处理
+        int cnt0 = map.getOrDefault(0, 0);
+        if (cnt0 % 2 != 0) {
+            return new int[0];
+        }
+        map.remove(0);
+
         int i = 0;
-        for (Map.Entry<Integer, Integer> kv : map.entrySet()) {
-            // x 已配对
-            if (kv.getValue() == 0) {
+        for (int x : map.keySet()) {
+            if (x % 2 == 0 && map.containsKey(x / 2)) {
                 continue;
             }
-            // 0 特殊处理
-            if (kv.getKey() == 0) {
-                int cnt = kv.getValue();
-                if (cnt % 2 != 0) {
+            while (map.containsKey(x)) {
+                int next = 2 * x;
+                int cnt = map.get(x);
+                int cnt2 = map.getOrDefault(next, 0);
+                if (cnt > cnt2) {
                     return new int[0];
                 }
-                cnt /= 2;
-                Arrays.fill(ans, i, i + cnt, 0);
+                Arrays.fill(ans, i, i + cnt, x);
                 i += cnt;
-            }
-            int x = kv.getKey();
-            if (x % 2 == 1 || !map.containsKey(x / 2)) {
-                int next = x * 2;
-                while (map.getOrDefault(x, 0) <= map.getOrDefault(next, 0) && map.getOrDefault(x, 0) > 0) {
-                    int cnt = map.getOrDefault(x, 0);
-                    map.merge(x, -cnt, Integer::sum);
+                if (cnt < cnt2) {
                     map.merge(next, -cnt, Integer::sum);
-                    // original 填值
-                    Arrays.fill(ans, i, i + cnt, x);
-                    i += cnt;
-                    if (map.get(next) > 0) {
-                        x = next;
-                    } else {
-                        x = 2 * next;
-                    }
-                    next = 2 * x;
-
-                }
-                if (map.getOrDefault(x, 0) > map.getOrDefault(next, 0)) {
-                    return new int[0];
+                    x = next;
+                } else {
+                    x = 2 * next;
                 }
 
             }
