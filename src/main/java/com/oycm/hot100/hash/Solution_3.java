@@ -145,7 +145,12 @@ class Solution_2007 {
 
         如果 x 为奇数，则必须作为 original 元素；
         如果 x 为偶数，map 中 存在 x/2，不应该以 x 作为起点，寻找 original 元素
-        x, 2x 数量匹配 4x 存在则查看 8x 是否存在数量匹配
+        x, 2x, 4x, 8x, ...
+        x next 比较规则
+            cnt(x) > cnt(next) changed 不匹配
+            cnt(x) == cnt(next) x = 2next; next = 2x;
+            cnt(x) < cnt(next) x = next; next = 2x;
+        x = 0 时，需要特殊处理下
          */
 
         int n = changed.length;
@@ -162,18 +167,37 @@ class Solution_2007 {
             if (kv.getValue() == 0) {
                 continue;
             }
+            // 0 特殊处理
+            if (kv.getKey() == 0) {
+                int cnt = kv.getValue();
+                if (cnt % 2 != 0) {
+                    return new int[0];
+                }
+                cnt /= 2;
+                Arrays.fill(ans, i, i + cnt, 0);
+                i += cnt;
+            }
             int x = kv.getKey();
             if (x % 2 == 1 || !map.containsKey(x / 2)) {
                 int next = x * 2;
-                // 数量不匹配
-                if (kv.getValue() > map.getOrDefault(next, 0)) {
+                while (map.getOrDefault(x, 0) <= map.getOrDefault(next, 0) && map.getOrDefault(x, 0) > 0) {
+                    int cnt = map.getOrDefault(x, 0);
+                    map.merge(x, -cnt, Integer::sum);
+                    map.merge(next, -cnt, Integer::sum);
+                    // original 填值
+                    Arrays.fill(ans, i, i + cnt, x);
+                    i += cnt;
+                    if (map.get(next) > 0) {
+                        x = next;
+                    } else {
+                        x = 2 * next;
+                    }
+                    next = 2 * x;
+
+                }
+                if (map.getOrDefault(x, 0) > map.getOrDefault(next, 0)) {
                     return new int[0];
                 }
-                // 数量清零
-                int cnt = kv.getValue();
-                kv.setValue(0);
-                map.merge(next, -cnt, Integer::sum);
-
 
             }
         }
