@@ -42,4 +42,21 @@ public class Solution_4 {
         return f1;
     }
 
+    public long rob_2(int[] nums, int[] colors) {
+        long f0 = 0;
+        long f1 = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (colors[i - 1] == colors[i]) {
+                long temp = f1;
+                f1 = Math.max(f0 + nums[i], f1);
+                f0 = temp;
+            } else {
+                f0 = f1;
+                f1 += nums[i];
+            }
+        }
+
+        return f1;
+    }
+
 }
