@@ -113,6 +113,19 @@ class Solution_2007 {
         排序后，从左到右遍历 nums，x 可用次数 -1, 查找是否存在可用的 2x，不存在则返回空数组；存在则减少次数更新 ans
         如果 x % 2 == 1，这个数只能作为 original 元素，看是否存在 2x 元素，不存在则返回 空数组
          */
+        /*
+        排序 hash 思路：hash 表记录 双倍数
+            对 changed 数组排序后，前面较小的元素 x 就是 original，2x 元素就是 changed 中需要标记删除，用 map 标记需要删除的次数；
+            从左到右遍历 changed 元素 x：
+                如果 map 不包含 x，x 记为 original；map 中记录 2x 元素次数
+                如果 map 包含 x，map 中 x 次数减少，降为 0 时，删除元素；
+                如果 original 数量 大于 changed.length / 2，说明无法配对，返回空数组
+        排序 队列 思路：用 队列记录双倍数，队首->队尾 从小到大
+            如果队列为空，把 x 假如答案，把 2x 加入队尾。如果后面遍历到一个等于 2x 的元素，说明 x 与 2x 配对成功；
+            如果队列不为空，并且队首小于 x，由于 x 越来越大，队首没有其它元素配对，返回空数组；
+            如果队列不为空，并且队首等于 x，弹出队首
+            如果队列不为空，并且队首大于 x，把 x 加入答案，把 2x 加入队尾
+         */
         int n = changed.length;
         if (n % 2 != 0) return new int[0];
         Arrays.sort(changed);
