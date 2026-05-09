@@ -22,24 +22,50 @@ public class Solution_3 {
         怎么做去重判断？
             先对数组排序，从小到大遍历
             -10 + b + c = 0, [i+1, n-1] 中找到两数之和为 10 b+c
+        [i+1, n-1] 区间找 i,j 使得 nums[i] + nums[j] + nums[k] == 0
+        数组有序要找 nums[j] + nums[k] == -nums[i]
+        暴力的做法：
+            j [i+1, n-1] 循环
+            j+1 [j+1, n-1] 循环
+        数组有序，最小值 + 最大值 和 -nums[i] 有哪些情况呢？
+            最小值 + 最大值 = -nums[i] 符合要求
+            最小值 + 最大值 < -nums[i] 最小值和最大值相加都小于 -nums[i]，说明最小值和任意数相加都不会符合条件，就不用和后续比较了
+            最小值 + 最大值 > -nums[i] 最小值和最大值相加都大于 -nums[i]，说明最大值和任意数相加都不会符合条件，就不用和后续比较了
+
          */
         List<List<Integer>> ans = new ArrayList<>();
         int n = nums.length;
-        Set<Integer> set = new HashSet<>();
+
         Arrays.sort(nums);
         for (int i = 0; i < n - 2; i++) {
-            if (i > 0 && nums[i] == nums[i - 1]) {
+            int x = nums[i];
+            if (i > 0 && x == nums[i - 1]) {
                 continue;
             }
-            set.clear();
-            Set<Integer> vis = new HashSet<>();
-            for (int j = i + 1; j < n; j++) {
+            // 优化一：最小值之和都大于 0
+            if (x + nums[i + 1] + nums[i + 2] > 0) {
+                break;
+            }
+            // 优化二：当前值 + 两个最大值都小于 0
+            if (x + nums[n - 2] + nums[n - 1] < 0) {
+                continue;
+            }
 
-                if (set.contains(-nums[i] - nums[j]) && !vis.contains(nums[j])) {
-                    ans.add(List.of(nums[i], nums[j], -nums[i] - nums[j]));
-                    vis.add(nums[j]);
+            int j = i + 1;
+            int k = n - 1;
+            while (j < k) {
+                int sum = x + nums[j] + nums[k];
+                if (sum > 0) {
+                    k--;
+                } else if (sum < 0) {
+                    j++;
+                } else {
+                    // 三数之和为 0
+                    ans.add(List.of(nums[i], nums[j], nums[k]));
+                    // 跳过重复数字
+                    for (j++; j < k && nums[j] == nums[j - 1]; j++) ;
+                    for (k--; j < k && nums[k] == nums[k + 1]; k--) ;
                 }
-                set.add(nums[j]);
             }
         }
 
