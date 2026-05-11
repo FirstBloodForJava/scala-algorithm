@@ -44,4 +44,28 @@ public class Solution_17 {
         return n + 1;
     }
 
+    public int firstMissingPositive_swap(int[] nums) {
+        /*
+        题解思路：交换位置
+        记 x = nums[i]，把 x 交换到正确的位置。
+            如果 x > 0 && x <= n，temp = nums[x-1]，把 nums[x-1] = x, x = temp 继续保持这个逻辑交换，直到 nums[x-1] == x
+         */
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            while (0 < nums[i] && nums[i] <= n && nums[nums[i] - 1] != nums[i]) {
+                int j = nums[i] - 1;
+                // 交换，把 nums[i] 交换到正确的位置
+                int temp = nums[j];
+                nums[j] = nums[i];
+                nums[i] = temp;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (i + 1 != nums[i]) {
+                return i + 1;
+            }
+        }
+        return n + 1;
+    }
+
 }
