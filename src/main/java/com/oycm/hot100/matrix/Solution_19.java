@@ -44,5 +44,39 @@ public class Solution_19 {
         return ans;
     }
 
+    public List<Integer> spiralOrder_1(int[][] matrix) {
+        /*
+        [
+            [1,2,3,4],
+            [5,6,7,8],
+            [9,10,11,12]
+        ]
+        右 1 -> 2 -> 3 -> 4 移动 4 次
+        下 8 -> 12 移动 2 次
+        左 11 -> 10 -> 9 移动 3 次
+        上 5 移动 1 次
+        右 6 -> 7 移动 2 次
+        可以发现规律，再移动多少次后换方向，次数也是交替减少 4 -> 3 -> 2; 2 -> 1
+         */
+        int[][] dirs = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int m = matrix.length, n = matrix[0].length;
+        int size = m * n;
+        List<Integer> ans = new ArrayList<>(size);
+        int i = 0;
+        // 先移动，再加入答案
+        int j = -1;
+        for (int di = 0; ans.size() < size; di = (di + 1) % 4) {
+            for (int k = 0; k < n; k++) {
+                i += dirs[di][0];
+                j += dirs[di][1];
+                ans.add(matrix[i][j]);
+            }
+            int temp = n;
+            n = m - 1;
+            m = temp;
+        }
+        return ans;
+    }
+
 
 }
