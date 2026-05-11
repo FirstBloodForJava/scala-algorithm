@@ -1,5 +1,7 @@
 package com.oycm.hot100.matrix;
 
+import java.util.Arrays;
+
 public class Solution_18 {
 
     /**
@@ -93,4 +95,98 @@ public class Solution_18 {
 
     }
 
+
+    public void setZeroes_optimize2(int[][] matrix) {
+        /*
+        看第一行是否包含 0
+        列从第 0 列开始遍历，第一行保持最后遍历
+         */
+        int m = matrix.length, n = matrix[0].length;
+        boolean firstRowHasZero = false;
+        for (int x : matrix[0]) {
+            if (x == 0) {
+                firstRowHasZero = true;
+                break;
+            }
+        }
+
+        /*
+        如果第一行包含 0，会把 matrix[0][0] 置为 0，如果这里时候遍历第一行，会出现前面的问题，所以需要单独处理
+         */
+        for (int i = 1; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = matrix[0][j] = 0;
+
+                }
+            }
+        }
+
+        // 跳过第一行和第一列处理
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        /*
+        如果第一列中包含 0，只剩第一行未置为 0；
+        如果第一列中第一个是 0，其余位置都不为 0，则其它位置的 0 还需要重新设置
+        这个需要在第一行遍历之前判断，避免把 matrix[0][0] 置为 0
+         */
+        if (matrix[0][0] == 0) {
+            for (int[] row : matrix) {
+                row[0] = 0;
+            }
+        }
+
+        if (firstRowHasZero) {
+            Arrays.fill(matrix[0], 0);
+        }
+    }
+
+    public void setZeroes_optimize3(int[][] matrix) {
+        /*
+        看第一行是否包含 0
+        列从第 0 列开始遍历，第一行保持最后遍历
+         */
+        int m = matrix.length, n = matrix[0].length;
+        boolean firstRowHasZero = false;
+        for (int x : matrix[0]) {
+            if (x == 0) {
+                firstRowHasZero = true;
+                break;
+            }
+        }
+
+        /*
+        如果第一行包含 0，会把 matrix[0][0] 置为 0，如果这里时候遍历第一行，会出现前面的问题，所以需要单独处理
+         */
+        for (int i = 1; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    matrix[i][0] = matrix[0][j] = 0;
+
+                }
+            }
+        }
+
+        /*
+        倒序遍历，前面不能处理第一列的原因是提前 matrix[i][0] 置为 0，导致后面误判 matrix[i][j] 置为 0
+        最后处理 matrix[i][0] 这样就不会误判了
+         */
+        for (int i = 1; i < m; i++) {
+            for (int j = n - 1; j >= 0; j--) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+
+        if (firstRowHasZero) {
+            Arrays.fill(matrix[0], 0);
+        }
+    }
 }
