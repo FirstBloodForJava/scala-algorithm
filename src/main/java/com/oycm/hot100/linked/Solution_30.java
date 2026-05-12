@@ -41,13 +41,11 @@ public class Solution_30 {
         递归边界，剩余节点数量不足两个，返回当前节点
          */
         if (head == null || head.next == null) return head;
-        ListNode node1 = head;
         ListNode node2 = head.next;
         ListNode node3 = node2.next;
-
-
-        node2.next = node1;
-        node1.next = swapPairs(node3);
+        // 2 -> 1 1 -> 下一轮返回
+        node2.next = head;
+        head.next = swapPairs(node3);
 
         return node2;
     }
