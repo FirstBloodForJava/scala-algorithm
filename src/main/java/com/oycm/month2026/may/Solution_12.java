@@ -72,5 +72,19 @@ public class Solution_12 {
         return ans;
     }
 
+    public int minimumEffort_asc(int[][] tasks) {
+        /*
+        设完成任务 ti = (ai, mi) 之后的能量为 e，那么完成 ti 之前的能量为 e + ai, 且需要大于等于 mi，所以完成 ti 之前的能量至少为 max(e + ai, mi)
+        为了最小化初始能量，完成最后一个任务的能量应当为 0，作为 e 的初始值
+        m - a 可以改成从小到大排序，就可以正序遍历数组
+         */
+        Arrays.sort(tasks, (a, b) -> a[1] - a[0] - (b[1] - b[0]));
+        int e = 0;
+        for (int[] task : tasks) {
+            e = Math.max(e + task[0], task[1]);
+        }
+        return e;
+    }
+
 
 }
