@@ -1,5 +1,8 @@
 package com.oycm.month2026.may;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Solution_14 {
 
     /**
@@ -36,6 +39,39 @@ public class Solution_14 {
         }
 
         return true;
+    }
+
+}
+
+class Solution_442 {
+
+    /**
+     * 442. <a href="https://leetcode.cn/problems/find-all-duplicates-in-an-array/description/">数组中重复的数据</a>
+     *
+     * @param nums n = nums.length; n [1, 1e5]; 1 <= nums[i] <= n
+     * @return
+     */
+    public List<Integer> findDuplicates(int[] nums) {
+        /*
+        一个长度为 n 的整数数组 nums ，其中 nums 的所有整数都在范围 [1, n] 内，且每个整数出现 最多两次。
+        找出所有出现 两次 的整数，并以数组形式返回。
+        时间复杂度 O(n) 且常量空间实现
+         */
+        /*
+        如果 x = nums[i] 把 nums[x-1] 标记为 负数，后面遍历到 nums[x-1] < 0，则说明 x 出现了两次
+         */
+        List<Integer> ans = new ArrayList<>();
+        for (int x : nums) {
+            x = Math.abs(x);
+            int i = nums[x - 1];
+            if (i < 0) {
+                ans.add(x);
+            } else {
+                nums[x - 1] = -nums[x - 1];
+            }
+        }
+
+        return ans;
     }
 
 }
