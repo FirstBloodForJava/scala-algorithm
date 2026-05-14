@@ -81,3 +81,47 @@ class Solution_442 {
     }
 
 }
+
+class Solution_448 {
+
+    /**
+     * 448. <a href="https://leetcode.cn/problems/find-all-numbers-disappeared-in-an-array/description/">找到所有数组中消失的数字</a>
+     *
+     * @param nums n = nums.length; n [1, 1e5]; 1 <= nums[i] <= n
+     * @return
+     */
+    public List<Integer> findDisappearedNumbers(int[] nums) {
+        /*
+        给你一个含 n 个整数的数组 nums ，其中 nums[i] 在区间 [1, n] 内。
+        请你找出所有在 [1, n] 范围内但没有出现在 nums 中的数字，并以数组的形式返回结果。
+         */
+        /*
+        原数组标记法：
+            遍历 nums 数组，元素记为 x，x 更新为绝对值，如果 nums[x-1] > 0；nums[x-1] 更新为负数；
+            再次遍历 nums 数组，元素 x > 0 的，就是没有出现的数字
+         */
+        /*
+        换座位法：
+            遍历 nums 数组，如果 nums[i] != nums[nums[i]-1] 交换数组下标 i 和 nums[i]-1 的值，直到 nums[i] == nums[nums[i]-1]
+        再次遍历 nums 数组，如果 i != nums[i] - 1，说明 i+1 没有出现，nums[i] 元素出现了多次，把他的位置占用了
+         */
+        List<Integer> ans = new ArrayList<>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            while (nums[i] != nums[nums[i] - 1]) {
+                int j = nums[i] - 1;
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        }
+        for (int i = 0; i < n; i++) {
+            if (nums[i] - 1 != i) {
+                ans.add(i + 1);
+            }
+        }
+        return ans;
+    }
+
+}
+
