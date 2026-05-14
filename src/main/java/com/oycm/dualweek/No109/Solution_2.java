@@ -102,4 +102,34 @@ public class Solution_2 {
         return new String(cs);
     }
 
+    public String countSort(String s) {
+        /*
+        计数排序
+         */
+        int vowelMask = 0x208222;
+        int[] cnt = new int['u' + 1];
+        char[] cs = s.toCharArray();
+
+        for (char c : cs) {
+            if ((vowelMask >> (c & 31) & 1) > 0) {
+                cnt[c]++;
+            }
+        }
+
+        int j = 'A';
+        for (int i = 0; i < cs.length; i++) {
+            // 非元音字符跳过
+            if ((vowelMask >> (cs[i] & 31) & 1) == 0) {
+                continue;
+            }
+            while (cnt[j] == 0) {
+                j = 'Z' == j ? 'a' : j + 1;
+            }
+            cs[i] = (char) j;
+            cnt[j]--;
+        }
+
+        return new String(cs);
+    }
+
 }
