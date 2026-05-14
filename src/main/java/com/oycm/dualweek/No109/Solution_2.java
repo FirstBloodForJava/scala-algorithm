@@ -1,6 +1,7 @@
 package com.oycm.dualweek.No109;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,6 +38,67 @@ public class Solution_2 {
             if (vowelStr.indexOf(cs[j]) > -1) cs[j] = vowels.get(i++);
         }
 
+        return new String(cs);
+    }
+
+    public String sortVowels_optimize(String s) {
+        /*
+        a: 1100001  A: 1000001
+        b: 1100010  B: 1000010
+        c: 1100011  C: 1000011
+        d: 1100100  D: 1000100
+        e: 1100101  E: 1000101
+        f: 1100110  F: 1000110
+        g: 1100111  G: 1000111
+        h: 1101000  H: 1001000
+        i: 1101001  I: 1001001
+        j: 1101010  J: 1001010
+        k: 1101011  K: 1001011
+        l: 1101100  L: 1001100
+        m: 1101101  M: 1001101
+        n: 1101110  N: 1001110
+        o: 1101111  O: 1001111
+        p: 1110000  P: 1010000
+        q: 1110001  Q: 1010001
+        r: 1110010  R: 1010010
+        s: 1110011  S: 1010011
+        t: 1110100  T: 1010100
+        u: 1110101  U: 1010101
+        v: 1110110  V: 1010110
+        w: 1110111  W: 1010111
+        x: 1111000  X: 1011000
+        y: 1111001  Y: 1011001
+        z: 1111010  Z: 1011010
+         */
+        /*
+        题解思路：观察 a -> z, A -> Z 的低五位二进制代码都是 [1, 26]
+        可以用集合 + 二进制来判断字符是否为元音字符
+        a e i o u => 二进制集合 {1, 5, 9, 15, 21}
+        00000000
+        00100000
+        10000010
+        00100010
+        转成 16 进制，
+         */
+        int vowelMask = 0x208222;
+        byte[] vowels = new byte[s.length()];
+        char[] cs = s.toCharArray();
+        int k = 0;
+        for (char c : cs) {
+            if ((vowelMask >> (c & 31) & 1) > 0) {
+                vowels[k++] = (byte) c;
+            }
+        }
+        Arrays.sort(vowels, 0, k);
+        if (k == 0) {
+            return s;
+        }
+        k = 0;
+        for (int i = 0; i < cs.length; i++) {
+            if ((vowelMask >> (cs[i] & 31) & 1) > 0) {
+                cs[i] = (char) vowels[k++];
+            }
+        }
         return new String(cs);
     }
 
