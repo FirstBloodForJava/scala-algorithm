@@ -1,7 +1,5 @@
 package com.oycm.dp.a.sub_array_sum;
 
-import java.util.Arrays;
-
 public class Solution_2 {
 
     /**
@@ -26,15 +24,14 @@ public class Solution_2 {
         本质是求 买卖股票的最佳操作，且可以不操作
          */
         int[] cs = new int[26];
-        Arrays.fill(cs, Integer.MIN_VALUE);
+        for (int i = 0; i < cs.length; i++) {
+            // 先填默认值，后遍历 chars 时覆盖默认值
+            cs[i] = i + 1;
+        }
         for (int i = 0; i < vals.length; i++) {
             cs[chars.charAt(i) - 'a'] = vals[i];
         }
-        for (int i = 0; i < cs.length; i++) {
-            if (cs[i] == Integer.MIN_VALUE) {
-                cs[i] = i + 1;
-            }
-        }
+
         // 空字符为 0，可以不操作
         int ans = 0;
         int sum = 0;
