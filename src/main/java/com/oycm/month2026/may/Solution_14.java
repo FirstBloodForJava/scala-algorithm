@@ -60,6 +60,12 @@ class Solution_442 {
         /*
         如果 x = nums[i] 把 nums[x-1] 标记为 负数，后面遍历到 nums[x-1] < 0，则说明 x 出现了两次
          */
+        /*
+        另外解题思路：nums.length = n, 如果 [1, n] 中一个数字出现 2 次，则对应 [1, n] 中一个数字会不存在
+        如果 nums[i] != nums[nums[i]-1] 把 nums[i] 这个值换到正确的下标 nums[i] - 1，nums[i] 换成原来下标 nums[i] - 1 的值；
+            当前 nums[i] == nums[nums[i]-1] 时，说明这个下标已经正确，当前 i 下标再次出现已经正确的位置的值时，就不切换位置，这个位置可能就是缺失的数字，
+            后面遍历到 nums[i] - 1 != i，就是出现了 2 次的数字
+         */
         List<Integer> ans = new ArrayList<>();
         for (int x : nums) {
             x = Math.abs(x);
