@@ -33,17 +33,17 @@ public class Solution_15 {
                 x 要么是最小值，要么在最小值 右边
          */
         int n = nums.length;
-        int l = 0;
-        int r = nums.length - 2;
-        while (l <= r) {
+        int l = -1;
+        int r = n - 1;
+        while (l + 1 < r) {
             int mid = (l + r) >> 1;
             if (nums[mid] > nums[n - 1]) {
-                l = mid + 1;
+                l = mid;
             } else {
-                r = mid - 1;
+                r = mid;
             }
         }
-        return nums[l];
+        return nums[r];
     }
 
 }
