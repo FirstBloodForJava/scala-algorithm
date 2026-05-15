@@ -39,7 +39,8 @@ public class Solution_7 {
         if (!isValidBSTMid(node.left)) {
             return false;
         }
-        if (node.val >= pre) {
+        // pre nums[i]; node.val nums[i+1]; nums[i] >= nums[i+1] 则非严格递增
+        if (node.val <= pre) {
             return false;
         }
         pre = node.val;
