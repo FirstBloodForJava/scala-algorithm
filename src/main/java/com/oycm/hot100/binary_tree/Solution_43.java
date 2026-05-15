@@ -24,6 +24,10 @@ public class Solution_43 {
         /*
         先序遍历：额外传入当前路径的最小值和最大值，node.val 要大于最小值，且小于最大值
          */
+        /*
+        后续遍历：返回子树的最小值和最大值，供给父节点判断
+            父节点要大于左子树的最大值，且小于右子树的最小值，才是合法的二叉搜索树
+         */
 
         return isValidBSTPre(root, Long.MIN_VALUE, Long.MAX_VALUE);
     }
