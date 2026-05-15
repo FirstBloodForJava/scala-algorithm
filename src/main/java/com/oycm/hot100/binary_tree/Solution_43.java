@@ -21,9 +21,19 @@ public class Solution_43 {
         中序遍历：左 -> 根 -> 右，中序遍历后得到的结果如果是递增的，就是二叉搜索树。
         在遍历二叉搜索树的过程中，用一个变量，记录前一个节点的值，判断当前节点的值是否 > 前一个节点值
          */
+        /*
+        先序遍历：额外传入当前路径的最小值和最大值，node.val 要大于最小值，且小于最大值
+         */
 
+        return isValidBSTPre(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
 
-
+    public boolean isValidBSTPre(TreeNode node, long min, long max) {
+        if (node == null) return true;
+        int x = node.val;
+        return min < x && x < max
+                && isValidBSTPre(node.left, min, x)
+                && isValidBSTPre(node.right, x, max);
     }
 
 }
