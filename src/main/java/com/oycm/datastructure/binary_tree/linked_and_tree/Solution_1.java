@@ -30,6 +30,12 @@ public class Solution_1 {
         public void flatten(TreeNode root) {
             /*
             分治:
+            root.right 指向 root.left，同时还要知道左子树的最后一个节点，最后一个节点要指向 root.right
+            递归过程中，返回左子树合并后的尾部节点
+            递归边界，当前节点是空节点，返回空节点
+            当前节点的左尾部节点，右尾部节点
+                如果左尾部节点不为空 左尾部节点.right 指向 当前节点.right；当前节点.right 指向 当前节点.left；当前节点.left 置为 null；
+                如果右尾部节点不为空，返回结束；左尾部节点不为空，返回左尾部节点，否则返回当前节点。
              */
             dfs(root);
         }
