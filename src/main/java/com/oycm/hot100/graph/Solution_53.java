@@ -1,0 +1,64 @@
+package com.oycm.hot100.graph;
+
+import java.util.*;
+
+public class Solution_53 {
+
+    /**
+     * 207. <a href="https://leetcode.cn/problems/course-schedule/description/">课程表</a>
+     *
+     * @param numCourses
+     * @param prerequisites
+     * @return
+     */
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        /*
+        你这个学期必须选修 numCourses 门课程，记为 0 到 numCourses - 1。
+        在选修某些课程之前需要一些先修课程。先修课程按数组 prerequisites 给出，其中 prerequisites[i] = [ai, bi] ，表示如果要学习课程 ai，则必须先学习课程 bi。
+        判断是否可能完成所有课程的学习？如果可以，返回 true ；否则，返回 false 。
+         */
+        /*
+        [0, 1], [1, 2], [2, 0] 这种情况下，先修后修课程关系形成环，无法完成所有课程学习。
+         */
+        /*
+        ‌拓扑排序（Topological Sorting）是一种对有向无环图（DAG）的所有顶点进行线性排序的算法，使得对于图中任意一条有向边(u, v)，顶点 u 都出现在顶点 v 之前‌。
+        它常用于解决依赖关系问题，如任务调度、课程安排或编译顺序确定。
+        排序结果‌：得到的线性序列称为‌拓扑序列‌。一个DAG可能有多个合法的拓扑序列。
+         */
+        /*
+        bfs 搜索，初始化两个数组：
+            一个数组维护节点的度；
+            一个数组维护节点的下一个节点集合；
+        初始先找出度为 0 的队列，
+        如果队列不为空，先访问 u 节点（范围计数器++），对 u 下面的节点 v 的度减少 1，如果度减少为 0，则加入到待遍历的队列
+         */
+        List<Integer>[] edges = new List[numCourses];
+        Arrays.setAll(edges, l -> new ArrayList<>());
+        int[] indeg = new int[numCourses];
+        for (int[] row : prerequisites) {
+            edges[row[1]].add(row[0]);
+            indeg[row[0]]++;
+        }
+        Queue<Integer> q = new LinkedList();
+        // 先找出度为 0 的节点集合；
+        for (int i = 0; i < indeg.length; i++) {
+            if (indeg[i] == 0) {
+                q.offer(i);
+            }
+        }
+        int visited = 0;
+        while (!q.isEmpty()) {
+            visited++;
+            int u = q.poll();
+            for (Integer v : edges[u]) {
+                // 度
+                if (--indeg[v] == 0) {
+                    q.offer(v);
+                }
+            }
+        }
+
+        return visited == numCourses;
+    }
+
+}
