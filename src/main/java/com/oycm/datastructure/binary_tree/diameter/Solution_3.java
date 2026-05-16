@@ -12,9 +12,12 @@ public class Solution_3 {
      */
     public int maxPathSum(TreeNode root) {
         /*
-        当前节点 左子树的最大路径和 + 右子树的最大路径和
-        子树路径和为负数, 返回 0
-        返回给父节点的最大路径和 max(left, right) + node.val, 0
+        最大路径和，可以是二叉树上任意一条链
+        当前节点表示自底下的节点到当前路径的最大和（不一定是叶子节点，中间如果存在负数的情况，肯定不计算，和才能更大）：
+            max(max(左子树的最大路径和 + 右子树的最大路径和) + node.val, 0)
+            max(max(left, right) + node.val, 0)
+        在返回最大链和前，先计算经过当前节点链的最大和，再更新下面节点到当前节点的最大和。
+        递归边界：节点为空，返回 0；
          */
         dfs(root);
         return ans;
