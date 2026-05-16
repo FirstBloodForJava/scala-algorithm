@@ -113,3 +113,59 @@ public class Solution_53 {
     }
 
 }
+
+class Solution_210 {
+    /**
+     * 210. <a href="https://leetcode.cn/problems/course-schedule-ii/description/">课程表 II</a>
+     *
+     * @param numCourses
+     * @param prerequisites
+     * @return
+     */
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        /*
+        现在你总共有 numCourses 门课需要选，记为 0 到 numCourses - 1。
+        给你一个数组 prerequisites ，其中 prerequisites[i] = [ai, bi] ，表示在选修课程 ai 前 必须 先选修 bi。
+        返回你为了学完所有课程所安排的学习顺序。可能会有多个正确的顺序，你只要返回 任意一种 就可以了。如果不可能完成所有课程，返回 一个空数组 。
+         */
+        List<Integer>[] g = new List[numCourses];
+        Arrays.setAll(g, l -> new ArrayList<>());
+        int[] colors = new int[numCourses];
+        for (int[] row : prerequisites) {
+            g[row[1]].add(row[0]);
+        }
+        int[] ans = new int[numCourses];
+        stack = numCourses - 1;
+        boolean isValid = true;
+        for (int i = 0; i < colors.length && isValid; i++) {
+            if (colors[i] == 0 && dfs(i, g, colors, ans)) {
+                isValid = false;
+            }
+        }
+        if (!isValid) {
+            return new int[0];
+        }
+
+        return ans;
+    }
+
+    int stack;
+
+    public boolean dfs(int u, List<Integer>[] g, int[] colors, int[] ans) {
+        colors[u] = 1;
+        for (int v : g[u]) {
+            /*
+            colors[v] 有三种情况：
+                colors[v] = 1，表示出现了环；
+                colors[v] = 0，表示没有访问，继续递归 v 获取信息
+                colors[v] = 2，表示前面递归没有找到环，后续可以不用递归
+             */
+            if (colors[v] == 1 || colors[v] == 0 && dfs(v, g, colors, ans)) {
+                return true;
+            }
+        }
+        colors[u] = 2;
+        ans[stack--] = u;
+        return false;
+    }
+}
