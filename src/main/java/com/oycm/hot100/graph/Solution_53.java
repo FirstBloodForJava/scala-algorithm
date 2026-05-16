@@ -61,4 +61,55 @@ public class Solution_53 {
         return visited == numCourses;
     }
 
+    public boolean canFinish_dfs(int numCourses, int[][] prerequisites) {
+        /*
+        dfs 三色标记法：
+            0-未搜索：节点 x 未被访问；
+            1-搜索中：节点 x 正在访问中，尚未结束（搜索中的下一个节点访问到搜索中的节点，则构成了环）；
+            2-已完成：节点已全部访问完毕，说明 节点 x 出发未找到环。
+        执行过程：
+            1. 建有向图：prerequisites[i][1] -> prerequisites[i][0] 存在一条边；
+            2. 创建长为 numCourses 的颜色数组 colors，各个节点初始化为 0-未搜索；
+            3. 遍历 colors 数组，如果 colors 为 0，调用递归函数 dfs(i)；
+            4. dfs(u) 过程：
+                首先标记 colors[u] = 1，表示正在搜索中；
+                然后遍历 u 的下一个节点 v，
+                    如果 colors[v] = 1，则表示找到环，返回 true。
+                    如果 colors = 0 （表示未搜索，搜索 v），如果 dfs(v) 返回 true，则返回 true；
+                如果没有找到环，那么先标记 colors[u] = 2，然后返回 false。
+            5. dfs(i) 返回 true，说明找到了环，返回 false；
+            6. 遍历所有后，未找到环，则返回 true
+         */
+        List<Integer>[] g = new List[numCourses];
+        Arrays.setAll(g, l -> new ArrayList<>());
+        int[] colors = new int[numCourses];
+        for (int[] row : prerequisites) {
+            g[row[1]].add(row[0]);
+        }
+        for (int i = 0; i < colors.length; i++) {
+            if (colors[i] == 0 && dfs(i, g, colors)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean dfs(int u, List<Integer>[] g, int[] colors) {
+        colors[u] = 1;
+        for (int v : g[u]) {
+            /*
+            colors[v] 有三种情况：
+                colors[v] = 1，表示出现了环；
+                colors[v] = 0，表示没有访问，继续递归 v 获取信息
+                colors[v] = 2，表示前面递归没有找到环，后续可以不用递归
+             */
+            if (colors[v] == 1 || colors[v] == 0 && dfs(v, g, colors)) {
+                return true;
+            }
+        }
+        colors[u] = 2;
+        return false;
+    }
+
 }
