@@ -18,6 +18,14 @@ public class Solution_64 {
         /*
         矩阵二分查找，m log(n) 写法，每一行进行一个二分查找
          */
+        /*
+        log(m*n)
+        l = -1, r = m*n 二分查找，中间点为 [mid/n][mid%n] 一行有 n 个元素，确定是第几行，第几列
+         */
+        /*
+        排除法 m+n
+        从右上角开始查找
+         */
         int m = matrix.length, n = matrix[0].length;
         for (int[] row : matrix) {
             if (target < row[0] || target >row[n - 1]) continue;
