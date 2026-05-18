@@ -65,6 +65,38 @@ public class Solution_66 {
         return nums[r] == target ? r : -1;
     }
 
+    public int search_optimize(int[] nums, int target) {
+        /*
+        讨论优化：
+        二分查找 x = nums[mid] 和 target 的位置关系，
+        x 和 target 和 nums[n-1] 可以确定位置关系。
+        分类讨论：
+            如果 x 和 target 在不同的段：
+                x 在第一段，target 在第二段，x 在 target 的左边；(l, mid] 都大于 nums[n-1] 大于 target，l = mid；
+                x 在第二段，target 在第一段，x 在 target 的右边，[mid, r) 都小于 target，r = mid;
+            如果 x 和 target 在相同的段：
+                和 target 直接比大小，二分查找 大于等于 target 的第一个 下标
+        开区间二分，初始化 r = n-1，这样 r 不计算，也不会越界
+         */
+        int n = nums.length;
+        int last = nums[n - 1];
+        int l = -1;
+        int r = n - 1;
+        while (l + 1 < r) {
+            int mid = (l + r) >>> 1;
+            int x = nums[mid];
+            if (target > last && x <= last) {
+                r = mid;
+            } else if (target <= last && x > last) {
+                l = mid;
+            } else if (x >= target) {
+                r = mid;
+            } else {
+                l = mid;
+            }
+        }
 
+        return nums[r] == target ? r : -1;
+    }
 
 }
