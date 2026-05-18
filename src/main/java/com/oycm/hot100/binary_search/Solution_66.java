@@ -99,4 +99,34 @@ public class Solution_66 {
         return nums[r] == target ? r : -1;
     }
 
+    public int search_left(int[] nums, int target) {
+        /*
+        二分查找大于等于 target 的第一个下标时，当 nums[mid] >= target 不断玩左移动 r，直到循环不成立。
+        为了满足返回的 r 能作为判断的条件，只考虑 r = mid 的情况，target 在 x 的左边，或 target 就是 x；否则，target 在 x 的右边。
+        target 在 x 左边的情况，分类讨论：
+            如果 x > nums[n-1]，说明 x 在第一段，target 在 x 的左边，则要满足 target <= x && target > nums[n-1]；
+            如果 x <= nums[n-1]，说明 x 在第二段，或 nums 只有一段，那么 target 可以在第一段，也可以在第二段；
+                target 在第一段，一定在左边，要满足 target > nums[n-1]
+                target 在第二段，在左边，要满足 target <= x
+         */
+        int last = nums[nums.length - 1];
+        int l = -1;
+        int r = nums.length - 1;
+
+        while (l + 1 < r) {
+            int mid = (l + r) >>> 1;
+            if (check(nums[mid], last, target)) {
+                r = mid;
+            } else {
+                l = mid;
+            }
+        }
+        return nums[r] == target ? r : -1;
+    }
+
+    public boolean check(int x, int last, int target) {
+        if (x > last) return target <= x && target > last;
+        return target > last || x >= target;
+    }
+
 }
