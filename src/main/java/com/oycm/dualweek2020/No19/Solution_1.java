@@ -3,7 +3,7 @@ package com.oycm.dualweek2020.No19;
 public class Solution_1 {
 
     /**
-     * 1342. <a href="https://leetcode.cn/problems/number-of-steps-to-reduce-a-number-to-zero/description/">将数字变成 0 的操作次数</a>
+     * 1342. <a href="https://leetcode.cn/problems/number-of-steps-to-reduce-a-number-to-zero/description/">将数字变成 0 的操作次数</a> 1164
      *
      * @param num [0, 1e6]
      * @return
