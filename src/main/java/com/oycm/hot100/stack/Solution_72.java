@@ -21,6 +21,9 @@ public class Solution_72 {
         暴力计算思路：对于 temperatures[i]，在 [i+1, n-1] 找到第一个大于 temperatures[i] 的下标 j，j = n 时，表示不存在，否则 j - i 就是答案
         单调栈，从右到左，栈底 -> 栈顶 是单调递减的，栈顶元素温度 小于等于 当前温度，则弹栈
          */
+        /*
+        从左到右，栈顶表示需要计算下一个最大温度的下标，当 当前温度 大于 栈顶温度时，弹栈计算温度，小于等于栈顶元素入栈，单调递减栈
+         */
         int n = temperatures.length;
         Deque<Integer> st = new ArrayDeque<>();
         int[] answer = new int[n];
