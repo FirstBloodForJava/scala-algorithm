@@ -1,5 +1,8 @@
 package com.oycm.hot100.two_points;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class Solution_4 {
 
     /**
@@ -63,6 +66,26 @@ public class Solution_4 {
                 right--;
             }
         }
+        return ans;
+    }
+
+    public int monotonicStack(int[] height) {
+        /*
+        height = {1, 2, 3, 6, 5, 4}
+        观察发现：前面高为 1, 2 不能接任何雨水，要想接到雨水，柱子要从高到低，后面遇到一个大于等于较低的柱子，就能接雨水了
+         */
+        int ans = 0;
+        Deque<Integer> st = new ArrayDeque<>();
+        for (int i = 0; i < height.length; i++) {
+            while (!st.isEmpty() && height[i] >= height[st.peek()]) {
+                int bottom = height[st.pop()];
+                if (st.isEmpty()) break;
+                int left = st.peek();
+                ans += (i - left - 1) * (Math.min(height[i], height[left]) - bottom);
+            }
+            st.push(i);
+        }
+
         return ans;
     }
 
