@@ -1,8 +1,5 @@
 package com.oycm.month2026.may;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Solution_20 {
 
     /**
@@ -25,7 +22,7 @@ public class Solution_20 {
         set1 记录 A 中元素出现情况
         set2 记录 B 中元素出现情况
          */
-        int n = A.length;
+        /*int n = A.length;
         int[] C = new int[n];
         Set<Integer> set1 = new HashSet<>();
         Set<Integer> set2 = new HashSet<>();
@@ -53,9 +50,19 @@ public class Solution_20 {
                 set2.add(B[i]);
             }
 
+        }*/
+        /*
+        元素都恰好出现移除，且长度比较，可以使用集合+二进制来求公共元素数目
+        用两个 long 表示 A, B 的集合，a & b 中 1 的数量，就是前面公共元素的数量
+         */
+        long a = 0, b = 0;
+        for (int i = 0; i < A.length; i++) {
+            a |= 1L << A[i];
+            b |= 1L << B[i];
+            A[i] = Long.bitCount(a & b);
         }
 
-        return C;
+        return A;
     }
 
 }
