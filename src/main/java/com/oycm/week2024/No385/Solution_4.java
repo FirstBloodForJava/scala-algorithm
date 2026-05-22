@@ -1,5 +1,8 @@
 package com.oycm.week2024.No385;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Solution_4 {
 
     /**
@@ -28,9 +31,34 @@ public class Solution_4 {
         对于个长度为 n 的字符串 。定义函数 z[i] 表示 s 和 s[i, n-1]（即以 s[i] 开头的后缀）的最长公共前缀（LCP）的长度。
         被称为 s 的 z 函数。特别地，z[0] = 0（因为 abc 和从下标 0 开始的字符就是自己，一定匹配）。
          */
-        return 0;
+        /*
+        字典树，用一个 pair 表示一对字符，前缀字符和后缀字符，pair (s[i], s[n-1-i])
+        从左到右遍历，先更新答案（增加路过节点的数量），更新树末尾节点的数量
+         */
+        long ans = 0;
+        Trie trie = new Trie();
+        for (String word : words) {
+            char[] cs = word.toCharArray();
+            int n = cs.length;
+            Trie cur = trie;
+            for (int i = 0; i < cs.length; i++) {
+                int pair = (cs[i] - 'a') << 5 | (cs[n - 1 - i] - 'a');
+                cur = cur.son.computeIfAbsent(pair, l -> new Trie());
+                ans += cur.cnt;
+            }
+            // 在前缀树末尾计数
+            cur.cnt++;
+
+        }
+
+        return ans;
     }
 
+
+    class Trie {
+        Map<Integer,Trie> son = new HashMap<>();
+        int cnt = 0;
+    }
 
     public int[] squareZ(char[] cs) {
         /*
