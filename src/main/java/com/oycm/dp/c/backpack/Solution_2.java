@@ -98,3 +98,81 @@ class Solution_494_1 {
         return f[n][m];
     }
 }
+
+class Solution_494_2 {
+    public int findTargetSumWays(int[] nums, int target) {
+        /*
+        dfs(i, s) = dfs(i-1, s) + dfs(i-1, s - nums[i])
+        递归翻译成递推
+        f[i][s] = f[i-1][s] + f[i-1][s-nums[i]]
+        f[i+1][s] = f[i][s] + f[i][s-nums[i]]
+        注意，第二个表达式 s 减去的依旧是 nums[i]。
+        我的理解是：
+            第一个表达式可以定义为 [0, i] 中选一些数，和为 s 的方案数
+            第二个表达式可以定义为前 i+1 个数中选出一些数，和为 s 的方案数
+        f[i+1] 依赖 f[i]，前面的 [0, i-1] 就不需要了，
+            相当于两个数组 pre 表示 f[i], cur 表示 f[i+1] 计算完成后 pre = cur，继续更新 cur
+        i 是连续性的 i%2 是奇数，那么 (i+1)%2 一定是偶数，这样可以创建长为 2 的数组，对 2 取模的范围确定上一层是哪些
+         */
+        int s = 0;
+        for (int x : nums) {
+            s += x;
+        }
+        s -= Math.abs(target);
+        if (s < 0 || s % 2 == 1) return 0;
+        int m = s / 2;
+        int n = nums.length;
+        int[][] f = new int[2][m + 1];
+        f[0][0] = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= m; j++) {
+                if (nums[i] > j) {
+                    f[(i + 1) % 2][j] = f[i % 2][j];
+                } else {
+                    f[(i + 1) % 2][j] = f[i % 2][j] + f[i % 2][j - nums[i]];
+                }
+            }
+        }
+
+        return f[n % 2][m];
+    }
+}
+
+class Solution_494_3 {
+    public int findTargetSumWays(int[] nums, int target) {
+        /*
+        dfs(i, s) = dfs(i-1, s) + dfs(i-1, s - nums[i])
+        递归翻译成递推
+        f[i][s] = f[i-1][s] + f[i-1][s-nums[i]]
+        f[i+1][s] = f[i][s] + f[i][s-nums[i]]
+        注意，第二个表达式 s 减去的依旧是 nums[i]。
+        我的理解是：
+            第一个表达式可以定义为 [0, i] 中选一些数，和为 s 的方案数
+            第二个表达式可以定义为前 i+1 个数中选出一些数，和为 s 的方案数
+        f[i+1] 依赖 f[i]，前面的 [0, i-1] 就不需要了，
+            相当于两个数组 pre 表示 f[i], cur 表示 f[i+1] 计算完成后 pre = cur，继续更新 cur
+        i 是连续性的 i%2 是奇数，那么 (i+1)%2 一定是偶数，这样可以创建长为 2 的数组，对 2 取模的范围确定上一层是哪些
+        f[i]   = {1, 2, 3}
+        f[i+1] = {}
+        从左到右计算 f[i+1][j] 会用到 f[i] j 左边的结果，使用一个数组，会取到更新的结果
+        考虑倒着计算 f[i+1][s] 会用到 f[i][s] 和 f[i][s-x]，s-x 在 s 的左边，还没有被更新，这样就能使用一个数组更新
+        右边更新的结果，只会在下一层被用到
+         */
+        int s = 0;
+        for (int x : nums) {
+            s += x;
+        }
+        s -= Math.abs(target);
+        if (s < 0 || s % 2 == 1) return 0;
+        int m = s / 2;
+        int[] f = new int[m + 1];
+        f[0] = 1;
+        for (int x : nums) {
+            for (int c = m; c >= x; c--) {
+                f[c] += f[c - x];
+            }
+        }
+
+        return f[m];
+    }
+}
