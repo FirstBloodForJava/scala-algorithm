@@ -70,7 +70,7 @@ public class Solution_1 {
 
 }
 
-class Solution_1143 {
+class Solution_1143_1 {
     public int longestCommonSubsequence(String text1, String text2) {
         /*
         dfs 翻译成 递推
