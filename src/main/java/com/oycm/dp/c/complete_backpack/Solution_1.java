@@ -106,3 +106,31 @@ class Solution_322_2 {
         return ans < Integer.MAX_VALUE / 2 ? ans : -1;
     }
 }
+
+class Solution_322_3 {
+    public int coinChange(int[] coins, int amount) {
+        /*
+        dfs(i, s) = Math.min(dfs(i-1, s), dfs(i, s-nums[i]) + 1)
+        递归翻译成递推
+        f[i][s] = Math.min(f[i-1][s], f[i][s-nums[i]] + 1)
+        f[i+1][s] = Math.min(f[i][s], f[i+1][s-nums[i]] + 1)
+        f[0][0] = 0, f[0][1, s] 都是无穷大
+        和 0-1 背包相似，f[i+1] 只会用到 f[i] f[i+1] 左边, [0, i-1] 不会被使用
+        f[i]   = {1, 2, 3}
+        f[i+1] = {}
+        f[i+1] 数组更新过程中，当 s 大于等于 x=coins[i] 时，需要用到上一行的 f[i][s] 和当前行的 s-x
+        上一层只会在当前 s 使用到，大于 s 的会用到当前层左边即上一层，可以使用一个数组来记录答案
+         */
+        int[] f = new int[amount + 1];
+        Arrays.fill(f, Integer.MAX_VALUE / 2);
+        f[0] = 0;
+        for (int x : coins) {
+            for (int s = x; s <= amount; s++) {
+                f[s] = Math.min(f[s], f[s - x] + 1);
+            }
+        }
+
+        int ans = f[amount];
+        return ans < Integer.MAX_VALUE / 2 ? ans : -1;
+    }
+}
