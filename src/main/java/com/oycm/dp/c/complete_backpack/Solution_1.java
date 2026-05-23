@@ -76,3 +76,33 @@ class Solution_322_1 {
         return ans < Integer.MAX_VALUE / 2 ? ans : -1;
     }
 }
+
+class Solution_322_2 {
+
+    public int coinChange(int[] coins, int amount) {
+        /*
+        dfs(i, s) = Math.min(dfs(i-1, s), dfs(i, s-nums[i]) + 1)
+        递归翻译成递推
+        f[i][s] = Math.min(f[i-1][s], f[i][s-nums[i]] + 1)
+        f[i+1][s] = Math.min(f[i][s], f[i+1][s-nums[i]] + 1)
+        f[0][0] = 0, f[0][1, s] 都是无穷大
+        和 0-1 背包相似，f[i+1] 只会用到 f[i] f[i+1] 左边, [0, i-1] 不会被使用
+         */
+        int n = coins.length;
+        int[][] f = new int[2][amount + 1];
+        Arrays.fill(f[0], Integer.MAX_VALUE / 2);
+        f[0][0] = 0;
+        for (int i = 0; i < n; i++) {
+            for (int s = 0; s <= amount; s++) {
+                if (coins[i] > s) {
+                    f[(i + 1) % 2][s] = f[i % 2][s];
+                } else {
+                    f[(i + 1) % 2][s] = Math.min(f[i % 2][s], f[(i + 1) % 2][s - coins[i]] + 1);
+                }
+
+            }
+        }
+        int ans = f[n % 2][amount];
+        return ans < Integer.MAX_VALUE / 2 ? ans : -1;
+    }
+}
