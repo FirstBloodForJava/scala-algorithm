@@ -47,7 +47,7 @@ public class Solution_1 {
 
 }
 
-class Solution_300 {
+class Solution_300_1 {
 
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
