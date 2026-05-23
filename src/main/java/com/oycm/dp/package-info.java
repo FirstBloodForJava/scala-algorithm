@@ -18,5 +18,11 @@
  *     <li>complete_backpack 完全背包</li>
  *     <li></li>
  * </ol>
+ *
+ * <p>c. 线性 dp</p>
+ * <ol>
+ *     <li>lcs 最长公共子序列</li>
+ *     <li>lis 最长递增子序列</li>
+ * </ol>
  */
 package com.oycm.dp;
