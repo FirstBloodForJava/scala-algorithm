@@ -46,3 +46,21 @@ public class Solution_1 {
     }
 
 }
+
+class Solution_300 {
+
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        int[] f = new int[n];
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j]) f[i] = Math.max(f[i], f[j]);
+            }
+            f[i]++;
+            ans = Math.max(f[i], ans);
+        }
+
+        return ans;
+    }
+}
