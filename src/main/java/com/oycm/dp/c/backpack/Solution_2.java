@@ -176,3 +176,10 @@ class Solution_494_3 {
         return f[m];
     }
 }
+
+class Solution_494_4 {
+    /*
+    如果 nums[i] 数值范围扩大，上面计算会超时。
+    可以通过折半枚举 + 求两数之和计算方案数
+     */
+}
