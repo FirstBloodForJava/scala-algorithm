@@ -76,7 +76,7 @@ class Solution_1143_1 {
         dfs 翻译成 递推
         s[i] = t[j]:  dfs(i, j) = dfs(i-1, j-1) + 1
         s[i] != t[j]: dfs(i, j) = max(dfs(i-1, j), dfs(i, j-1))
-        s[i] = t[j]:  f[i+1][j+1] = f[i][j];
+        s[i] = t[j]:  f[i+1][j+1] = f[i][j] + 1;
         s[i]!= t[j]:  f[i+1][j+1] = max(f[i][j+1], f[i+1][j])
          */
         int n = text1.length();
@@ -91,5 +91,34 @@ class Solution_1143_1 {
             }
         }
         return f[n % 2][m];
+    }
+}
+
+class Solution_1143_2 {
+    public int longestCommonSubsequence(String text1, String text2) {
+        /*
+        s[i] = t[j]:  f[i+1][j+1] = f[i][j] + 1;
+        s[i]!= t[j]:  f[i+1][j+1] = max(f[i][j+1], f[i+1][j])
+        f[i+1][j+1] 计算需要用到三个位置变量：
+            上   f[i][j+1]，只有当前行会访问到
+            左   f[i+1][j]，更新后，当前行可以使用
+            左上 f[i][j]，需要使用变量记录上一行的
+         */
+        int n = text1.length();
+        int m = text2.length();
+        int[] f = new int[m + 1];
+        char[] s = text1.toCharArray();
+        char[] t = text2.toCharArray();
+        for (int i = 0; i < n; i++) {
+            int pre = f[0];
+            for (int j = 0; j < m; j++) {
+                // 记录当前行会覆盖上一行的内容
+                int temp = f[j + 1];
+                f[j + 1] = s[i] == t[j] ? pre + 1 :
+                        Math.max(f[j], f[j + 1]);
+                pre = temp;
+            }
+        }
+        return f[m];
     }
 }
