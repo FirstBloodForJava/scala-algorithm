@@ -48,17 +48,53 @@ public class Solution_2 {
         for (int[] row : memo) {
             Arrays.fill(row, -1);
         }
-        return dfs(n-1, m, nums, memo);
+        return dfs(n - 1, m, nums, memo);
     }
 
     public int dfs(int i, int s, int[] nums, int[][] memo) {
         if (i < 0) return s == 0 ? 1 : 0;
         if (memo[i][s] != -1) return memo[i][s];
-        int res = dfs(i-1, s, nums, memo);
+        int res = dfs(i - 1, s, nums, memo);
         if (nums[i] <= s) {
             res += dfs(i - 1, s - nums[i], nums, memo);
         }
         return memo[i][s] = res;
     }
 
+}
+
+class Solution_494_1 {
+    public int findTargetSumWays(int[] nums, int target) {
+        /*
+        dfs(i, s) = dfs(i-1, s) + dfs(i-1, s - nums[i])
+        递归翻译成递推
+        f[i][s] = f[i-1][s] + f[i-1][s-nums[i]]
+        f[i+1][s] = f[i][s] + f[i][s-nums[i]]
+        注意，第二个表达式 s 减去的依旧是 nums[i]。
+        我的理解是：
+            第一个表达式可以定义为 [0, i] 中选一些数，和为 s 的方案数
+            第二个表达式可以定义为前 i+1 个数中选出一些数，和为 s 的方案数
+         */
+        int s = 0;
+        for (int x : nums) {
+            s += x;
+        }
+        s -= Math.abs(target);
+        if (s < 0 || s % 2 == 1) return 0;
+        int m = s / 2;
+        int n = nums.length;
+        int[][] f = new int[n + 1][m + 1];
+        f[0][0] = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= m; j++) {
+                if (nums[i] > j) {
+                    f[i + 1][j] = f[i][j];
+                } else {
+                    f[i + 1][j] = f[i][j] + f[i][j - nums[i]];
+                }
+            }
+        }
+
+        return f[n][m];
+    }
 }
