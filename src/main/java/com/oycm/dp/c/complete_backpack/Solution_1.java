@@ -22,6 +22,7 @@ public class Solution_1 {
             不选，则看 dfs(i-1, s) 最小选择数量；
             选，则看 dfs(i, s-nums[i]) + 1 有哪些选法；
         递归边界 i < 0，如果 s = 0 返回 0，否则返回 ∞
+        dfs(i, s) = Math.min(dfs(i-1, s), dfs(i, s-nums[i]) + 1)
          */
         int n = coins.length;
         int[][] memo = new int[n][amount + 1];
@@ -46,4 +47,32 @@ public class Solution_1 {
         return memo[i][c] = Math.min(dfs(i - 1, c, coins, memo), 1 + dfs(i, c - coins[i], coins, memo));
     }
 
+}
+
+class Solution_322_1 {
+    public int coinChange(int[] coins, int amount) {
+        /*
+        dfs(i, s) = Math.min(dfs(i-1, s), dfs(i, s-nums[i]) + 1)
+        递归翻译成递推
+        f[i][s] = Math.min(f[i-1][s], f[i][s-nums[i]] + 1)
+        f[i+1][s] = Math.min(f[i][s], f[i+1][s-nums[i]] + 1)
+        f[0][0] = 0, f[0][1, s] 都是无穷大
+         */
+        int n = coins.length;
+        int[][] f = new int[n + 1][amount + 1];
+        Arrays.fill(f[0], Integer.MAX_VALUE / 2);
+        f[0][0] = 0;
+        for (int i = 0; i < n; i++) {
+            for (int s = 0; s <= amount; s++) {
+                if (coins[i] > s) {
+                    f[i + 1][s] = f[i][s];
+                } else {
+                    f[i + 1][s] = Math.min(f[i][s], f[i + 1][s - coins[i]] + 1);
+                }
+
+            }
+        }
+        int ans = f[n][amount];
+        return ans < Integer.MAX_VALUE / 2 ? ans : -1;
+    }
 }
