@@ -25,8 +25,13 @@ public class Solution_89 {
         s /= 2;
         boolean[] f = new boolean[s + 1];
         f[0] = true;
+        /*
+        优化，由于数字一开始的和不会比 s/2 大，前面子数组和小于 s 的后面一定是false
+         */
+        int s2 = 0;
         for (int x : nums) {
-            for (int c = s; c >= x; c--) {
+            s2 = Math.min(x  + s2, s);
+            for (int c = s2; c >= x; c--) {
                 f[c] = f[c] || f[c - x];
             }
             if (f[s]) return true;
