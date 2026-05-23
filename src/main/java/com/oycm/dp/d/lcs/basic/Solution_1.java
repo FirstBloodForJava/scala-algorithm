@@ -63,9 +63,33 @@ public class Solution_1 {
 
     public int dfs(int i, int j) {
         if (i < 0 || j < 0) return 0;
-        if(memo[i][j] != -1) return memo[i][j];
+        if (memo[i][j] != -1) return memo[i][j];
         if (s[i] == t[j]) return memo[i][j] = dfs(i - 1, j - 1) + 1;
         return memo[i][j] = Math.max(dfs(i - 1, j), dfs(i, j - 1));
     }
 
+}
+
+class Solution_1143 {
+    public int longestCommonSubsequence(String text1, String text2) {
+        /*
+        dfs 翻译成 递推
+        s[i] = t[j]:  dfs(i, j) = dfs(i-1, j-1) + 1
+        s[i] != t[j]: dfs(i, j) = max(dfs(i-1, j), dfs(i, j-1))
+        s[i] = t[j]:  f[i+1][j+1] = f[i][j];
+        s[i]!= t[j]:  f[i+1][j+1] = max(f[i][j+1], f[i+1][j])
+         */
+        int n = text1.length();
+        int m = text2.length();
+        int[][] f = new int[2][m + 1];
+        char[] s = text1.toCharArray();
+        char[] t = text2.toCharArray();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                f[(i + 1) % 2][j + 1] = s[i] == t[j] ? f[i % 2][j] + 1 :
+                        Math.max(f[(i + 1) % 2][j], f[i % 2][j + 1]);
+            }
+        }
+        return f[n % 2][m];
+    }
 }
