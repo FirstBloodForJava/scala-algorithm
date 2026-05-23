@@ -1,8 +1,6 @@
 package com.oycm.dp.d.lis.basic;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Solution_1 {
 
@@ -93,7 +91,7 @@ class Solution_300_2 {
         int l = -1;
         while (l + 1 < r) {
             int mid = (l + r) >> 1;
-            if (nums[mid] < target){
+            if (nums[mid] < target) {
                 l = mid;
             } else {
                 r = mid;
@@ -102,4 +100,61 @@ class Solution_300_2 {
         return r;
     }
 
+}
+
+class Solution_300_3 {
+    public List<Integer> findOneLis(int[] nums) {
+        /*
+        返回一个具体的 lis：
+        g 数组记录值，并记录下标
+        还需要一个数组，维持 lis 序列的关系
+         */
+        int n = nums.length;
+        if (n == 0) {
+            return List.of();
+        }
+        // 二元组：nums[0] 表示值， nums[1] 表示下标
+        List<int[]> g = new ArrayList<>();
+        int[] last = new int[n];
+        Arrays.fill(last, -1);
+
+        for (int i = 0; i < n; i++) {
+            int x = nums[i];
+            int j = lowerBound(g, x);
+            if (j > 0) {
+                // last[i] 倒着遍历，直到 -1，就是一个子序列路径
+                last[i] = g.get(j - 1)[1]; // 记录 nums[i] 添加到了哪个数的末尾
+            }
+            if (j < g.size()) {
+                g.set(j, new int[]{x, i});
+            } else {
+                g.add(new int[]{x, i});
+            }
+        }
+
+        List<Integer> lis = new ArrayList<>();
+        // LIS 的最后一个数是 g 的最后一个元素，顺着 last 倒着找上一个数
+        for (int i = g.get(g.size() - 1)[1]; i >= 0; i = last[i]) {
+            lis.add(nums[i]);
+        }
+        Collections.reverse(lis);
+        return lis;
+    }
+
+    private int lowerBound(List<int[]> g, int target) {
+        int left = -1;
+        int right = g.size(); // 开区间 (left, right)
+        while (left + 1 < right) { // 开区间不为空
+            // 循环不变量：
+            // g[right][0] >= target
+            // g[left][0] < target
+            int mid = left + (right - left) / 2;
+            if (g.get(mid)[0] >= target) {
+                right = mid; // 范围缩小到 (left, mid)
+            } else {
+                left = mid; // 范围缩小到 (mid, right)
+            }
+        }
+        return right;
+    }
 }
