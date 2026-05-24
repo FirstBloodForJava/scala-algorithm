@@ -1,5 +1,7 @@
 package com.oycm.hot100.dp_mult;
 
+import java.util.Arrays;
+
 public class Solution_92 {
 
     /**
@@ -34,7 +36,7 @@ public class Solution_92 {
 
 }
 
-class Solution_64 {
+class Solution_64_1 {
 
     public int minPathSum(int[][] grid) {
         /*
@@ -64,5 +66,28 @@ class Solution_64 {
         }
 
         return f[m][n];
+    }
+}
+
+class Solution_64_2 {
+    public int minPathSum(int[][] grid) {
+        /*
+
+         */
+        int n = grid[0].length;
+        int[] f = new int[n + 1];
+        Arrays.fill(f, Integer.MAX_VALUE);
+        /*
+        f[1] 初始化为 0，就不用后面 f[0] 的修改
+         */
+        f[0] = 0;
+        for (int[] row : grid) {
+            for (int j = 0; j < row.length; j++) {
+                f[j + 1] = Math.min(f[j], f[j + 1]) + row[j];
+            }
+            f[0] = f[1];
+        }
+
+        return f[n];
     }
 }
