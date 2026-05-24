@@ -56,3 +56,23 @@ class Solution_62_1 {
         return f[m][n];
     }
 }
+
+class Solution_62_2 {
+    public int uniquePaths(int m, int n) {
+        /*
+        dfs(i, j) = dfs(i-1, j) + dfs(i, j-1)
+        f[i][j] = f[i-1][j] + f[i][j-1]
+        f[i+1][j+1] = f[i][j + 1] + f[i+1][j]
+        f[i+1][j+1] 用到当前位置 左和上 位置的值，可以用一个数组来计算
+         */
+        int[] f = new int[n + 1];
+        // 注意，这里不能把 f[0] 初始化为 1，因为第二行的 f[1] += f[0] 会导致多计算
+        f[1] = 1;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                f[j + 1] += f[j];
+            }
+        }
+        return f[n];
+    }
+}
