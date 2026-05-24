@@ -36,3 +36,23 @@ public class Solution_91 {
     }
 
 }
+
+class Solution_62_1 {
+
+    public int uniquePaths(int m, int n) {
+        /*
+        dfs(i, j) = dfs(i-1, j) + dfs(i, j-1)
+        f[i][j] = f[i-1][j] + f[i][j-1]
+        f[i+1][j+1] = f[i][j + 1] + f[i+1][j]
+         */
+        int[][] f = new int[m + 1][n + 1];
+        // f[0][1] 或 f[1][0] 初始化 1
+        f[1][0] = 1;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                f[i + 1][j + 1] = f[i][j + 1] + f[i + 1][j];
+            }
+        }
+        return f[m][n];
+    }
+}
