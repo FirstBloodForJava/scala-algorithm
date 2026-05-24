@@ -56,3 +56,37 @@ public class Solution_95 {
         return memo[i][j] = Math.min(dfs(i - 1, j), Math.min(dfs(i - 1, j - 1), dfs(i, j - 1))) + 1;
     }
 }
+
+class Solution_72_1 {
+
+    public int minDistance(String word1, String word2) {
+        /*
+        dfs(i)(j) =
+            dfs(i - 1, j - 1)
+            min(dfs(i - 1, j), Math.min(dfs(i - 1, j - 1), dfs(i, j - 1))) + 1
+        f[i][j] =
+            f[i-1][j-1]
+            min(f[i-1][j], f[i-1][j-1], f[i][j-1]) + 1
+        dfs(-1, j) = j + 1; f[-1][j] = j + 1; f[0][j + 1] = j + 1;
+        dfs(i, -1) = i + 1; f[i][-1] = i + 1; f[i + 1][0] = i + 1;
+         */
+        char[] s = word1.toCharArray();
+        char[] t = word2.toCharArray();
+        int m = word1.length();
+        int n = word2.length();
+        int[][] f = new int[m + 1][n + 1];
+        for (int j = 0; j < n; j++) {
+            f[0][j + 1] = j + 1;
+        }
+        for (int i = 0; i < m; i++) {
+            f[i + 1][0] = i + 1;
+            for (int j = 0; j < n; j++) {
+                f[i + 1][j + 1] = s[i] == t[j] ?
+                        f[i][j] :
+                        Math.min(f[i][j + 1], Math.min(f[i][j], f[i + 1][j])) + 1;
+            }
+        }
+
+        return f[m][n];
+    }
+}
