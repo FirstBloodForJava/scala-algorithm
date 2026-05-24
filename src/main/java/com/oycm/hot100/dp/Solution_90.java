@@ -49,3 +49,51 @@ public class Solution_90 {
     }
 
 }
+
+class Solution_32_1 {
+
+    public int longestValidParentheses(String s) {
+        /*
+        left 表示左括号的数量
+        right 表示右括号的数量
+        当 left == right 时，更新答案
+        当 left < right 时，前面不可能形成有效括号， left = right = 0 置为 0
+        当 left > right 时，((()) ()(() 无法判断 有效长度是 4 还是 2
+        ((()), ()(() 倒着计算
+        left 表示右括号数量
+        right 表示左括号数量
+        这样就能处理 上面的情况，左边多出来的括号移到右边，前面一定会出现 left == right 的情况
+         */
+        char[] cs = s.toCharArray();
+        int left = 0, right = 0;
+        int ans = 0;
+        for (char c : cs) {
+            if (c == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left < right) {
+                left = right = 0;
+            } else if (left == right) {
+                ans = Math.max(ans, left * 2);
+            }
+        }
+        left = right = 0;
+        for (int i = cs.length - 1; i >= 0; i--) {
+            if (cs[i] == ')') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left < right) {
+                left = right = 0;
+            } else if (left == right) {
+                ans = Math.max(ans, left * 2);
+            }
+        }
+
+
+        return ans;
+    }
+}
