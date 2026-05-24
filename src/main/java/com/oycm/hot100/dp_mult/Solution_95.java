@@ -90,3 +90,35 @@ class Solution_72_1 {
         return f[m][n];
     }
 }
+
+class Solution_72_2 {
+    public int minDistance(String word1, String word2) {
+        /*
+        f[i + 1][j + 1] =
+            f[i][j + 1] 上，当前行更新才会访问
+            f[i + 1][j] 左，当前行更新会读到，可以修改
+            f[i][j]     左上，当前行更新会覆盖结果，需要单独记录
+         */
+        char[] t = word2.toCharArray();
+        int n = word2.length();
+        int[] f = new int[n + 1];
+        for (int j = 0; j < n; j++) {
+            f[j + 1] = j + 1;
+        }
+        for (char x : word1.toCharArray()) {
+            // 左上位置
+            int pre = f[0];
+            f[0]++; // f[i+1][0] = i + 1
+            for (int j = 0; j < n; j++) {
+                // 下一个左上位置，会被修改
+                int temp = f[j + 1];
+                f[j + 1] = x == t[j] ?
+                        pre :
+                        Math.min(pre, Math.min(f[j + 1], pre)) + 1;
+                pre = temp;
+            }
+        }
+
+        return f[n];
+    }
+}
