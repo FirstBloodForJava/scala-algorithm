@@ -36,17 +36,18 @@ public class Solution_25 {
                 f[j] = f[i] && cs[j] == '0';
             }
         }*/
-        int[] f = new int[n];
+
         int[] sums = new int[n + 1];
-        f[0] = sums[1] = 1;
+        sums[1] = 1;
         for (int j = 1; j < n; j++) {
+            sums[j + 1] += sums[j];
             if (j >= minJump && cs[j] == '0' && sums[j - minJump + 1] > sums[Math.max(j - maxJump, 0)]) {
-                f[j] = 1;
+                sums[j + 1]++;
             }
-            sums[j + 1] = sums[j] + f[j];
+
         }
 
-        return f[n - 1] == 1;
+        return sums[n] > sums[n - 1];
     }
 
 
