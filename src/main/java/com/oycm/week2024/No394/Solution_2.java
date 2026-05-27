@@ -19,25 +19,21 @@ public class Solution_2 {
         也可以使用集合来做
          */
         int[] cnt = new int[2];
-
+        int invalid = 0;
         for (char c : word.toCharArray()) {
             int i = c >> 5 & 1;
             int bit = 1 << (c & 31);
-            if (i == 1) {
-                if ((cnt[0] & bit) == 0) {
-                    // 小写字母 前面 不存在大写字母
-                    cnt[i] |= bit;
-                } else {
-                    // 存在大写字母，要去掉小写字母
-                    cnt[i] &= Integer.MAX_VALUE ^ bit;
+            cnt[i] |= bit;
+            if (i > 0) {
+                // 小写字母，判断前面大写字母是否和当前字母有交集
+                if ((cnt[0] & bit) > 0) {
+                    invalid |= bit;
                 }
-            } else {
-                // 大写字母
-                cnt[i] |= bit;
             }
+            // 如果是大写字符，后面没有出现小写字母，没有交集，所有不用添加到无效中
         }
 
-        return Integer.bitCount(cnt[0] & cnt[1]);
+        return Integer.bitCount(cnt[0] & cnt[1] & ~invalid);
     }
 
 }
