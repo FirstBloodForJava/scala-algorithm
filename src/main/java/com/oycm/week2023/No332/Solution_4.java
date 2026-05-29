@@ -29,12 +29,13 @@ public class Solution_4 {
             pre[i] 表示子串 s[0 : i] 对应 t 的最长前缀结束下标；
             suf[i] 表示自创 s[i : n-1] 对应 t 的最长后缀开始下标；
             枚举 i，left = pre[i] + 1; right = suf[i+1] - 1
-            ans = suf[i+1] - 1 - pre[i] - 1 + 1 = suf[i+1] - pre[i] - 1
+            ans = (suf[i+1] - 1) - (pre[i] + 1) + 1
+            suf[i] 表示 right + 1
          */
         int n = s.length();
         int m = t.length();
         int[] suf = new int[n + 1];
-        suf[n] = m - 1;
+        suf[n] = m;
         char[] cs = s.toCharArray();
         char[] ts = t.toCharArray();
         for (int i = n - 1, j = m - 1; i >= 0; i--) {
@@ -43,17 +44,21 @@ public class Solution_4 {
             }
             // t 是 s 子序列
             if (j < 0) return 0;
-            suf[i] = j;
+            suf[i] = j + 1;
         }
-        int ans = suf[0] + 1;
+        int ans = suf[0];
         for (int i = 0, j = 0; i < n; i++) {
             if (cs[i] == ts[j]) {
                 j++;
-                ans = Math.min(ans, suf[i + 1] - j + 1);
+                ans = Math.min(ans, suf[i + 1] - j);
             }
         }
 
         return ans;
     }
+
+    /*
+    todo 删除 s 中的子串，使得 t 仍然是 s 的子序列。可以删除的最长子串长度是多少？
+     */
 
 }
