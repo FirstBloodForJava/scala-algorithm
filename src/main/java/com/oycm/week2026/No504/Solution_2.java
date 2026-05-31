@@ -12,6 +12,11 @@ public class Solution_2 {
         返回你在购买物品花费最多为 budget 的前提下，能够获得的物品最大总数，包括购买的物品和免费的物品。
          */
         /*
+        1 <= items.length <= 1000
+        1 <= factori, pricei <= 1500
+        1 <= budget <= 1500
+         */
+        /*
         对于物品 i，统计 factorj % factori == 0 的数量（包含 i）cnti，那么 cnti 就是首次购买物品 i 所获得物品数量。
         如果物品只能购买一次，则是标准的 0-1 背包问题。
         f[i] 表示已用容量 i，所获得的物品数量，剩余的 budget - i 全部用来购买价格最低的物品，不断求最大值
