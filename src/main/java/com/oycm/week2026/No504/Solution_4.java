@@ -21,38 +21,39 @@ public class Solution_4 {
         要想字典序大，第一个 MEX 就要大。若 MEX = m，m > 0，
             则一定存在一个子数组包含 [0, m-1] 所有值，
          */
+        /*
+        优化点一：mex 最大为 n，大于等于 n 的数不需要考虑
+         */
         int n = nums.length;
-
-        Map<Integer,List<Integer>> map = new HashMap<>();
+        ArrayDeque<Integer>[] q = new ArrayDeque[n + 1];
+        Arrays.setAll(q, l -> new ArrayDeque<>());
         for (int i = 0; i < n; i++) {
             // 记录相同值得所有下标
-            map.computeIfAbsent(nums[i], l -> new ArrayList<>()).add(i);
+            if (nums[i] < n) {
+                q[nums[i]].add(i);
+            }
         }
         // 不包含最小值 0，每次删除一个元素，所有 MEX = 0
-        if (map.get(0) == null) {
+        if (q[0].isEmpty()) {
             return new int[n];
         }
-        List<Integer> ans = new ArrayList<>();
-        int left = 0;
-        while (left < n) {
-            int curMex = -1;
-            int right = left;
-            while (true) {
-                int nextMex = curMex + 1;
-                List<Integer> list = map.get(nextMex);
-                if (list == null) break;
-                // 查找 nextMex 是否在要移除得区间中 >= left
-                int idx = Collections.binarySearch(list, left);
-                if (idx < 0 && -(idx + 1) == list.size()) {
+        int idx = 0;
+        for (int i = 0; i < n; i++) {
+            int start = i;
+            int mex = 0;
+            for (; ; mex++) {
+                while (!q[mex].isEmpty() && q[mex].peekFirst() < start) {
+                    q[mex].pollFirst();
+                }
+                if (q[mex].isEmpty()) {
                     break;
                 }
-                curMex = nextMex;
-                right = Math.max(right, list.get(idx > 0 ? idx : -(idx + 1)));
+                i = Math.max(i, q[mex].peekFirst());
             }
-            ans.add(curMex + 1);
-            left = right + 1;
+
+            nums[idx++] = mex;
         }
 
-        return ans.stream().mapToInt(Integer::intValue).toArray();
+        return Arrays.copyOf(nums, idx);
     }
 }
