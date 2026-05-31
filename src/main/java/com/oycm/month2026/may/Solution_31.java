@@ -22,15 +22,33 @@ public class Solution_31 {
         把 asteroids 升序排序，mass 优先选择最小质量发生碰撞，如果 mass >= asteroids[i]，则 mass += asteroids[i]；
         否则返回 false
          */
-        long sum = mass;
-        Arrays.sort(asteroids);
+        /*
+        O(n) 做法，按二进制长度分组，如果 mass >= 长为 k 的一组二进制的最小值，这一组都能碰撞并删除，否则返回 false
+         */
+        int mx = 0;
         for (int x : asteroids) {
-            if (sum >= x) {
-                sum += x;
+            mx = Math.max(mx, x);
+        }
+        int m = 32 - Integer.numberOfLeadingZeros(mx);
+        long[] sum = new long[m];
+        int[] mn = new int[m];
+        Arrays.fill(mn, Integer.MAX_VALUE);
+        for (int x : asteroids) {
+            int i = 31 - Integer.numberOfLeadingZeros(x);
+            sum[i] += x;
+            mn[i] = Math.min(mn[i], x);
+        }
+        long k = mass;
+        for (int i = 0; i < m; i++) {
+            // 没有长为 k 的数
+            if (mn[i] == Integer.MAX_VALUE) continue;
+            if (k >= mn[i]) {
+                k+= sum[i];
             } else {
                 return false;
             }
         }
+
         return true;
     }
 
