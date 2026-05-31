@@ -16,16 +16,37 @@ public class Solution_2 {
         如果物品只能购买一次，则是标准的 0-1 背包问题。
         f[i] 表示已用容量 i，所获得的物品数量，剩余的 budget - i 全部用来购买价格最低的物品，不断求最大值
          */
+        /*
+        计算因子数量优化
+         */
         int[] f = new int[budget + 1];
         int mn = Integer.MAX_VALUE;
+        int mxFactor = 0;
+        for (int[] p : items) {
+            mn = Math.min(mn, p[1]);
+            mxFactor = Math.max(mxFactor, p[0]);
+        }
+        // 物品因子数量
+        int[] factors = new int[mxFactor + 1];
+        for (int[] p : items) {
+            factors[p[0]]++;
+        }
+        // 待计算因子数量
+        int[] factorCnt = new int[mxFactor + 1];
+        int sumPrice = 0;
         for (int[] p : items) {
             int factor = p[0], price = p[1];
             mn = Math.min(mn, price);
-            int cnt = 0;
-            for (int[] q : items) {
-                if (q[0] % factor == 0) cnt++;
+            // 该因子未计算才处理
+            if (factorCnt[factor] == 0) {
+                for (int i = factor; i <= mxFactor ; i+=factor) {
+                    factorCnt[factor] += factors[i];
+                }
             }
-            for (int i = budget; i >= price; i--) {
+            int cnt = factorCnt[factor];
+            // 前面已遍历价格至多为 sumPrice，sumPrice < budget 时的价格无法凑出来
+            sumPrice = Math.min(sumPrice + price, budget);
+            for (int i = sumPrice; i >= price; i--) {
                 f[i] = Math.max(f[i], f[i - price] + cnt);
             }
         }
