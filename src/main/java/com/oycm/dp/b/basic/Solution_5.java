@@ -25,10 +25,21 @@ public class Solution_5 {
         /*
         f[i][j] = f[i][j-1] + f[i-1][j]
          */
+        /*
+        优化一：grid 中最大值 mx，二进制长度为 L，如果 k > 2^L - 1，则一定不能满足异或和为 k
+         */
+        int mx = 0;
+        for (int[] row : grid) {
+            for (int x : row) {
+                mx = Math.max(mx, x);
+            }
+        }
+        int u = 1 << (32 - Integer.numberOfLeadingZeros(mx));
+        if (k >= u) return 0;
         int mod = 1000000007;
         int m = grid.length;
         int n = grid[0].length;
-        int[][][] f = new int[m + 1][n + 1][16];
+        int[][][] f = new int[m + 1][n + 1][u];
         int pre = grid[0][0];
         f[1][1][pre] = 1;
         for (int j = 1; j < n; j++) {
@@ -38,7 +49,7 @@ public class Solution_5 {
         }
         for (int i = 1; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                for (int x = 0; x < 16; x++) {
+                for (int x = 0; x < u; x++) {
                     f[i + 1][j + 1][x ^ grid[i][j]] = (f[i + 1][j][x] + f[i][j + 1][x]) % mod;
                 }
             }
