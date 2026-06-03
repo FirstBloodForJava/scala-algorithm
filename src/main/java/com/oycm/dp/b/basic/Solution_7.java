@@ -33,9 +33,25 @@ public class Solution_7 {
         dfs(i, j) 表示从 (0, 0) 到 (i, j) 的最小成本
             (i, j) 可以拆分成 dfs(i-1, j) 和 dfs(i, j-1) 最小成本
         dfs(i, j) = min(dfs(i-1, j), dfs(i, j-1)) + (i+1) * (j+1)
+        除了 (0, 0) 出发点和终点 (m-1, n-1)，不用花费 waitCost[i][j]，中间的点都需要 cost[i][j]
+        可以把 waitCost[0][0] 置为 0，这样就不用特殊处理
+        dfs(i, j) = (i + 1)  * (j + 1) +
+            min(
+            dfs(i-1, j) + cost[i-1][j],
+            dfs(i, j-1) + cost[i][j-1]
+            )
          */
+        waitCost[0][0] = 0;
 
-        return 0;
+        return dfs(m - 1, n - 1, waitCost, new long[m][n]);
+    }
+
+    public long dfs(int i, int j, int[][] cost, long[][] memo) {
+        if (i < 0 || j < 0) return Long.MAX_VALUE;
+        if (i == 0 && j == 0) return 1;
+        if (memo[i][j] != 0) return memo[i][j];
+        return memo[i][j] = Math.min(dfs(i - 1, j, cost, memo) + (i > 0 ? cost[i - 1][j] : 0),
+                dfs(i, j - 1, cost, memo) + (j > 0 ? cost[i][j - 1] : 0)) + (i + 1) * (j + 1);
     }
 
 }
