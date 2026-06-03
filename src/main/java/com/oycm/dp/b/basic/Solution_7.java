@@ -1,5 +1,7 @@
 package com.oycm.dp.b.basic;
 
+import java.util.Arrays;
+
 public class Solution_7 {
 
     /**
@@ -42,7 +44,7 @@ public class Solution_7 {
             )
         每个路径点的值表示为 (i + 1) * (j + 1) + cost[i][j]，把 cost[0][0] 和 cost[m-1][n-1] 置为 0，
         只有起始点和终点不用等待，
-        问题就变成路径中求最小路径和
+        问题就变成路径中求最小路径和，同 64 题
          */
         waitCost[m - 1][n - 1] = 0;
 
@@ -55,6 +57,21 @@ public class Solution_7 {
         if (memo[i][j] != 0) return memo[i][j];
         return memo[i][j] = Math.min(dfs(i - 1, j, cost, memo),
                 dfs(i, j - 1, cost, memo)) + (i + 1) * (j + 1) + cost[i][j];
+    }
+
+    public long minCost_dp(int m, int n, int[][] waitCost) {
+        long[] f = new long[n + 1];
+        waitCost[m - 1][n - 1] = 0;
+        waitCost[0][0] = 0;
+        Arrays.fill(f, Long.MAX_VALUE);
+        f[1] = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                f[j + 1] = Math.min(f[j], f[j+1]) + (i + 1) * (j + 1) + waitCost[i][j];
+            }
+        }
+
+        return f[n];
     }
 
 }
