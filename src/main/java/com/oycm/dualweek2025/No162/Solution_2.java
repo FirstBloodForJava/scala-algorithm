@@ -62,4 +62,27 @@ public class Solution_2 {
         return right;
     }
 
+    public int minRemoval_slidingWindow(int[] nums, int k) {
+        /*
+        排序后，固定 r 为每个数组的最大值，看最小值要移动到哪里
+        最大值不断变大，如果
+        nums[l] * k < nums[r-1] nums[l] * k < nums[r]
+        随着 r 不断右移，l也是不断右移
+         */
+        Arrays.sort(nums);
+        int n = nums.length;
+        if ((nums[n - 1] - 1) / k + 1 <= nums[0]) return 0;
+
+        int maxSave = 0;
+        int left = 0;
+        for (int i = 0; i < n; i++) {
+            while (nums[i] > (long) nums[left] * k) {
+                left++;
+            }
+            maxSave = Math.max(maxSave, i - left + 1);
+        }
+
+        return n - maxSave;
+    }
+
 }
