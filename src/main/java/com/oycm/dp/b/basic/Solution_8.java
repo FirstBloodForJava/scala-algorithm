@@ -47,4 +47,27 @@ public class Solution_8 {
         return memo[i][j] = res + grid[i][j];
     }
 
+    public int minPathCost_dp(int[][] grid, int[][] moveCost) {
+
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] f = grid;
+        for (int i = m - 2; i >= 0; i--) {
+            for (int j = 0; j < n; j++) {
+                int x = grid[i][j];
+                f[i][j] = Integer.MAX_VALUE;
+                for (int k = 0; k < n; k++) {
+                    f[i][j] = Math.min(f[i][j], moveCost[x][k] + f[i + 1][k]);
+                }
+                f[i][j] += x;
+            }
+        }
+
+        int ans = Integer.MAX_VALUE;
+        for (int x : f[0]) {
+            ans = Math.min(ans, x);
+        }
+        return ans;
+    }
+
 }
