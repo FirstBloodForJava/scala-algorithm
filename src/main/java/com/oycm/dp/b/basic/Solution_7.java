@@ -40,8 +40,11 @@ public class Solution_7 {
             dfs(i-1, j) + cost[i-1][j],
             dfs(i, j-1) + cost[i][j-1]
             )
+        每个路径点的值表示为 (i + 1) * (j + 1) + cost[i][j]，把 cost[0][0] 和 cost[m-1][n-1] 置为 0，
+        只有起始点和终点不用等待，
+        问题就变成路径中求最小路径和
          */
-        waitCost[0][0] = 0;
+        waitCost[m - 1][n - 1] = 0;
 
         return dfs(m - 1, n - 1, waitCost, new long[m][n]);
     }
@@ -50,8 +53,8 @@ public class Solution_7 {
         if (i < 0 || j < 0) return Long.MAX_VALUE;
         if (i == 0 && j == 0) return 1;
         if (memo[i][j] != 0) return memo[i][j];
-        return memo[i][j] = Math.min(dfs(i - 1, j, cost, memo) + (i > 0 ? cost[i - 1][j] : 0),
-                dfs(i, j - 1, cost, memo) + (j > 0 ? cost[i][j - 1] : 0)) + (i + 1) * (j + 1);
+        return memo[i][j] = Math.min(dfs(i - 1, j, cost, memo),
+                dfs(i, j - 1, cost, memo)) + (i + 1) * (j + 1) + cost[i][j];
     }
 
 }
