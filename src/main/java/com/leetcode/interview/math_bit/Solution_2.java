@@ -38,6 +38,8 @@ public class Solution_2 {
                 int dy = points[j][1] - points[i][1];
                 int dx = points[j][0] - points[i][0];
                 double k = dx == 0 ? Double.POSITIVE_INFINITY : (double) dy / dx;
+                // -0.0 处理
+                if (k == 0) k = 0;
                 int c = cnt.merge(k, 1, Integer::sum);
                 ans = Math.max(ans, c);
             }
