@@ -19,10 +19,17 @@
  *     <li></li>
  * </ol>
  *
- * <p>c. 线性 dp</p>
+ * <p>d. 线性 dp</p>
  * <ol>
  *     <li>lcs 最长公共子序列</li>
  *     <li>lis 最长递增子序列</li>
+ * </ol>
+ *
+ * <p>j. 数位 dp</p>
+ * <ol>
+ *     <li>count_num 统计合法元素的数目</li>
+ *     <li>count_val 统计合法元素的价值总和</li>
+ *     <li>other 其他数位 dp</li>
  * </ol>
  */
 package com.oycm.dp;
