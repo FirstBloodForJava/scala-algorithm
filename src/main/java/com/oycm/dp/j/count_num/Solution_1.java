@@ -1,5 +1,7 @@
 package com.oycm.dp.j.count_num;
 
+import java.util.Arrays;
+
 public class Solution_1 {
 
     /**
@@ -33,7 +35,7 @@ public class Solution_1 {
         for (int i = 0; i < m && cs[i] > '0'; i++) {
             int d = cs[i] - '1';
             pow /= 9;
-            if (i == m-1) {
+            if (i == m - 1) {
                 d++;
             }
             ans += d * pow;
@@ -42,5 +44,64 @@ public class Solution_1 {
         return ans;
     }
 
+    /**
+     * @param low
+     * @param high
+     * @param target
+     * @return 统计 [low, high] 区间包含 target 个 0 的数字个数
+     */
+    public long digitDP(long low, long high, int target) {
+        char[] lowS = String.valueOf(low).toCharArray();
+        char[] highS = String.valueOf(high).toCharArray();
+
+        int n = highS.length;
+        long[][] memo = new long[n][target + 1];
+        for (long[] row : memo) {
+            Arrays.fill(row, -1);
+        }
+
+        return dfs(0, 0, true, true, lowS, highS, target, memo);
+    }
+
+    private long dfs(int i, int cnt0, boolean limitLow, boolean limitHigh, char[] lowS, char[] highS, int target, long[][] memo) {
+        if (cnt0 > target) {
+            return 0; // 不合法
+        }
+        if (i == highS.length) {
+            return cnt0 == target ? 1 : 0;
+        }
+
+        if (!limitLow && !limitHigh && memo[i][cnt0] >= 0) {
+            return memo[i][cnt0];
+        }
+
+        int diff = highS.length - lowS.length;
+        int lo = limitLow && i >= diff ? lowS[i - diff] - '0' : 0;
+        int hi = limitHigh ? highS[i] - '0' : 9;
+
+        long res = 0;
+        int d = lo;
+
+        // 通过 limitLow 和 i 可以判断能否不填数字，无需 isNum 参数
+        // 如果前导零不影响答案，去掉这个 if block
+        if (limitLow && i < diff) {
+            // 不填数字，上界不受约束
+            res = dfs(i + 1, 0, true, false, lowS, highS, target, memo);
+            d = 1; // 下面填数字，从 1 开始填
+        }
+
+        for (; d <= hi; d++) {
+            res += dfs(i + 1,
+                    cnt0 + (d == 0 ? 1 : 0),
+                    limitLow && d == lo,
+                    limitHigh && d == hi,
+                    lowS, highS, target, memo);
+        }
+
+        if (!limitLow && !limitHigh) {
+            memo[i][cnt0] = res;
+        }
+        return res;
+    }
 
 }
