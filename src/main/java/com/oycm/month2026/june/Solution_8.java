@@ -1,6 +1,7 @@
 package com.oycm.month2026.june;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Solution_8 {
@@ -39,6 +40,45 @@ public class Solution_8 {
         for (int i : c) ans[idx++] = nums[i];
 
         return ans;
+    }
+
+    public int[] pivotArray_point(int[] nums, int pivot) {
+        /*
+        给你一个下标从 0 开始的整数数组 nums 和一个整数 pivot 。请你将 nums 重新排列，使得以下条件均成立：
+            所有小于 pivot 的元素都出现在所有大于 pivot 的元素 之前 。
+            所有等于 pivot 的元素都出现在小于和大于 pivot 的元素 中间 。
+            小于 pivot 的元素之间和大于 pivot 的元素之间的 相对顺序 不发生改变。
+         */
+        /*
+        双指针，初始化 l = 0, r = n-1；
+            如果 nums[i] < pivot，ans[l++] = nums[i]
+            如果 nums[i] > pivot，ans[r--] = nums[i]
+        最终 [l, r] 区间就是等于 pivot 的元素，[r+1, n-1] 元素出现相对顺序是相反的，需要反转
+         */
+        int n = nums.length;
+        int[] ans = new int[n];
+        Arrays.fill(ans, pivot);
+        int l = 0, r = n - 1;
+        for (int x : nums) {
+            if (x < pivot) {
+                ans[l++] = x;
+            } else if (x > pivot) {
+                ans[r--] = x;
+            }
+        }
+        reverse(ans, r + 1, n - 1);
+
+        return ans;
+    }
+
+    public void reverse(int[] nums, int l, int r) {
+        while (l < r) {
+            int temp = nums[l];
+            nums[l] = nums[r];
+            nums[r] = temp;
+            r--;
+            l++;
+        }
     }
 
 }
