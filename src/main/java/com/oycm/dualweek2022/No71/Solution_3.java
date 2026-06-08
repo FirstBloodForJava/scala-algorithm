@@ -34,38 +34,53 @@ public class Solution_3 {
             当 targetSeconds % 60 <= 39 秒时，分钟少输一分钟，秒增加 60，targetSeconds/60, targetSeconds % 60 + 60
         如果 startAt 初始停留在 0 位置，要想代价最小，不输入是最优解，因为最终 targetSeconds 大于 0，需要移动，不输入情况下，可以自动补 0
          */
+        /*
+        分类讨论：
+            如果 s < 100，可以之间输入秒数；
+            如果 s >= 60 && s < 6000，输入分钟和秒数，秒前面需要补 0；
+            如果 s >= 100 && s % 60 < 40，借一分钟到秒；
+         */
         int ans = Integer.MAX_VALUE;
-        int mod = targetSeconds % 60;
-        int minutes = targetSeconds / 60;
-        if (mod <= 39 && minutes > 0) {
-            // 分钟肯定大于大于 10
-            int ms = minutes - 1;
-            int ss = mod + 60;
-            String s = ms > 0 ? String.valueOf(ms) : "";
-            s += ss;
-            ans = Math.min(ans, calCost(startAt, moveCost, pushCost, s));
+        if (targetSeconds < 100) {
+            ans = Math.min(ans, calCost(startAt, moveCost, pushCost, new int[]{0, 0, targetSeconds / 10, targetSeconds % 10}));
+        } else if (targetSeconds % 60 < 40) {
+            int minutes = targetSeconds / 60 - 1;
+            int seconds = targetSeconds % 60 + 60;
+            ans = Math.min(ans, calCost(startAt, moveCost, pushCost, new int[]{minutes / 10, minutes % 10, seconds / 10, seconds % 10}));
         }
-        // 分钟大于 99
-        if (minutes > 99) {
-            return ans;
+        if (60 <= targetSeconds && targetSeconds < 6000) {
+            int minutes = targetSeconds / 60;
+            int seconds = targetSeconds % 60;
+            ans = Math.min(ans, calCost(startAt, moveCost, pushCost, new int[]{minutes / 10, minutes % 10, seconds / 10, seconds % 10}));
         }
-        String s = minutes > 0 ? String.valueOf(minutes) : "";
-        s += mod < 10 && minutes > 0 ? "0" + mod : mod;
-        ans = Math.min(ans, calCost(startAt, moveCost, pushCost, s));
 
         return ans;
     }
 
     public int calCost(int pre, int moveCost, int pushCost, String s) {
-        int cost = 0;
+        int cost = pushCost * s.length();
 
         for (char c : s.toCharArray()) {
             c -= '0';
-            if (pre == c) {
+            if (pre != c) {
+                cost += moveCost;
+                pre = c;
+            }
+        }
+        return cost;
+    }
+
+    public int calCost(int pre, int moveCost, int pushCost, int[] nums) {
+        int cost = 0;
+        boolean start = true;
+        for (int x : nums) {
+            if (start && x == 0) continue;
+            start = false;
+            if (x == pre) {
                 cost += pushCost;
             } else {
-                cost += pushCost + moveCost;
-                pre = c;
+                cost += moveCost + pushCost;
+                pre = x;
             }
         }
         return cost;
