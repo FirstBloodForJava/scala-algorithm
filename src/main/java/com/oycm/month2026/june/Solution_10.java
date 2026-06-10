@@ -30,6 +30,7 @@ public class Solution_10 {
         拆分成两个 2^k 的区间 (st[i][k], st[r-2^k+1][k])
         则需要预处理所有 nums[i] 2^k 的最值
         st[i][k] = st[i][k-1], st[i+2^(k-1][k-1])
+        其它解法：线段数 待学
          */
         int n = nums.length;
         ST st = new ST(nums);
