@@ -28,10 +28,24 @@ public class Solution_107 {
          */
         /*
         带权并查集
-        定义 mul[x] 表示 x * mul[x] = x 的代表元的值
-        如果 c 和 d 在同一个集合中，那么
+        定义 mul[x] 表示 x * mul[x] = x 的代表元的值(f[x]), 初始 f[x] 代表元就是自己 mul[x] = 1；
+        如果 c 和 d 在同一个集合中，那么 f[c] = f[d]
             c * mul[c] = d * mul[d] = 代表元的值。怎么理解这里？
+            f[c] = c * mul[c], f[d] = d * mul[d]，根据定义 f[c] = f[d]
+        mul[x] = f[x] / x
 
+        合并 y/x
+           x ----?---- y
+          /           /
+        from ------- to
+        已知以下情况，求 y/x ?
+            fa[from] = x, fa[to] = y;
+            x/from = fa[from] / from = mul[from];
+            y/to = fa[to] / to = mul[to]
+            to/from = value
+        y/from = (y/to) * (to/from) = (y/x) * (x/from)
+        得 y/x = (y/to) * (to/from) / (x/from)
+               = mul[to] * value / mul[from]
          */
         // 把不同字符串映射为不同的数字，方便使用并查集
         Map<String, Integer> variableToId = new HashMap<>();
@@ -42,21 +56,27 @@ public class Solution_107 {
         }
 
         // 初始化并查集
-        UnionFind uf = new UnionFind(variableToId.size());
+        WeightMulUnionFind uf = new WeightMulUnionFind(variableToId.size());
         for (int i = 0; i < equations.size(); i++) {
             List<String> equation = equations.get(i);
+            /*
+            to/from = value
+            to = equation[0]
+            from = equation[1]
+             */
             uf.merge(variableToId.get(equation.get(1)), variableToId.get(equation.get(0)), values[i]);
         }
 
-        // 回答询问
         double[] ans = new double[queries.size()];
         for (int i = 0; i < queries.size(); i++) {
             List<String> query = queries.get(i);
             Integer c = variableToId.get(query.get(0));
             Integer d = variableToId.get(query.get(1));
             if (c != null && d != null && uf.same(c, d)) {
-                //    c * mul[c] = d * mul[d] = 代表元的值
-                // => c / d = mul[d] / mul[c]
+                /*
+                c * mul[c] = d * mul[d]
+                c / d = mul[d] / mul[c]
+                 */
                 ans[i] = uf.mul[d] / uf.mul[c];
             } else {
                 ans[i] = -1;
@@ -65,57 +85,68 @@ public class Solution_107 {
         return ans;
     }
 
-    class UnionFind {
-        private final int[] fa; // 代表元
-        public final double[] mul; // x 的值 * mul[x] = x 的代表元的值
+}
 
-        public UnionFind(int n) {
-            fa = new int[n];
-            // 一开始有 n 个集合 {0}, {1}, ..., {n-1}
-            // 集合 i 的代表元是自己，自己 * 1 = 自己
-            for (int i = 0; i < n; i++) {
-                fa[i] = i;
-            }
+class WeightMulUnionFind {
 
-            mul = new double[n];
-            Arrays.fill(mul, 1);
+    private final int[] fa; // fa[x] 表示 x 所在集合的代表元
+    public final double[] mul; // fa[x] = x * mul[x]
+
+    public WeightMulUnionFind(int n) {
+        fa = new int[n];
+        for (int i = 0; i < n; i++) {
+            fa[i] = i;
         }
-
-        // 返回 x 所在集合的代表元
-        // 同时做路径压缩，也就是把 x 所在集合中的所有元素的 fa 都改成代表元
-        private int find(int x) {
-            if (fa[x] != x) {
-                int root = find(fa[x]);
-                mul[x] *= mul[fa[x]]; // 更新 x 到其代表元的 mul 值
-                fa[x] = root;
-            }
-            return fa[x];
-        }
-
-        // 判断 x 和 y 是否在同一个集合
-        public boolean same(int x, int y) {
-            // 如果 x 的代表元和 y 的代表元相同，那么 x 和 y 就在同一个集合
-            // 这就是代表元的作用：用来快速判断两个元素是否在同一个集合
-            return find(x) == find(y);
-        }
-
-        // 合并 from 和 to，新增信息 to / from = value
-        // 其中 to 和 from 表示未知量，下文的 x 和 y 也表示未知量
-        public void merge(int from, int to, double value) {
-            int x = find(from);
-            int y = find(to);
-            if (x == y) { // from 和 to 在同一个集合，不做合并
-                return;
-            }
-            //    x --------- y
-            //   /           /
-            // from ------- to
-            // 已知 x/from = mul[from] 和 y/to = mul[to]，现在合并 from 和 to，新增信息 to/from = value
-            // 由于 y/from = (y/x) * (x/from) = (y/to) * (to/from)
-            // 所以 y/x = (y/to) * (to/from) / (x/from) = mul[to] * value / mul[from]
-            mul[x] = mul[to] * value / mul[from];
-            fa[x] = y;
-        }
+        mul = new double[n];
+        Arrays.fill(mul, 1);
     }
 
+    // 返回 x 所在集合的代表元
+    // 同时做路径压缩，也就是把 x 所在集合中的所有元素的 fa 都改成代表元
+    private int find(int x) {
+        if (fa[x] != x) {
+                /*
+                已知：
+                    f[a] = b, b = a * mul[a]
+                    f[b] = c, c = b * mul[b]
+                此时 a, b, c 在一个集合，代表元为 c，mul[b] 的定义是正确的，但是 mul[a] 还是 b/a，此时需要更新
+                mul[a] = c/a = (c/b) * (b/a) = mul[b] * mul[a]
+                 */
+            int root = find(fa[x]);
+            mul[x] *= mul[fa[x]]; // 更新 x 到其代表元的 mul 值
+            fa[x] = root;
+        }
+        return fa[x];
+    }
+
+    // 判断 x 和 y 是否在同一个集合
+    public boolean same(int x, int y) {
+        // 如果 x 的代表元和 y 的代表元相同，那么 x 和 y 就在同一个集合
+        // 这就是代表元的作用：用来快速判断两个元素是否在同一个集合
+        return find(x) == find(y);
+    }
+
+    public void merge(int from, int to, double value) {
+        int x = find(from);
+        int y = find(to);
+        if (x == y) { // from 和 to 在同一个集合，不做合并
+            return;
+        }
+        /*
+        合并 y/x
+            x ----?---- y
+           /           /
+         from ------- to
+        已知以下情况，求 y/x ?
+            fa[from] = x, fa[to] = y;
+            x/from = fa[from] / from = mul[from];
+            y/to = fa[to] / to = mul[to]
+            to/from = value
+        y/from = (y/to) * (to/from) = (y/x) * (x/from)
+        得 y/x = (y/to) * (to/from) / (x/from)
+               = mul[to] * value / mul[from]
+        */
+        mul[x] = mul[to] * value / mul[from];
+        fa[x] = y;
+    }
 }
