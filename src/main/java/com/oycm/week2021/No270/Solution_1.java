@@ -65,4 +65,41 @@ public class Solution_1 {
         return ans;
     }
 
+    public int[] findEvenNumbers_1(int[] digits) {
+        /*
+        答案的视角
+         */
+        int[] cnt = new int[10];
+        for (int i : digits) {
+            cnt[i]++;
+        }
+        List<Integer> path = new ArrayList<>();
+        out:
+        for (int i = 100; i < 1000; i += 2) {
+            int[] c = new int[10];
+            for (int x = i; x > 0; x /= 10) {
+                int d = x % 10;
+                if (++c[d] > cnt[d]) continue out;
+            }
+            path.add(i);
+        }
+
+        return path.stream().mapToInt(i -> i).toArray();
+    }
+
+    public void dfs(int i, int x, int[] cnt, List<Integer> path) {
+        if (i == 3) {
+            path.add(x);
+            return;
+        }
+        for (int d = 0; d < cnt.length; d++) {
+            if (cnt[d] > 0 && (i == 0 && d > 0 || (i == 1) || i == 2 && d % 2 == 0)) {
+                cnt[d]--;
+                dfs(i + 1, x * 10 + d, cnt, path);
+                cnt[d]++;
+            }
+        }
+
+    }
+
 }
