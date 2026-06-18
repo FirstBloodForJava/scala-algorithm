@@ -3,8 +3,7 @@ package com.oycm.dualweek2020.No19;
 public class Solution_3 {
 
     /**
-     * 1344.
-     * <a href="https://leetcode.cn/problems/angle-between-hands-of-a-clock/description/">时钟指针的夹角</a> 1325
+     * 1344. <a href="https://leetcode.cn/problems/angle-between-hands-of-a-clock/description/">时钟指针的夹角</a> 1325
      *
      * @param hour    [1, 12]
      * @param minutes [0, 59]
@@ -27,7 +26,7 @@ public class Solution_3 {
         都是整数 一分钟表示一小时移动 0.5 度
          */
         double minuteAngle = minutes * 6;
-        double hourAngle = (hour % 12) * 30 + minuteAngle / 2.0;
+        double hourAngle = (hour % 12) * 30 + minutes / 2.0;
 
         double abs = Math.abs(hourAngle - minuteAngle);
 
