@@ -34,7 +34,7 @@ public class Solution_2 {
         for (int[] row : memo) {
             Arrays.fill(row, -1);
         }
-        return dfs(0, n-1, cs, memo);
+        return dfs(0, n - 1, cs, memo);
     }
 
     public int dfs(int i, int j, char[] cs, int[][] memo) {
@@ -49,7 +49,25 @@ public class Solution_2 {
         return memo[i][j] = res;
     }
 
+    public int minInsertions_DP(String s) {
+        /*
+        f[i][j] = cs[i] == cs[j] ? f[i+1][j-1] : Math.min(f[i+1][j], f[i][j-1]) + 1
+         */
+        char[] cs = s.toCharArray();
+        int n = cs.length;
+        int[] f = new int[n];
 
+        for (int i = n - 1; i >= 0; i--) {
+            int pre = f[i];
+            for (int j = i + 1; j < n; j++) {
+                int temp = f[j];
+                f[j] = cs[i] == cs[j] ? pre : Math.min(f[j], f[j - 1]) + 1;
+                pre = temp;
+            }
+        }
+
+        return f[n - 1];
+    }
 
 
 }
