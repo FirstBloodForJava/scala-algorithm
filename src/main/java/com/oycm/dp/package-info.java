@@ -28,7 +28,7 @@
  * <p>h. 区间 dp</p>
  * <ol>
  *     <li>longest_palindromic_subsequence 最长回文子序列</li>
- *     <li>section_dp 区间 dp</li>
+ *     <li>interval_dp 区间 dp</li>
  * </ol>
  *
  * <p>i. 状态压缩 dp</p>
