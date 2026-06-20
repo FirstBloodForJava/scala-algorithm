@@ -1,7 +1,8 @@
 package com.oycm.dualweek2021.No44;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Solution_2 {
@@ -28,39 +29,33 @@ public class Solution_2 {
         暴力思路：枚举所有用户之间用 [1, n] 语言沟通，需要教会的人数，求最小值。
          */
         int m = languages.length;
-        Set<Integer>[] ls = new Set[m];
-        Arrays.setAll(ls, l -> new HashSet<>());
+        boolean[][] learned = new boolean[m][n + 1];
         for (int i = 0; i < languages.length; i++) {
             for (int x : languages[i]) {
-                ls[i].add(x);
+                learned[i][x] = true;
             }
         }
-        int ans = m;
-
-        for (int i = 1; i <= n && ans > 0; i++) {
-            int temp = 0;
-            // 标记学会了该语言
-            boolean[] flag = new boolean[m];
-            second:
-            for (int[] fs : friendships) {
-                int u = fs[0] - 1, v = fs[1] - 1;
-                // 不能沟通的情况下学 i 语言
-                for (Integer x : ls[u]) {
-                    if (ls[v].contains(x)) {
-                        continue second;
-                    }
-                }
-                if (!ls[u].contains(i) && !flag[u]) {
-                    temp++;
-                    flag[u] = true;
-                }
-
-                if (!ls[v].contains(i) && !flag[v]) {
-                    temp++;
-                    flag[v] = true;
-                }
+        // 标记哪些人需要学习
+        List<int[]> todoLearn = new ArrayList<>();
+        outer:
+        for (int[] fs : friendships) {
+            int u = fs[0] - 1, v = fs[1] - 1;
+            for (int x : languages[u]) {
+                if (learned[v][x]) continue outer;
             }
-            ans = Math.min(ans, temp);
+            todoLearn.add(fs);
+        }
+
+        int ans = m;
+        for (int k = 1; k <= n; k++) {
+            // 枚举学 k 语言的人数
+            Set<Integer> set = new HashSet<>();
+            for (int[] fs : todoLearn) {
+                int u = fs[0] - 1, v = fs[1] - 1;
+                if (!learned[u][k]) set.add(u);
+                if (!learned[v][k]) set.add(v);
+            }
+            ans = Math.min(ans, set.size());
         }
 
         return ans;
