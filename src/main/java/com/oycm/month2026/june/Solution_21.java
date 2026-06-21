@@ -1,7 +1,5 @@
 package com.oycm.month2026.june;
 
-import java.util.Arrays;
-
 public class Solution_21 {
 
     /**
@@ -23,13 +21,19 @@ public class Solution_21 {
         /*
         排序后，先选价格最低的
          */
-        Arrays.sort(costs);
+        int mx = 0;
+        for (int x : costs) {
+            mx = Math.max(x, mx);
+        }
+        int[] cnt = new int[mx + 1];
+        for (int x : costs) {
+            cnt[x]++;
+        }
         int res = 0;
-        for (int i = 0; i < costs.length && coins > 0; i++) {
-            coins -= costs[i];
-            if (coins >= 0) {
-                res++;
-            }
+        for (int cost = 1; cost < cnt.length && coins >= cost; cost++) {
+            int num = Math.min(cnt[cost], coins / cost);
+            coins -= cost * num;
+            res += num;
         }
 
         return res;
