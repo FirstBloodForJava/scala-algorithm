@@ -1,6 +1,6 @@
 package com.oycm.month2026.june;
 
-import com.oycm.dualweek2020.No19.Solution_3;
+import com.oycm.dualweek.lc2020.No19.Solution_3;
 
 public class Solution_18 {
 
