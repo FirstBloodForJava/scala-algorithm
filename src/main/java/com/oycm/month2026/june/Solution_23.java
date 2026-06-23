@@ -117,6 +117,45 @@ public class Solution_23 {
         return (int) (ans % mod);
     }
 
+    public int zigZagArrays_dp_optimize_space_1(int n, int l, int r) {
+        int mod = 1000000007;
+        int m = r - l + 1;
+        int[] asc = new int[m];
+        int[] desc = new int[m];
+        Arrays.fill(asc, 1);
+        Arrays.fill(desc, 1);
+        /*
+        前一个 desc 前缀和结果就是 下一个 asc
+        前一个 asc 后缀和结果就是下一个 desc
+         */
+        for (int i = 1; i < n; i++) {
+            // 计算前缀和的过程中，计算 asc[i]
+            long pre = 0;
+            for (int j = 0; j < m; j++) {
+                int v = desc[j];
+                desc[j] = (int) (pre % mod);
+                pre += v;
+            }
+            long suf = 0;
+            for (int j = m - 1; j >= 0 ; j--) {
+                int v = asc[j];
+                asc[j] = (int) (suf % mod);
+                suf += v;
+            }
+            int[] temp = asc;
+            asc = desc;
+            desc = temp;
+        }
+
+        long ans = 0;
+
+        for (int i = 0; i < m; i++) {
+            ans += asc[i] + desc[i];
+        }
+
+        return (int) (ans % mod);
+    }
+
 
 
 
