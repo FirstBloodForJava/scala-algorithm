@@ -137,7 +137,7 @@ public class Solution_23 {
                 pre += v;
             }
             long suf = 0;
-            for (int j = m - 1; j >= 0 ; j--) {
+            for (int j = m - 1; j >= 0; j--) {
                 int v = asc[j];
                 asc[j] = (int) (suf % mod);
                 suf += v;
@@ -156,7 +156,42 @@ public class Solution_23 {
         return (int) (ans % mod);
     }
 
+    public int zigZagArrays_dp_optimize_space_2(int n, int l, int r) {
+        int mod = 1000000007;
+        int m = r - l + 1;
+        int[] f = new int[m];
+        Arrays.fill(f, 1);
+        /*
+        增减增减 与 减增减增 方案数相等，只需要计算一个方案数，最终结果再乘 2
+        f 初始数组数组既可以表示 增/减
+         */
+        // 奇偶 减增
+        for (int i = 1; i < n; i++) {
+            if (i % 2 > 0) {
+                long suf = 0;
+                for (int j = m - 1; j >= 0; j--) {
+                    int v = f[j];
+                    f[j] = (int) (suf % mod);
+                    suf += v;
+                }
+            } else {
+                long pre = 0;
+                for (int j = 0; j < m; j++) {
+                    int v = f[j];
+                    f[j] = (int) (pre % mod);
+                    pre += v;
+                }
+            }
+        }
 
+        long ans = 0;
+
+        for (int i = 0; i < m; i++) {
+            ans += f[i];
+        }
+
+        return (int) (ans * 2 % mod);
+    }
 
 
 }
