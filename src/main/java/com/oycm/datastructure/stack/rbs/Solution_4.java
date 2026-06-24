@@ -43,4 +43,37 @@ public class Solution_4 {
         return sb.toString();
     }
 
+    public String reverseParentheses_1(String s) {
+        /*
+        题解思路：预处理括号
+        遇到括号时，只需要跳跃到对应另一个括号，然后改变移动方向。
+         */
+        int n = s.length();
+        int[] pair = new int[n];
+        Deque<Integer> st = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (s.charAt(i) == '(') {
+                st.push(i);
+            } else if (s.charAt(i) == ')') {
+                int j = st.pop();
+                pair[i] = j;
+                pair[j] = i;
+            }
+        }
+        int idx = 0, step = 1;
+        StringBuilder sb = new StringBuilder();
+        while (idx < n) {
+            if (s.charAt(idx) == '(' || s.charAt(idx) == ')') {
+                // pair 对中循环左右切换方向移动
+                idx = pair[idx];
+                step = -step;
+            } else {
+                sb.append(s.charAt(idx));
+            }
+            idx += step;
+        }
+
+        return sb.toString();
+    }
+
 }
