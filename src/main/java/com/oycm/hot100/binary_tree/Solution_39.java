@@ -11,6 +11,10 @@ public class Solution_39 {
      * @return
      */
     public boolean isSymmetric(TreeNode root) {
+        /*
+        root 的左子树是否和右子树对称
+            p.left = q.right, p.right = q.left
+         */
         if (root == null) return true;
         return dfs(root.left, root.right);
     }
