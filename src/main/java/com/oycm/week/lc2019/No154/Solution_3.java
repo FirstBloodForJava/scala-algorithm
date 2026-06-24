@@ -27,6 +27,13 @@ public class Solution_3 {
                 以及和数组的最大前缀和相比，哪个更大
             sum(arr) < 0，单个数组最大前缀，或数组连接后的最大前缀和。
          */
+        /*
+        上面应该换成 max(preMax + sufMax, 2*sum)
+        前后缀最大和，可以调整为就 2 个 arr 数组的最大子数组和。
+        如果 sum > 0，sufMax = sum - preMin（前缀最小值）
+                      preMax = max(sum)
+            sufMax + preMax 就是 第一个数组的前缀最小值到末尾，加上第二个数组到数组前缀和最大值
+         */
         int mod = 1000000007;
         // 最大前缀和
         long maxSum = 0;
@@ -58,9 +65,7 @@ public class Solution_3 {
             sufMax = Math.max(suf, sufMax);
         }
 
-        System.out.println(String.format("{%d, %d, %d}", preMax, sufMax, ans));
-
-        return (int) (Math.max(ans, (k-2) * suf + Math.max(preMax, suf) + Math.max(sufMax, suf)) % mod);
+        return (int) (Math.max(ans, (k - 2) * suf + Math.max(preMax, suf) + Math.max(sufMax, suf)) % mod);
     }
 
 }
