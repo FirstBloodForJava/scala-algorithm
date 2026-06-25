@@ -53,5 +53,32 @@ public class Solution_24 {
         // 在 dfs 之后打印，就是从右到左打印链表
     }
 
+    public boolean isPalindrome_1(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        // 此时 slow 就是中间节点
+        // 反转链表
+        ListNode pre = null, cur = slow;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        while (pre != null) {
+            if (pre.val != head.val) {
+                return false;
+            }
+            pre = pre.next;
+            head = head.next;
+        }
+
+        return true;
+    }
+
 
 }
