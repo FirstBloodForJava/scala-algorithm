@@ -38,4 +38,19 @@ public class Solution_23 {
         return revHead;
     }
 
+    public ListNode reverseList_1(ListNode head) {
+        /*
+        迭代，尾插法
+         */
+        ListNode pre = null, cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+
+        return pre;
+    }
+
 }
