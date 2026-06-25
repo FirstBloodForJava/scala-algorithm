@@ -45,5 +45,23 @@ public class Solution_13 {
         return ans;
     }
 
+    public int maxSubArray_dp_optimize(int[] nums) {
+        /*
+        定义 f[i] 为 i 结尾时的最大子数组和，分类讨论：
+            nums[i] 独自成为子数组，f[i] = nums[i]；
+            nums[i] 和前面的子数组拼接，f[i] = f[i-1] + nums[i]，只有当 f[i-1] >= 0 时，拼接才会变大
+        f[i] 的计算只会用到 f[i-1] 可以使用一个变量来替换
+         */
+        int ans = nums[0];
+        int n = nums.length;
+        int f = nums[0];
+        for (int i = 1; i < n; i++) {
+            f = Math.max(f, 0) + nums[i];
+            ans = Math.max(f, ans);
+        }
+
+        return ans;
+    }
+
 
 }
