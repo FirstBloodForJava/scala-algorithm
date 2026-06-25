@@ -2,7 +2,7 @@ package com.oycm.hot100.two_points;
 
 import java.util.*;
 
-public class Solution_3 {
+public class Solution_6 {
 
     /**
      * 15. <a href="https://leetcode.cn/problems/3sum/description/">三数之和</a>
@@ -31,7 +31,8 @@ public class Solution_3 {
             最小值 + 最大值 = -nums[i] 符合要求
             最小值 + 最大值 < -nums[i] 最小值和最大值相加都小于 -nums[i]，说明最小值和任意数相加都不会符合条件，就不用和后续比较了
             最小值 + 最大值 > -nums[i] 最小值和最大值相加都大于 -nums[i]，说明最大值和任意数相加都不会符合条件，就不用和后续比较了
-
+        排序之后，不用 hash 记录左边的值
+        时间复杂度 O(n^2)
          */
         List<List<Integer>> ans = new ArrayList<>();
         int n = nums.length;
