@@ -19,4 +19,20 @@ public class Solution_17 {
         }
         return ans;
     }
+
+    public int[] countBits_dp(int n) {
+        /*
+        计算 i 的 1 bit 位数，如果存在 0 <= j < i，且 i 和 和 j 相比，i 的二进制只多了一个 1，还需要再计算 i 的 1 bit 位数吗？不需要
+        如果知道 小于等于 i 的最大 2 的幂，那么 bit[i] = bit[i-highBit] + 1;
+         */
+        int[] ans = new int[n + 1];
+        int highBit = 0;
+        for (int i = 0; i <= n ; i++) {
+            if ((i & (i - 1)) == 0) {
+                highBit = i;
+            }
+            ans[i] = ans[i - highBit] + 1;
+        }
+        return ans;
+    }
 }
