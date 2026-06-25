@@ -1,6 +1,6 @@
 package com.oycm.hot100.two_points;
 
-public class Solution_2 {
+public class Solution_5 {
 
     /**
      * 11. <a href="https://leetcode.cn/problems/container-with-most-water/description/">盛最多水的容器</a>
@@ -21,6 +21,16 @@ public class Solution_2 {
             相等时，由于移动使得长越来越短，需要找到两个更高的柱子，才能取到更大的容量，所有只有当左右两边都找到比前面相等时更高的柱子时，才有可能产生新答案
          */
         int ans = 0;
+        int l = 0, r = height.length - 1;
+        while (l < r) {
+            ans = Math.max(ans, Math.min(height[l], height[r]) * (r - l));
+            // 那边柱子短移动那边，短的不能接更多的水
+            if (height[l] < height[r]) {
+                l++;
+            } else {
+                r++;
+            }
+        }
 
         return ans;
     }
