@@ -1,7 +1,5 @@
 package com.oycm.hot100.trick;
 
-import com.oycm.algorithm.h.basic.Solution_22;
-
 public class Solution_97 {
 
     /**
@@ -18,7 +16,17 @@ public class Solution_97 {
             否则，判断当前选水是否就是擂主，不是则血量 -1；是则血量 +1；
             最后 擂主就是出现次数大于 n/2 次数的元素
          */
-        return new Solution_22().majorityElement(nums);
+        int ans = nums[0];
+        int heap = 0;
+        for (int x : nums) {
+            if (heap == 0) {
+                ans = x;
+                heap = 1;
+            } else {
+                heap += ans == x ? 1 : -1;
+            }
+        }
+        return ans;
     }
 
 }
