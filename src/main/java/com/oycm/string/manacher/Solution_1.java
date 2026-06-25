@@ -34,6 +34,7 @@ public class Solution_1 {
         }
         // ts 末尾 #$ 两个字符，不在计算范围内
         int[] halfLen = new int[ts.length - 2];
+        // boxM 表示 以 boxM 为回文中心，对应最长回文串的右端点 +1 为 boxR
         int boxM = 0, boxR = 0;
         int maxI = 0;
         for (int i = 2; i < halfLen.length; i++) {
