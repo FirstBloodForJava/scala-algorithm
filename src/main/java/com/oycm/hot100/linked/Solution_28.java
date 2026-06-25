@@ -23,7 +23,7 @@ public class Solution_28 {
     }
 
     public ListNode addTwo(ListNode l1, ListNode l2, int c) {
-        if (l1 == null && l2 == null) return  c != 0 ? new ListNode(c) : null;
+        if (l1 == null && l2 == null) return c != 0 ? new ListNode(c) : null;
 
         if (l1 == null) {
             // l1 为 空时，能到这里，说明 l2 一定不为空
@@ -33,6 +33,33 @@ public class Solution_28 {
         int sum = c + l1.val + (l2 != null ? l2.val : 0);
         l1.val = sum % 10;
         l1.next = addTwo(l1.next, l2 == null ? null : l2.next, sum / 10);
+        return l1;
+    }
+
+    public ListNode addTwoNumbers_1(ListNode l1, ListNode l2) {
+        /*
+        迭代写法，将结果合并至 l1
+         */
+        int c = 0;
+        ListNode t1 = l1, t2 = l2;
+        ListNode pre = null;
+        while (t1 != null) {
+            int sum = c + t1.val + (t2 != null ? t2.val : 0);
+            t1.val = sum % 10;
+            c = sum / 10;
+            pre = t1;
+            t1 = t1.next;
+            t2 = t2 != null ? t2.next : null;
+            if (t1 == null) {
+                pre.next = t2;
+                t1 = t2;
+                t2 = null;
+            }
+        }
+        if (c > 0) {
+            pre.next = new ListNode(c);
+        }
+
         return l1;
     }
 
