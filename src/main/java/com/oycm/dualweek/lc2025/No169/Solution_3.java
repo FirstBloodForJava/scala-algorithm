@@ -64,4 +64,42 @@ public class Solution_3 {
         return ans;
     }
 
+    public int longestSubarray_1(int[] nums) {
+        /*
+        写法优化，必须 判断 n = 1 情况，不适用 n = 2
+         */
+        int n = nums.length;
+        int ans = 2;
+        if (n <= 2) return ans;
+
+        int[] suf = new int[n];
+        suf[n - 1] = 1;
+
+        for (int i = n - 2; i > 0; i--) {
+            if (nums[i] > nums[i + 1]) {
+                suf[i] = 1;
+            } else {
+                suf[i] = suf[i + 1] + 1;
+                // 把 nums[i-1] 修改为小于 nums[i]
+                ans = Math.max(ans, suf[i] + 1);
+            }
+        }
+        int pre = 1;
+        for (int i = 1; i < n - 1; i++) {
+            if (nums[i - 1] <= nums[i + 1]) {
+                // 拼接 pre[0, i-1] nums[i] [i+1, n-1]
+                ans = Math.max(ans, pre + 1 + suf[i + 1]);
+            }
+            if (nums[i - 1] <= nums[i]) {
+                pre++;
+                // 把 nums[i+1] 修改
+                ans = Math.max(ans, pre + 1);
+            } else {
+                pre = 1;
+            }
+        }
+
+        return ans;
+    }
+
 }
