@@ -14,6 +14,9 @@ public class Solution_59 {
      */
     public List<String> generateParenthesis(int n) {
         /*
+        数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+         */
+        /*
         枚举下一个左括号的位置：
         从左往右填的过程中，要时刻保证右括号的数量不能超过左括号的数量 r - l <= 0, l - r >= 0
         递归过程中，记录填了 i 个括号，balance 表示 左右括号数量之差( >= 0)，path 记录填左括号下标
@@ -36,6 +39,7 @@ public class Solution_59 {
         }
         for (int right = 0; right <= balnace ; right++) {
             // 先填 right 个右括号，再填一个左括号， i+right 表示当前填的左括号下标
+            // (i, i+right) 直接填右括号
             path.add(i + right);
             dfs(i + right + 1, balnace - right + 1, n, path, ans);
             // 回溯
