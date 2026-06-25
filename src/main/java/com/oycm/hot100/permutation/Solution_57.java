@@ -15,10 +15,16 @@ public class Solution_57 {
         /*
         给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
          */
+        /*
+        时间复杂度 O(n4^n)
+            所有结果生成最坏需要 4^n
+            记录答案需要 n
+         */
         List<String> ans = new ArrayList<>();
         dfs(0, digits.toCharArray(), new char[digits.length()], ans);
         return ans;
     }
+
     public static final String[] MAPPING = new String[]{"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
 
     public void dfs(int i, char[] cs, char[] path, List<String> ans) {
