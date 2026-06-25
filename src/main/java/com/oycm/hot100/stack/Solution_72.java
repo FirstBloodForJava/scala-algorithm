@@ -41,4 +41,31 @@ public class Solution_72 {
         return answer;
     }
 
+    public int[] dailyTemperatures_1(int[] temperatures) {
+        /*
+        给定一个整数数组 temperatures ，表示每天的温度，
+        返回一个数组 answer ，其中 answer[i] 是指对于第 i 天，下一个更高温度出现在几天后。
+        如果气温在这之后都不会升高，请在该位置用 0 来代替。
+         */
+        /*
+        暴力计算思路：对于 temperatures[i]，在 [i+1, n-1] 找到第一个大于 temperatures[i] 的下标 j，j = n 时，表示不存在，否则 j - i 就是答案
+        单调栈，从右到左，栈底 -> 栈顶 是单调递减的，栈顶元素温度 小于等于 当前温度，则弹栈
+         */
+        /*
+        从左到右遍历，栈顶记录的是最低温度对应的下标 i
+         */
+        int n = temperatures.length;
+        Deque<Integer> st = new ArrayDeque<>();
+        int[] answer = new int[n];
+        for (int i = 0; i < n; i++) {
+            while (!st.isEmpty() && temperatures[i] > temperatures[st.peek()]) {
+                int j = st.pop();
+                answer[j] = i - j;
+            }
+            st.push(i);
+        }
+
+        return answer;
+    }
+
 }
