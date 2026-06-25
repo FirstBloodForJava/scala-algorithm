@@ -40,4 +40,25 @@ public class Solution_43 {
                 && isValidBSTPre(node.right, x, max);
     }
 
+    public boolean isValidBST_post(TreeNode root) {
+        /*
+        两种情况
+            dfs(root)[1] != Long.MAX_VALUE;
+            dfs(root)[0] != Long.MIN_VALUE;
+         */
+
+        return dfs(root)[1] != Long.MAX_VALUE;
+    }
+
+    public long[] dfs(TreeNode node) {
+        if (node == null) return new long[]{Long.MAX_VALUE, Long.MIN_VALUE};
+        int x = node.val;
+        long[] left = dfs(node.left);
+        // 父节点值 <= 左节点最大值
+        if (x <= left[1]) return new long[]{Long.MIN_VALUE, Long.MAX_VALUE};
+        long[] right = dfs(node.right);
+        // 父节点 >= 右节点最小值
+        if (x >= right[0]) return new long[]{Long.MIN_VALUE, Long.MAX_VALUE};
+        return new long[]{Math.min(x, left[0]), Math.max(x, right[1])};
+    }
 }
