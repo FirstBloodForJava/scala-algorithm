@@ -40,4 +40,25 @@ public class Solution_46 {
 
     TreeNode pre = null;
 
+    public TreeNode dfs(TreeNode node) {
+        /*
+        分治:
+        root.right 指向 root.left，同时还要知道左子树的最后一个节点，最后一个节点要指向 root.right
+        递归过程中，返回左子树合并后的尾部节点
+        递归边界，当前节点是空节点，返回空节点
+            怎么返回当前节点的尾部节点？
+                如果右尾部节点不为空，返回该节点；
+                否则看左尾部节点情况，如果不为空，返回左尾部节点，否则返回当前节点
+        */
+        if (node == null) return node;
+        TreeNode leftTail = dfs(node.left);
+        TreeNode rightTail = dfs(node.right);
+        if (leftTail != null) {
+            leftTail.right = node.right;
+            node.right = node.left;
+            node.left = null;
+        }
+        return rightTail != null ? rightTail : leftTail != null ? leftTail : node;
+    }
+
 }
