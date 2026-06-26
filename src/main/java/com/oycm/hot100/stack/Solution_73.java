@@ -37,7 +37,7 @@ public class Solution_73 {
         }
         stack.clear();
         int[] right = new int[n];
-        for (int i = n-1; i >= 0 ; i--) {
+        for (int i = n - 1; i >= 0; i--) {
             while (!stack.isEmpty() && heights[i] <= heights[stack.peek()]) {
                 stack.pop();
             }
@@ -90,6 +90,49 @@ public class Solution_73 {
         int ans = 0;
         for (int i = 0; i < n; i++) {
             ans = Math.max(ans, heights[i] * (right[i] - left[i] - 1));
+        }
+
+        return ans;
+    }
+
+    public int largestRectangleArea_1(int[] heights) {
+        /*
+        给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+        求在该柱状图中，能够勾勒出来的矩形的最大面积。
+         */
+        /*
+        枚举所有 i 以 height[i] 为高的矩形能到达左右边界，这样就能把所有的面积计算出来
+            left[i] 表示 i 左边 最近小于 height[i] 的下标；
+            right[i] 表示 i 右边 最近小于 height[i] 的下标；
+        如何快速计算出 left[i] 或 right[i] 暴力计算是 O(n^2)
+         */
+        /*
+        left[i] 表示 i 左边 最近小于 height[i] 的下标；
+        right[i] 表示 i 右边最近小于等于 height[i] 的下标
+        right[i] 定义，[1,3,4,3,2] 第一个 height[i] = 3 计算比第一种定义要小，但是最终结果是一样的
+         */
+        Deque<Integer> st = new ArrayDeque<>();
+        int n = heights.length;
+        /*
+            [0, 1, 2, 3, 4]
+            [1, 3, 4, 2, 2]
+        l   [-1,0, 1, 0, 0]
+        r   [0, 3, 3, 4, 0]
+        所以 right 要初始赋值 n，不能这里是因为 i 右边的元素都 大于等于 height[i]
+         */
+        st.push(-1);
+        int ans = 0;
+        for (int r = 0; r <= n; r++) {
+            // 当 r == n 时，栈中元素会全部取出来，right[i] 都是 n
+            int h = r < n ? heights[r] : -1;
+            while (st.size() > 1 && heights[st.peek()] >= h) {
+                // i 就是右端点
+                int i = st.poll();
+                int l = st.peek();
+                ans = Math.max(ans, heights[i] * (r - l - 1));
+            }
+
+            st.push(r);
         }
 
         return ans;
