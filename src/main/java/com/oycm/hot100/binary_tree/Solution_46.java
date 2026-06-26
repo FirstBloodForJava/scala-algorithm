@@ -32,7 +32,7 @@ public class Solution_46 {
         flatten(root.right);
         flatten(root.left);
         root.left = null;
-        // 当前节点执行上一个头节点
+        // 当前节点指向上一个头节点
         root.right = pre;
         // 更新头节点
         pre = root;
