@@ -2,7 +2,7 @@ package com.oycm.hot100.dp_mult;
 
 import java.util.Arrays;
 
-public class Solution_107 {
+public class Solution_108 {
 
     /**
      * 312. <a href="https://leetcode.cn/problems/burst-balloons/description/">戳气球</a>
