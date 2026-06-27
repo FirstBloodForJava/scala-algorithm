@@ -35,7 +35,11 @@ public class Solution_60 {
             if (++cnt[c] > boardCnt[c]) return false;
         }
 
-        if (cnt[cs[word.length() - 1]] > cnt[cs[0]]) {
+        /*
+        倒序还是顺序搜索：
+            如果 word 最后一个字符在 board 中出现次数小于 第一个字符出现次数，倒序搜索则会进入更少的递归
+         */
+        if (boardCnt[cs[word.length() - 1]] < boardCnt[cs[0]]) {
             cs = new StringBuilder(word).reverse().toString().toCharArray();
         }
         for (int i = 0; i < board.length; i++) {
@@ -62,7 +66,7 @@ public class Solution_60 {
             int x = i + dir[0];
             int y = j + dir[1];
             if (x >= 0 && x < board.length && y >= 0 && y < board[0].length && dfs(x, y, k + 1, board, cs)) {
-                // 找打答案也回溯
+                // 找到答案也回溯
                 board[i][j] = cs[k];
                 return true;
             }
