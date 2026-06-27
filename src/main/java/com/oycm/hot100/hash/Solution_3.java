@@ -60,6 +60,11 @@ public class Solution_3 {
             如果 x - 1 在 nums 中，则不以 x 作为起点计算序列长度。
         如果 x-1 在序列中，x-1 作为计算的长度肯定 > x 作为起点的长度。这样能避免大量的计算。
          */
+        /*
+        排序做法：排序后，从小到大遍历。
+        hash 表做法，数组去重后，遍历 x 作为开头，最大序列数时多少。
+        如果 x-1 存在，就不以 x 开始
+         */
         Set<Integer> set = new HashSet<>();
         for (int num : nums) {
             set.add(num);
