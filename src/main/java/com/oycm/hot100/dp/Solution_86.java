@@ -10,7 +10,7 @@ public class Solution_86 {
     /**
      * 139. <a href="https://leetcode.cn/problems/word-break/description/">单词拆分</a>
      *
-     * @param s 1 <= s.length <= 300
+     * @param s        1 <= s.length <= 300
      * @param wordDict 1 <= wordDict.length <= 1000; 1 <= wordDict[i].length <= 20
      * @return
      */
@@ -62,6 +62,28 @@ public class Solution_86 {
         String pre = s.substring(0, j);
         String suf = s.substring(j + w.length());
         return dfs(i - 1, s, wordDict) || (dfs(i, pre, wordDict) && dfs(i, suf, wordDict));
+    }
+
+    public boolean wordBreak_dp(String s, List<String> wordDict) {
+        int maxLen = 0;
+        for (String w : wordDict) {
+            maxLen = Math.max(maxLen, w.length());
+        }
+        Set<String> words = new HashSet<>(wordDict);
+        int n = s.length();
+        boolean[] f = new boolean[n + 1];
+        f[0] = true;
+        // [0, i) 拆分 [j , i) 的条件是前面的能匹配
+        for (int i = 1; i <= n; i++) {
+            for (int j = i - 1; j >= Math.max(i - maxLen, 0); j--) {
+                if (f[j] && words.contains(s.substring(j, i))) {
+                    f[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return f[n];
     }
 
 }
