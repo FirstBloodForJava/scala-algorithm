@@ -1,5 +1,7 @@
 package com.oycm.hot100.substring;
 
+import java.util.Arrays;
+
 public class Solution_103 {
 
     /**
@@ -27,6 +29,42 @@ public class Solution_103 {
                 r++;
             }
 
+        }
+
+        return ans;
+    }
+
+    public int countSubstrings_manacher(String s) {
+        /*
+        以 i 为中心的回文子串的回文半径，就是以 i 为中心的所有回文串
+         */
+        int n = s.length();
+        char[] cs = new char[2 * n + 3];
+        Arrays.fill(cs, '#');
+        cs[0] = '^';
+        for (int i = 0; i < n; i++) {
+            cs[2 * i + 2] = s.charAt(i);
+        }
+        cs[cs.length - 1] = '$';
+        int ans = 0;
+        int[] halfLen = new int[2 * n + 1];
+        int boxI = 0, boxR = 0;
+        for (int i = 2; i < halfLen.length; i++) {
+            int hl = 1;
+            if (i < boxR) {
+                hl = Math.min(halfLen[2 * boxI - i], boxR - i);
+            }
+            while (cs[i - hl] == cs[i + hl]) {
+                hl++;
+                boxI = i;
+                boxR = i + hl;
+            }
+            halfLen[i] = hl;
+            /*
+            回文半径，奇数长度上取整
+            hl = 直径 + 1，所以直接除以 2 即可
+             */
+            ans += hl / 2;
         }
 
         return ans;
