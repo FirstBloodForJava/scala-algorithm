@@ -32,6 +32,8 @@ public class Solution_51 {
         return ans;
     }
 
+    public static int[][] dirs = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+
     private void dfs(char[][] grid, int i, int j) {
         // 先判断是否出界, 再判断是否是否为水或已经访问过
         if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] != '1') {
@@ -39,10 +41,9 @@ public class Solution_51 {
         }
         // 标记访问
         grid[i][j] = '2';
-        dfs(grid, i, j - 1); // 往左走
-        dfs(grid, i, j + 1); // 往右走
-        dfs(grid, i - 1, j); // 往上走
-        dfs(grid, i + 1, j); // 往下走
+        for (int[] dir : dirs) {
+            dfs(grid,i + dir[0], j + dir[1]);
+        }
     }
 
 }
