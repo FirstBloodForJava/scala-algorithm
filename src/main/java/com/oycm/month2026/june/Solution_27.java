@@ -47,4 +47,31 @@ public class Solution_27 {
         return ans;
     }
 
+    public int maximumLength_n(int[] nums) {
+        Map<Long, Integer> cnt = new HashMap<>();
+        for (int num : nums) {
+            cnt.merge((long) num, 1, Integer::sum);
+        }
+        Integer cnt1 = cnt.remove(1L);
+        // (cnt - 1) | 1 奇数不变，偶数减 1
+        int ans = cnt1 != null ? (cnt1 - 1) | 1 : 0;
+
+        // 枚举每个数作为 x，求长度
+
+        for (long x : cnt.keySet()) {
+            long sqrt = (long) Math.sqrt(x);
+            if (sqrt * sqrt == x && cnt.getOrDefault(x, 0) >= 2) {
+                continue;
+            }
+            int res = 0;
+            while (cnt.getOrDefault(x, 0) >= 2) {
+                x *= x;
+                res += 2;
+            }
+            ans = Math.max(ans, res + (cnt.containsKey(x) ? 1 : -1));
+        }
+
+        return ans;
+    }
+
 }
