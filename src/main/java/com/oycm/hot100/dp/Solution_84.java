@@ -42,4 +42,28 @@ public class Solution_84 {
         return memo[i][j] = Math.min(dfs(i - 1, j), dfs(i, j - i * i) + 1);
     }
 
+
+    public int numSquares_dp(int n) {
+        /*
+        1 <= n <= 1e4
+         */
+        init();
+        return f[n];
+    }
+
+    static int[] f = new int[10001];
+    static boolean initialized = false;
+
+    public void init() {
+        if (initialized) return;
+        initialized = true;
+        Arrays.fill(f, Integer.MAX_VALUE);
+        f[0] = 0;
+        for (int i = 1; i * i <= 10000; i++) {
+            for (int x = i * i; x <= 10000; x++) {
+                f[x] = Math.min(f[x], f[x - i * i] + 1);
+            }
+        }
+    }
+
 }
