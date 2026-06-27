@@ -11,13 +11,16 @@ public class Solution_70 {
     class MinStack {
 
         /*
-        维护栈中元素的前缀最小值
-        栈中存一个二元组，一个表示当前值，一个表示栈底到栈顶的最小值
+        使用一个元素，维护栈中元素和最小值的插值，再通过差值还原栈中的值。
+        如果当前 val 比前面的最小值更小，那么栈顶元素将是负数。否则 val + mn 才是原来的元素
+            push 记录 val - mn；
+            pop 需要还原最小值（栈顶是负数时才需要还原）st.pop = val - preMin = min - preMin, preMin = min - st.pop
+            peek 栈顶是正数时需要加上最小值还原，否则就是最小值
          */
-        Deque<int[]> st = new ArrayDeque<>();
+        Deque<Long> st = new ArrayDeque<>();
+        long mn = Long.MAX_VALUE / 2;
 
         public MinStack() {
-            st.push(new int[]{0, Integer.MAX_VALUE});
         }
 
         /**
@@ -26,14 +29,15 @@ public class Solution_70 {
          * @param val
          */
         public void push(int val) {
-            st.push(new int[]{val, Math.min(st.peek()[1], val)});
+            st.push(val - mn);
+            mn = Math.min(mn, val);
         }
 
         /**
          * 删除栈顶元素
          */
         public void pop() {
-            st.pop();
+            mn -= Math.min(st.pop(), 0);
         }
 
         /**
@@ -42,7 +46,7 @@ public class Solution_70 {
          * @return
          */
         public int top() {
-            return st.peek()[0];
+            return (int) (mn + Math.max(st.peek(), 0));
         }
 
         /**
@@ -51,7 +55,7 @@ public class Solution_70 {
          * @return
          */
         public int getMin() {
-            return st.peek()[1];
+            return (int) mn;
         }
     }
 
