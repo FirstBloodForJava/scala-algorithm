@@ -45,4 +45,51 @@ public class Solution_85 {
         return memo[i][amount] = Math.min(dfs(i - 1, amount, coins, memo), 1 + dfs(i, amount - coins[i - 1], coins, memo));
     }
 
+    public int coinChange_dp(int[] coins, int amount) {
+        /*
+        dfs(i, amount) =
+            min(dfs(i, amount - coins[i]) + 1, dfs(i-1, amount))
+        选一个硬币之后，继续重复选，这个硬币硬币不选的方案数
+        f[i][amount] = min(f[i][amount-x] + 1, f[i-1][amount])
+         */
+        int n = coins.length;
+        int[][] f = new int[n + 1][amount + 1];
+        Arrays.fill(f[0], Integer.MAX_VALUE / 2);
+        f[0][0] = 0;
+        for (int i = 0; i < n; i++) {
+            for (int c = 0; c <= amount; c++) {
+                if (c < coins[i]) {
+                    // 硬币比金额还大，硬币不能选
+                    f[i + 1][c] = f[i][c];
+                } else {
+                    f[i + 1][c] = Math.min(f[i][c], f[i + 1][c - coins[i]] + 1);
+                }
+            }
+        }
+
+        int ans = f[n][amount];
+        return ans < Integer.MAX_VALUE / 2 ? ans : -1;
+    }
+
+
+    public int coinChange_dp_optimize(int[] coins, int amount) {
+        /*
+        dfs(i, amount) =
+            min(dfs(i, amount - coins[i]) + 1, dfs(i-1, amount))
+        选一个硬币之后，继续重复选，这个硬币硬币不选的方案数
+        f[i][amount] = min(f[i][amount-x] + 1, f[i-1][amount])
+         */
+        int[] f = new int[amount + 1];
+        Arrays.fill(f, Integer.MAX_VALUE / 2);
+        f[0] = 0;
+        for (int x : coins) {
+            for (int i = x; i <= amount; i++) {
+                f[i] = Math.min(f[i], f[i - x] + 1);
+            }
+        }
+
+        int ans = f[amount];
+        return ans < Integer.MAX_VALUE / 2 ? ans : -1;
+    }
+
 }
