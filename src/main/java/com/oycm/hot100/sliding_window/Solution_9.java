@@ -1,6 +1,6 @@
 package com.oycm.hot100.sliding_window;
 
-public class Solution_1 {
+public class Solution_9 {
 
     /**
      * 3. <a href="https://leetcode.cn/problems/longest-substring-without-repeating-characters/">无重复字符的最长子串</a>

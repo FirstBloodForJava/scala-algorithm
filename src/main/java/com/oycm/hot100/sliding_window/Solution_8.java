@@ -3,7 +3,7 @@ package com.oycm.hot100.sliding_window;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Solution_2 {
+public class Solution_8 {
 
     /**
      * 438. <a href="https://leetcode.cn/problems/find-all-anagrams-in-a-string/description/">找到字符串中所有字母异位词</a>
@@ -55,6 +55,33 @@ public class Solution_2 {
                 }
                 cnt[c]++;
                 l++;
+            }
+        }
+
+        return ans;
+    }
+
+    public List<Integer> findAnagrams_2(String s, String p) {
+        /*
+        可以不使用变量 k，使用计数数组来当作计数使用
+         */
+        int n = s.length(), m = p.length();
+        int[] cnt = new int[26];
+        for (char c : p.toCharArray()) {
+            cnt[c - 'a']++;
+        }
+        List<Integer> ans = new ArrayList<>();
+        char[] cs = s.toCharArray();
+        int l = 0;
+        for (int r = 0; r < n; r++) {
+            int c = cs[r] - 'a';
+            cnt[c]--;
+            while (cnt[c] < 0) {
+                // 要么 c 是非 p 中字符，或者 p 中字符出现多了
+                cnt[cs[l++] - 'a']++;
+            }
+            if (r - l + 1 == m) {
+                ans.add(l);
             }
         }
 
