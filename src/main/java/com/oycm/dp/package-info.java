@@ -24,6 +24,12 @@
  *     <li>lcs 最长公共子序列</li>
  *     <li>lis 最长递增子序列</li>
  * </ol>
+ * <p>f. 状态机 dp</p>
+ * <ol>
+ *     <li>max_profit 买卖股票</li>
+ *     <li>basic 基础</li>
+ *     <li>advance 进阶</li>
+ * </ol>
  *
  * <p>h. 区间 dp</p>
  * <ol>
