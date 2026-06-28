@@ -37,4 +37,31 @@ public class Solution_104 {
         return ans.toArray(new int[people.length][]);
     }
 
+    public int[][] reconstructQueue_asc(int[][] people) {
+        /*
+        从低到高考虑
+        先按高度升序排序，如果高度相同，再前面的人数倒序排序
+         */
+        Arrays.sort(people, (a, b) -> a[0] == b[0] ? b[1] - a[1] : a[0] - b[0]);
+        int n = people.length;
+        int[][] ans = new int[n][];
+        for (int[] p : people) {
+            int pos = p[1] + 1;
+            for (int i = 0; i < n; i++) {
+                // 不为空的人，高度都是小于当前 p[0] 的
+                if (ans[i] == null) {
+                    pos--;
+                    if (pos == 0) {
+                        ans[i] = p;
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        return ans;
+    }
+
+
 }
