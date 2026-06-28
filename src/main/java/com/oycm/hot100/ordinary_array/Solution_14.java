@@ -37,4 +37,38 @@ public class Solution_14 {
         return ans.toArray(new int[ans.size()][]);
     }
 
+    public int[][] merge_diff(int[][] intervals) {
+        /*
+        差分数组：对 [intervals[i][0], intervals[i][1]] 区间元素增加 1，差分数组还原后，如果 d[i] > 0，则说明区间是连通的。
+        [1,2] [3,4] 会出现误判情况，对 intervals[i][] * 2 区间 +1，这样区间就被拆分了
+        [2,4] [6, 8]
+         */
+        int mx = 0;
+        for (int[] p : intervals) {
+            mx = Math.max(mx, p[1]);
+        }
+        int[] d = new int[2 * mx + 2];
+        for (int[] p : intervals) {
+            d[2 * p[0]]++;
+            d[2 * p[1] + 1]--;
+        }
+        List<int[]> ans = new ArrayList<>();
+        int sum = 0;
+        int start = -1;
+        for (int i = 0; i < d.length; i++) {
+            sum += d[i];
+            if (sum > 0) {
+                if (start < 0) {
+                    start = i;
+                }
+            } else if (start >= 0) {
+                ans.add(new int[]{start / 2, i / 2});
+                start = -1;
+
+            }
+        }
+
+        return ans.toArray(new int[ans.size()][]);
+    }
+
 }
