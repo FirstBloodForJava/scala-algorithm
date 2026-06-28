@@ -40,5 +40,21 @@ public class Solution_58 {
         }
     }
 
+    public void dfs(int i, int reduce, int[] candidates, List<Integer> path, List<List<Integer>> ans) {
+        if (reduce == 0) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        if (i == candidates.length || reduce < 0) {
+            return;
+        }
+        // 不选
+        dfs(i + 1, reduce, candidates, path, ans);
+        // 选
+        path.add(candidates[i]);
+        dfs(i, reduce - candidates[i], candidates, path, ans);
+        path.remove(path.size() - 1);
+    }
+
 
 }
