@@ -1,6 +1,7 @@
 package com.oycm.hot100.stack;
 
-import java.util.stream.IntStream;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Solution_71 {
 
@@ -56,8 +57,37 @@ public class Solution_71 {
         String a = decodeString(s.substring(i + 1, j - 1));
         String b = decodeString(s.substring(j));
         StringBuilder sb = new StringBuilder();
-        IntStream.range(0, k).forEach(o -> sb.append(a));
+
         return sb.append(b).toString();
+    }
+
+    public String decodeString_1(String s) {
+        StringBuilder res = new StringBuilder();
+        Deque<Pair> st = new ArrayDeque<>();
+        int k = 0;
+        for (char c : s.toCharArray()) {
+            if (Character.isLetter(c)) {
+                res.append(c);
+            } else if (Character.isDigit(c)) {
+                k = k * 10 + (c - '0');
+            } else if (c == '[') {
+                // 开始递归
+                st.push(new Pair(res.toString(), k));
+                res.setLength(0);
+                k = 0;
+            } else {
+                Pair p = st.pop();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < p.k; i++) {
+                    sb.append(res);
+                }
+                res = new StringBuilder(p.s).append(sb);
+            }
+        }
+        return res.toString();
+    }
+
+    public record Pair(String s, int k) {
     }
 
 }
