@@ -43,4 +43,26 @@ public class Solution_108 {
         return memo[i][j] = res;
     }
 
+    public int maxCoins_dp(int[] nums) {
+        /*
+        dfs(i, j) = max(dfs(i, k) + dfs(k, j) + nums[i] * nums[j] * nums[k]) k (i, j)
+        f[i][j] = max(f[i][k] + f[k][j] + + nums[i] * nums[j] * nums[k]) k (i, j)
+        f[i][j] 需要用到 f[i][k], f[k][j]，i < k < j，怎么确定 i, j 的遍历方向？
+        i 从大到小遍历，这样 下一个 f[i][j] 才能用到前面已经计算过的 f[k][j]
+         */
+        int n = nums.length;
+        int[] val = new int[n + 2];
+        val[0] = val[n + 1] = 1;
+        System.arraycopy(nums, 0, val, 1, n);
+        int[][] f = new int[n + 2][n + 2];
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = i + 2; j <= n + 1; j++) {
+                for (int k = i + 1; k < j; k++) {
+                    f[i][j] = Math.max(f[i][j], f[i][k] + f[k][j] + val[i] * val[j] * val[k]);
+                }
+            }
+        }
+        return f[0][n + 1];
+    }
+
 }
