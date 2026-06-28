@@ -46,4 +46,53 @@ public class Solution_4 {
 
     }
 
+    public int maxProfit_dp(int k, int[] prices) {
+        /*
+        dfs(i, j, 0) = max( dfs(i-1, j, 0), dfs(i-1, j-1, 1) + p)
+        dfs(i, j, 1) = max( dfs(i-1, j, 1), dfs(i-1, j, 0) - p)
+        f[i][j][0] = max( f[i-1][j][0], f[i-1][j-1][1] + p);
+        f[i][j][1] = max( f[i-1][j][1], f[i-1][j][0] - p);
+        f[i][-1][k] = min;
+        f[-1][j][1] = min;
+        f[-1][j][0] = 0;
+         */
+        int n = prices.length;
+        int[][][] f = new int[n + 1][k + 2][2];
+        for (int i = 0; i <= n; i++) {
+            f[i][0][0] = Integer.MIN_VALUE;
+            f[i][0][1] = Integer.MIN_VALUE;
+        }
+        for (int j = 1; j <= k + 1; j++) {
+            f[0][j][1] = Integer.MIN_VALUE;
+            f[0][j][0] = 0;
+        }
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j <= k + 1; j++) {
+                f[i + 1][j][0] = Math.max(f[i][j][0], f[i][j - 1][1] + prices[i]);
+                f[i + 1][j][1] = Math.max(f[i][j][1], f[i][j][0] - prices[i]);
+            }
+        }
+
+        return f[n][k + 1][0];
+    }
+
+    public int maxProfit_dp_optimize(int k, int[] prices) {
+        int n = prices.length;
+        int[][] f = new int[k + 2][2];
+
+        for (int j = 0; j <= k + 1; j++) {
+            f[j][1] = Integer.MIN_VALUE;
+        }
+        f[0][0] = Integer.MIN_VALUE;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = k + 1; j > 0; j--) {
+                f[j][0] = Math.max(f[j][0], f[j - 1][1] + prices[i]);
+                f[j][1] = Math.max(f[j][1], f[j][0] - prices[i]);
+            }
+        }
+
+        return f[k + 1][0];
+    }
+
 }
