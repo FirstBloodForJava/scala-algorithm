@@ -76,5 +76,22 @@ public class Solution_2 {
         nums[j] = temp;
     }
 
+    public int[] rearrangeArray_1(int[] nums) {
+        /*
+        原地修改，
+            如果 i 为偶数，满足 nums[i] > nums[i-1]
+            如果 i 为奇数，满足 nums[i] < nums[i-1]
+        不成立时，交换 nums[i-1] 和 nums[i]
+         */
+
+        for (int i = 1; i < nums.length; i++) {
+            if (((i & 1) == 1 && nums[i] > nums[i - 1]) || ((i & 1) == 0 && nums[i] < nums[i - 1])) {
+                swap(nums, i - 1, i);
+            }
+        }
+
+        return nums;
+    }
+
 
 }
