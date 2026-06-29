@@ -45,4 +45,52 @@ public class Solution_106 {
         return isMatch && dfs(i + 1, j + 1, s, p, memo);
     }
 
+    public boolean isMatch_dp(String S, String P) {
+        char[] s = S.toCharArray();
+        char[] p = P.toCharArray();
+        int n = s.length;
+        int m = p.length;
+        boolean[][] f = new boolean[n + 1][m + 1];
+        f[n][m] = true;
+        for (int i = n; i >= 0; i--) {
+            for (int j = m - 1; j >= 0; j--) {
+                if (p[j] == '*') continue;
+                boolean isMatch = i < n && (p[j] == '.' || s[i] == p[j]);
+                if (j + 1 < m && p[j + 1] == '*') {
+                    f[i][j] = f[i][j + 2] || isMatch && f[i + 1][j];
+                } else {
+                    f[i][j] = isMatch && f[i + 1][j + 1];
+                }
+            }
+        }
+
+        return f[0][0];
+    }
+
+    public boolean isMatch_dp_optimize(String S, String P) {
+        char[] s = S.toCharArray();
+        char[] p = P.toCharArray();
+        int n = s.length;
+        int m = p.length;
+        boolean[] f = new boolean[m + 1];
+        f[m] = true;
+        for (int i = n; i >= 0; i--) {
+            boolean pre = f[m];
+            f[m] = i == n;
+            for (int j = m - 1; j >= 0; j--) {
+                if (p[j] == '*') continue;
+                boolean isMatch = i < n && (p[j] == '.' || s[i] == p[j]);
+                boolean temp = f[j];
+                if (j + 1 < m && p[j + 1] == '*') {
+                    f[j] = f[j + 2] || isMatch && f[j];
+                } else {
+                    f[j] = isMatch && pre;
+                }
+                pre = temp;
+            }
+        }
+
+        return f[0];
+    }
+
 }
