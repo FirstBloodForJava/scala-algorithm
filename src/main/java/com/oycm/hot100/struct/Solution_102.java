@@ -23,7 +23,7 @@ public class Solution_102 {
         如果 n > 0, 设出现次数最多的任务为 mx 次，最短时间至少为 max((mx-1)*(n+1), tasks.length )
         构造一个 mx 行，n+1 列的矩阵，把 mx 放在第一列，后续有和 mx 此次相同的，则依次放在其后面，
             如果后续的矩阵列没有全部占用，则 task < max((mx-1)*(n+1) + mxCnt
-            如果后续的矩阵全部占用了，没有空袭时间浪费，至少需要 task 时间
+            如果后续的矩阵全部占用了，没有空闲时间浪费，至少需要 task 时间
          */
         if (n == 0) return tasks.length;
         int[] cnt = new int[26];
