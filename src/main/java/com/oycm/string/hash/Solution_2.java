@@ -6,6 +6,7 @@ public class Solution_2 {
 
     /**
      * 187. 重复的DNA序列
+     * <br>
      * 187. <a href="https://leetcode.cn/problems/repeated-dna-sequences/description/">重复的DNA序列</a>
      *
      * @param s

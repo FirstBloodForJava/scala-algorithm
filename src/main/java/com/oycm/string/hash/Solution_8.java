@@ -6,6 +6,7 @@ public class Solution_8 {
 
     /**
      * 3213. 最小代价构造字符串
+     * <br>
      * 3213. <a href="https://leetcode.cn/problems/construct-string-with-minimum-cost/description/">最小代价构造字符串</a> 2171
      *
      * @param target
