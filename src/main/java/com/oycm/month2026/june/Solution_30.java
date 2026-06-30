@@ -21,13 +21,13 @@ public class Solution_30 {
         当 [l,r] 符合条件时，移除左边的字符，左边能移除的数量就是当前以 r 结尾，符合要求的子串。
          */
         int ans = 0;
-        int[] cnt = new int[3];
+        int[] cnt = new int['d'];
         int left = 0;
         char[] cs = s.toCharArray();
         for (char c : cs) {
-            cnt[c - 'a']++;
-            while (cnt[0] > 0 && cnt[1] > 0 && cnt[2] > 0) {
-                cnt[cs[left++] - 'a']--;
+            cnt[c]++;
+            while (cnt['a'] > 0 && cnt['b'] > 0 && cnt['c'] > 0) {
+                cnt[cs[left++]]--;
             }
             ans += left;
         }
