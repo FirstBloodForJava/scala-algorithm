@@ -32,7 +32,7 @@ public class Solution_2 {
         int[] suf = new int[n + 1];
         suf[n] = m;
         int j = m;
-        for (int i = n - 1; i >= 0; i++) {
+        for (int i = n - 1; i >= 0; i--) {
             j--;
             while (j >= 0 && ts[j] != cs[i]) {
                 j--;
@@ -57,6 +57,34 @@ public class Solution_2 {
 
         return false;
 
+    }
+
+    public boolean canMakeSubsequence_dp(String s, String t) {
+        /*
+        状态机 dp
+         */
+        char[] cs = s.toCharArray();
+        int n = cs.length;
+        // 不修改的情况下，s[0 : j0-1] 是 t 前缀的子序列
+        int j0 = 0;
+        // 修改的情况下，s[0 : j1-1] 是 t 前缀的子序列
+        int j1 = 0;
+
+        for (char c : t.toCharArray()) {
+            if (cs[j1] == c) {
+                j1++;
+            }
+            // 修改匹配，不能在 j0 判断之前，最后要有字符才能修改
+            j1 = Math.max(j1, j0 + 1);
+
+            if (cs[j0] == c) {
+                j0++;
+            }
+
+            if (j1 == n) return true;
+        }
+
+        return false;
     }
 
 }
