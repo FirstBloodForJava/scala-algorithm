@@ -39,4 +39,35 @@ public class Solution_82 {
         return ans;
     }
 
+    /**
+     * 119. 杨辉三角 II
+     * <br>
+     * 119. <a href="https://leetcode.cn/problems/pascals-triangle-ii/description/">杨辉三角 II</a>
+     *
+     * @param rowIndex
+     * @return
+     */
+    public List<Integer> getRow(int rowIndex) {
+        init();
+        return c[rowIndex];
+    }
+
+    private static final List<Integer>[] c = new List[34];
+    private static boolean initiated = false;
+
+    public void init() {
+        if (initiated) return;
+        initiated = true;
+        c[0] = List.of(1);
+        for (int i = 1; i < c.length; i++) {
+            List<Integer> row = new ArrayList<>();
+            row.add(1);
+            for (int j = 1; j < i; j++) {
+                row.add(c[i - 1].get(j - 1) + c[i - 1].get(j));
+            }
+            row.add(1);
+            c[i] = row;
+        }
+    }
+
 }
