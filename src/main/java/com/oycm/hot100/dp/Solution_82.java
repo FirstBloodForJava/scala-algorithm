@@ -70,4 +70,19 @@ public class Solution_82 {
         }
     }
 
+    public List<Integer> getRow_com(int rowIndex) {
+        /*
+        c(n, m) = (n! / (n-m)!) / m!
+        c(n, m-1) = (n! / (n-m+1)) / (m-1)!
+        c(n, m) = c(n, m-1) * n-m+1 / m
+        c(n, 0) = 1
+         */
+        List<Integer> ans = new ArrayList<>();
+        ans.add(1);
+        for (int i = 1; i <= rowIndex; i++) {
+            ans.add((int) ((long) ans.get(i - 1) * (rowIndex - i + 1) / i));
+        }
+
+        return ans;
+    }
 }
