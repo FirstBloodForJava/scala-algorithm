@@ -53,4 +53,30 @@ public class Solution_13 {
             }
         }
     }
+
+    public List<Integer> sequentialDigits_1(int low, int high) {
+        /*
+        滑动窗口
+         */
+        int x0 = 12;
+        int pow10 = 10;
+        List<Integer> ans = new ArrayList<>();
+        for (int length = 2; x0 <= high ; length++) {
+            pow10 *= 10;
+            // 枚举相同长度数字
+            int x = x0;
+            for (int i = length; i <= 9 && x <= high ; i++) {
+                if (x >= low) ans.add(x);
+                /*
+                length = i - l + 1
+                r+1 进入窗口，l 从窗口溢出 l = i + 1 - length
+                 */
+                x = x * 10 + i + 1 - (i + 1 - length) * pow10;
+            }
+
+            x0 = x0 * 10 + length + 1;
+        }
+
+        return ans;
+    }
 }
