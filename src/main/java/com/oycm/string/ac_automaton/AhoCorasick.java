@@ -66,9 +66,9 @@ public class AhoCorasick {
 class Node {
 
     Node[] son = new Node[26];
-    // 当 node.son[i] 匹配失败时，node.fail[i] 表示下一个待匹配节点（等于 root 则表示匹配结束）
+    // 当 node.son[i] 匹配失败时，node.fail[i] 表示下一个待匹配节点（等于 root 则表示没有匹配）
     Node fail;
-    // 用来快速跳到一定是某个模式串末尾的节点（等于 root 则表示匹配结束）
+    // 后缀链接（suffix link），用来快速跳到一定是某个模式串末尾的节点（等于 root 则表示匹配结束）
     Node last;
     // 当前字符结尾的模式串数量，没有相同字符串，至多 1
     int cnt;
