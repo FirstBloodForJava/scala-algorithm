@@ -1,7 +1,5 @@
 package com.oycm.dp.c.complete_backpack;
 
-import java.util.Arrays;
-
 public class Solution_2 {
 
     /**
@@ -26,16 +24,23 @@ public class Solution_2 {
         递归边界 i < 0，如果 s = 0 返回 1，否则返回 0
         dfs(i, s) = dfs(i-1, s), dfs(i, s-nums[i])
          */
-        int n = coins.length;
-        int[][] memo = new int[n][amount + 1];
-        for (int[] row : memo) {
-            Arrays.fill(row, -1);
-        }
         /*
-        amount 最大为 1e4，最大选择次数为 1e4，远小于 Integer.MAX_VALUE / 2
-        这里无法组成，返回的一定是 Integer.MAX_VALUE / 2
+        f[i][s] = f[i-1][s] + f[i][s-nums[i]]
+        f[i+1][s] = f[i][s] + f[i+1][s-nums[i]]
+        递归边界 dfs(-1, 0) = 1 对应 f[-1][0] => f[0][0] = 1
+        i 从 [0, n)，s 从 [0, amount]
+        f[i+1][s] 计算用到了 f[i][s] 和 f[i+1][s-nums[i]]。
+        用两个数组来表示，就是前一个数组当前列，当前数组 s-nums[i] 列。
          */
-        return dfs(n - 1, amount, coins, memo);
+        int[] f = new int[amount + 1];
+        f[0] = 1;
+        for (int x : coins) {
+            for (int c = x; c <= amount; c++) {
+                f[c] += f[c - x];
+            }
+        }
+
+        return f[amount];
     }
 
     public int dfs(int i, int c, int[] coins, int[][] memo) {
