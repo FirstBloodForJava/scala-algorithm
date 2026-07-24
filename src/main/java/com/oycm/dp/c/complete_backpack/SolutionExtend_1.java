@@ -1,5 +1,6 @@
 package com.oycm.dp.c.complete_backpack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SolutionExtend_1 {
@@ -19,8 +20,30 @@ public class SolutionExtend_1 {
         如果不存在这样的集合，返回一个 空 数组。
          */
         /*
-
+        numWays 数组就是 完全背包 的结果数组，相当于使用该数组得到硬币数组
+        f[i] += f[i-c]，c 表示硬币值
+        f[0] = 1, 第一个最小的硬币一定满足 f[i] = 1;
          */
-        return null;
+        int n = numWays.length;
+        int[] f = new int[n + 1];
+        f[0] = 1;
+        List<Integer> ans = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            // numWays[i] 表示使用硬币凑出金额为 i+1 的方法数
+            int way = numWays[i - 1];
+            if (f[i] == way) {
+                // 没有符合要求的币值
+                continue;
+            }
+            // 凑出金额较小的方法数，一定是先选金额小的，和他的方案数，第一次一定是差 1
+            if (way - 1 != f[i]) {
+                return List.of();
+            }
+            ans.add(i);
+            for (int j = i; j <= n; j++) {
+                f[j] += f[j - i];
+            }
+        }
+        return ans;
     }
 }
