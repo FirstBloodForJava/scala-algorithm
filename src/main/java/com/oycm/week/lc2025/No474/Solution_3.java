@@ -24,8 +24,38 @@ public class Solution_3 {
         /*
         怎么判定一个时间能完成送货？
          */
+        /*
+        t - t/r1 >= d1
+        t - t/r2 >= d2
+        t - t/l >= d1 + d2
+        t - t/r >= d，d 表示运行多少个小时，r 表示第几个小时要充电，已知 r，d，求最小的 t。
+        直接使用不等式，不好就算 t 的最小值，换个思路，计算需要几个小时充电。
+        要执行 d 次，那么没执行 r-1 次，就需要充电一次，但是当 d 能整除 r-1 时，以及 d % (r-1) > 0 时，最后一次是不需要充电的。
+        相当于 d / (r-1) 上取整后，再减少 1，相当于 (d-1)/(r-1)，就是充电等待时间
+        都大于这个最小值 d + (d-1)/(r-1)
+         */
+        int d1 = d[0], d2 = d[1];
+        int r1 = r[0], r2 = r[1];
+        int l = lcm(r1, r2);
 
-        return 1;
+        return Math.max(Math.max(f(d1, r1), f(d2, r2)), f(d1 + d2, l));
+    }
+
+    public long f(int d, int r) {
+        return (long) d + (d - 1) / (r - 1);
+    }
+
+    public int gcd(int a, int b) {
+        while (a != 0) {
+            int temp = a;
+            a = b % a;
+            b = temp;
+        }
+        return b;
+    }
+
+    public int lcm(int a, int b) {
+        return a / gcd(a, b) * b;
     }
 
 }
