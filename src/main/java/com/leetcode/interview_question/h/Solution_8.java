@@ -1,26 +1,26 @@
 package com.leetcode.interview_question.h;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class Solution_7 {
+public class Solution_8 {
 
     /**
-     * 面试题 08.07. <a href="https://leetcode.cn/problems/permutation-i-lcci/description/">无重复字符串的排列组合</a>
+     * 面试题 08.08. <a href="https://leetcode.cn/problems/permutation-ii-lcci/">有重复字符串的排列组合</a>
      *
      * @param S
      * @return
      */
     public String[] permutation(String S) {
         /*
-        无重复字符串的排列组合。编写一种方法，计算某字符串的所有排列组合，字符串每个字符均不相同。
+        有重复字符串的排列组合。编写一种方法，计算某字符串的所有排列组合。
          */
-        /*
-        全排列
-         */
+        char[] cs = S.toCharArray();
+        Arrays.sort(cs);
         char[] path = new char[S.length()];
         List<String> ans = new ArrayList<>();
-        dfs(0, path, S.toCharArray(), new boolean[S.length()], ans);
+        dfs(0, path, cs, new boolean[S.length()], ans);
         return ans.toArray(new String[0]);
     }
 
@@ -31,6 +31,10 @@ public class Solution_7 {
         }
 
         for (int j = 0; j < path.length; j++) {
+            // 剪枝
+            if (j > 0 && cs[j - 1] == cs[j] && !onPath[j - 1]) {
+                continue;
+            }
             if (!onPath[j]) {
                 onPath[j] = true;
                 path[i] = cs[j];
@@ -40,4 +44,5 @@ public class Solution_7 {
             }
         }
     }
+
 }
