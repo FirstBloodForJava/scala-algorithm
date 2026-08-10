@@ -62,8 +62,8 @@ public class Solution_2 {
         for (int i = 2; i < n; i++) {
             // 统计严格大于 mapping[i] 的数，相当于统计 [mapping[i] + 1, n-1] 区间和
             int left = mapping[i];
-            int g1 = f1.sumRange(left, n - 1);
-            int g2 = f2.sumRange(left, n - 1);
+            int g1 = a1 - f1.prefixSum(left);
+            int g2 = a2 - f2.prefixSum(left);
             /*
             nums 记录 a1
             mapping 记录 a2
@@ -107,7 +107,7 @@ class FenwickTree {
         }
     }
 
-    private int prefixSum(int i) {
+    public int prefixSum(int i) {
         int s = 0;
         for (; i > 0; i &= i - 1) {
             s += tree[i];
