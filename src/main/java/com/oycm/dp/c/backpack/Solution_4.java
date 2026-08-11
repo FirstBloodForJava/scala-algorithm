@@ -25,6 +25,12 @@ public class Solution_4 {
             dfs(i, j) = max(dfs(i-1, j), dfs(i-1, j ^ nums[i]) + 1) 不选/选 取最大
         递归边界 dfs(-1, 0) 返回 0; dfs(-1, j) j > 0，返回 min
          */
+        /*
+        空间优化：两个数组
+            查表法：f, nf; nf 作为循环的临时结果，计算后 nf 变成 f。
+            刷表法：f, nf = f; 使用异或逆运算
+                nf[j ^ x] = max(nf[j ^ x], f[j] + 1); f = nf;
+         */
         int max = 0;
         for (int x : nums) {
             max = Math.max(max, x);
