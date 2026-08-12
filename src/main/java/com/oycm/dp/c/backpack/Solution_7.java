@@ -19,6 +19,37 @@ public class Solution_7 {
         如果 x 的所有元素也是 y 的元素，集合 x 是集合 y 的 子集 。
          */
         /*
+        f[i+1][j][k] =
+            j >= n0[i] && k >= n1[i]
+            max(f[i][j][k], f[i][j-n0[i]][k-n1[i] + 1)
+         */
+        // 空间优化
+        int[][] f = new int[m + 1][n + 1];
+        int s0 = 0;
+        int s1 = 1;
+        for (String s : strs) {
+            int n0 = (int) s.chars().filter(c -> c == '0').count();
+            int n1 = s.length() - n0;
+            s0 = Math.min(s0 + n0, m);
+            s1 = Math.min(s1 + n1, n);
+            for (int j = s0; j >= n0; j--) {
+                for (int k = s1; k >= n1; k--) {
+                    f[j][k] = Math.max(f[j][k], f[j - n0][k - n1] + 1);
+                }
+            }
+        }
+        if (s0 == m && s1 == n) return f[m][n];
+        int ans = 0;
+        for (int[] row : f) {
+            for (int v : row) {
+                ans = Math.max(ans, v);
+            }
+        }
+        return ans;
+    }
+
+    public int findMaxForm_dfs(String[] strs, int m, int n) {
+        /*
         题目意思：从 strs 能最多选多少个字符串，所选字符 0 个数不超过 m，1 个数不超过 n。
         记忆化搜索思路：
         定义 dfs(i, j, k) 表示从 [0, i] 中选字符串，所有字符总数 0 至多 j，1 至多 k，至多选多少字符串。
