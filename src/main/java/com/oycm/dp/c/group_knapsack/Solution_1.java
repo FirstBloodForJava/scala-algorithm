@@ -1,7 +1,5 @@
 package com.oycm.dp.c.group_knapsack;
 
-import java.util.Arrays;
-
 public class Solution_1 {
 
     /**
@@ -25,11 +23,17 @@ public class Solution_1 {
         if (target < n || target > n * k) {
             return 0;
         }
-        int[][] memo = new int[n + 1][target - n + 1];
-        for (int[] row : memo) {
-            Arrays.fill(row, -1);
+        int[][] f = new int[n + 1][target - n + 1];
+        f[0][0] = 1;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 0; j <= target - n; j++) {
+                for (int x = 0; x < k && x <= j; x++) {
+                    // k 种结果累加
+                    f[i][j] = (f[i][j] + f[i - 1][j - x]) % 1000000007;
+                }
+            }
         }
-        return dfs(n, target - n, k, memo);
+        return f[n][target - n];
     }
 
 
