@@ -35,6 +35,12 @@ public class Solution_1 {
                  */
                 z[i] = Math.min(z[i - l], r - i + 1);
             }
+            /*
+            上面代码可简化: z[i] = Math.max(Math.min(z[i-l], r - i + 1), 0);
+            当 i <= r 时，Math.min(z[i - l], r - i + 1) >= 0;
+            当 i > r 时， r-i+1 <= 0; Math.min(z[i - l], r - i + 1) <= 0
+             */
+
             while (i + z[i] < n && cs[z[i]] == cs[i + z[i]]) {
                 z[i]++;
             }
