@@ -36,12 +36,31 @@ date_to_days() {
 TODAY=$(date +%Y-%m-%d)
 TODAY_DAYS=$(date_to_days "$TODAY")
 
+# Resolve shorthand code span to full package path.
+# $1 = code span, $2 = section package context (from ### heading, may be empty)
 resolve_pkg() {
-    case "$1" in
-        dp.*|string.*) echo "$1" ;;
-        monotonic.*) echo "datastructure.stack.$1" ;;
-        binary_tree.*|heap.*|linked.*|stack.*|tree.*|trie.*|union_find.*) echo "datastructure.$1" ;;
-        *) echo "algorithm.$1" ;;
+    local short="$1"
+    local ctx="$2"
+
+    case "$short" in
+        dp.*|string.*) echo "$short" ;;
+        monotonic.*) echo "datastructure.stack.$short" ;;
+        binary_tree.*|heap.*|linked.*|stack.*|tree.*|trie.*|union_find.*) echo "datastructure.$short" ;;
+        *)
+            # Bare word (no dot): resolve relative to section heading package
+            # e.g. section "datastructure.fenwick" + leaf "fenwick" -> datastructure.fenwick
+            #      section "datastructure.segment_tree" + leaf "binary" -> datastructure.segment_tree.binary
+            if [[ "$short" != *.* && -n "$ctx" ]]; then
+                local last="${ctx##*.}"
+                if [ "$short" = "$last" ]; then
+                    echo "$ctx"
+                else
+                    echo "$ctx.$short"
+                fi
+            else
+                echo "algorithm.$short"
+            fi
+            ;;
     esac
 }
 
@@ -53,6 +72,7 @@ CAT_FILE="$TMP/categories.txt"
 
 parent_section=""
 parent_subsection=""
+section_pkg=""
 
 while IFS= read -r line; do
     line="${line%$'\r'}"
@@ -61,12 +81,20 @@ while IFS= read -r line; do
         parent_section="${BASH_REMATCH[1]}"
         parent_section="${parent_section%% \`*}"
         parent_subsection=""
+        section_pkg=""
         continue
     fi
 
     if [[ "$line" =~ ^###[[:space:]]+(.*) ]]; then
-        parent_subsection="${BASH_REMATCH[1]}"
-        parent_subsection="${parent_subsection%% \`*}"
+        local_heading="${BASH_REMATCH[1]}"
+        # Extract package from heading if present (e.g. "### 树状数组 `datastructure.fenwick`")
+        if [[ "$local_heading" == *\`*\`* ]]; then
+            local_tmp="${local_heading#*\`}"
+            section_pkg="${local_tmp%%\`*}"
+        else
+            section_pkg=""
+        fi
+        parent_subsection="${local_heading%% \`*}"
         continue
     fi
 
@@ -101,8 +129,8 @@ while IFS= read -r line; do
         learn_date="${BASH_REMATCH[1]}"
     fi
 
-    # Resolve full package
-    full_pkg=$(resolve_pkg "$pkg_short")
+    # Resolve full package (pass section heading package as context)
+    full_pkg=$(resolve_pkg "$pkg_short" "$section_pkg")
 
     # Build display name from line text: strip markdown artifacts
     display="${line#*] }"           # Remove "- [ ] " or "  - [x] " prefix
