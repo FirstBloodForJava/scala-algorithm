@@ -19,6 +19,7 @@
  *     <li>complete_backpack 完全背包</li>
  *     <li>multiple_knapsack 多重背包</li>
  *     <li>group_knapsack 多重背包</li>
+ *     <li>tree_knapsack 树形背包</li>
  * </ol>
  *
  * <p>d. 线性 dp</p>
