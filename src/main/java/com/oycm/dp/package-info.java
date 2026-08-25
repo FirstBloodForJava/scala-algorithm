@@ -27,6 +27,11 @@
  *     <li>lcs 最长公共子序列</li>
  *     <li>lis 最长递增子序列</li>
  * </ol>
+ *
+ * <p>e. 划分型 dp</p>
+ * <ol>
+ *     <li>enable_divide 判定能否划分</li>
+ * </ol>
  * <p>f. 状态机 dp</p>
  * <ol>
  *     <li>max_profit 买卖股票</li>
