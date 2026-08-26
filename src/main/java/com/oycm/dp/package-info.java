@@ -31,6 +31,7 @@
  * <p>e. 划分型 dp</p>
  * <ol>
  *     <li>enable_divide 判定能否划分</li>
+ *     <li>best_divide 最优划分</li>
  * </ol>
  * <p>f. 状态机 dp</p>
  * <ol>
