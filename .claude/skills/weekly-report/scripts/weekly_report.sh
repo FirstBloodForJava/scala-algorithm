@@ -47,15 +47,22 @@ resolve_pkg() {
         monotonic.*) echo "datastructure.stack.$short" ;;
         binary_tree.*|heap.*|linked.*|stack.*|tree.*|trie.*|union_find.*) echo "datastructure.$short" ;;
         *)
-            # Bare word (no dot): resolve relative to section heading package
-            # e.g. section "datastructure.fenwick" + leaf "fenwick" -> datastructure.fenwick
-            #      section "datastructure.segment_tree" + leaf "binary" -> datastructure.segment_tree.binary
+            # Bare word (no dot): resolve relative to section heading package,
+            # falling back to filesystem check to handle sibling packages
+            # e.g. section "datastructure.segment_tree" + leaf "binary" -> datastructure.segment_tree.binary
+            #      section "datastructure.fenwick" + leaf "fenwick" -> datastructure.fenwick
+            #      section "algorithm.a" + leaf "abd" -> algorithm.abd (sibling, not child)
             if [[ "$short" != *.* && -n "$ctx" ]]; then
                 local last="${ctx##*.}"
                 if [ "$short" = "$last" ]; then
                     echo "$ctx"
                 else
-                    echo "$ctx.$short"
+                    local cand="$ctx.$short"
+                    if [ -d "$BASE/${cand//./\/}" ]; then
+                        echo "$cand"
+                    else
+                        echo "algorithm.$short"
+                    fi
                 fi
             else
                 echo "algorithm.$short"
