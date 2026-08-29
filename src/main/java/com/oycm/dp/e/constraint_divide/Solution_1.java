@@ -52,4 +52,33 @@ public class Solution_1 {
         return memo[i][j] = ans;
     }
 
+    public double largestSumOfAverages_dp(int[] nums, int k) {
+        /*
+        f[j][i] 表示把长为 i 的前缀分成 j 个连续子数组的最大平均分数。
+        枚举 最后一个子数组的左端点
+        f[j][i] = max(f[j-1][l] + avg(sum[i] - sums[l]))
+        j-1 <= l < i
+        j = 1, f[1][i] = sums[i] / i;
+        j > 1; f[j][i] = max(f[j-1][l] + avg(sum[i] - sums[l]))
+         */
+        int n = nums.length;
+        double[] sums = new double[n + 1];
+        for (int i = 0; i < n; i++) {
+            sums[i + 1] = sums[i] + nums[i];
+        }
+        double[][] f = new double[k + 1][n + 1];
+        for (int i = 1; i <= n; i++) {
+            f[1][i] = sums[i] / i;
+        }
+        for (int j = 2; j <= k; j++) {
+            for (int i = j; i <= n; i++) {
+                for (int l = j - 1; l < i; l++) {
+                    f[j][i] = Math.max(f[j][i], f[j - 1][l] + (sums[i] - sums[l]) / (i - l));
+                }
+            }
+        }
+
+        return f[k][n];
+    }
+
 }
