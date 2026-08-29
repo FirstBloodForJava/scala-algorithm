@@ -32,6 +32,7 @@
  * <ol>
  *     <li>enable_divide 判定能否划分</li>
  *     <li>best_divide 最优划分</li>
+ *     <li>constraint_divide 约束划分个数：恰好 k 个子数组</li>
  * </ol>
  * <p>f. 状态机 dp</p>
  * <ol>
