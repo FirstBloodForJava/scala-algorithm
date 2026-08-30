@@ -30,16 +30,10 @@ public class Solution_3 {
          */
         int n = nums.length;
         String[] ans = new String[n];
-        int z = 1 << 25;
         for (int i = 0; i < n; i++) {
             int x = nums[i];
-            StringBuilder sb = new StringBuilder();
-            int zc = x / z;
-            if (zc > 0) {
-                sb.append("z".repeat(zc));
-                x = x % z;
-            }
-            for (int j = 24; j >= 0; j--) {
+            StringBuilder sb = new StringBuilder("z".repeat(x >> 25));
+            for (int j = Math.min(24, 31 - Integer.numberOfLeadingZeros(x)); j >= 0; j--) {
                 if ((x & (1 << j)) > 0) {
                     sb.append((char) ('a' + j));
                 }
