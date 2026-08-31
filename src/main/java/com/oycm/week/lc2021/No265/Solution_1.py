@@ -8,7 +8,7 @@ x mod y 表示 x 除以 y 的 余数 。
 """
 
 
-class Solution:
+class Solution_1:
     def smallestEqual(self, nums: List[int]) -> int:
         # 顺序遍历 nums[i] % 10 = i，直接返回
         for i in range(len(nums)):
