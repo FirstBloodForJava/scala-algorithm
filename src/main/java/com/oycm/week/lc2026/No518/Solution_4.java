@@ -38,16 +38,17 @@ public class Solution_4 {
                 }
             }
         }
-        PriorityQueue<long[]> pq = new PriorityQueue<>((a, b) -> Long.compare(a[0], b[0]));
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
         for (int d = 0; d < 4; d++) {
             // 四个方向
             memo[0][0][d][0] = grid[0][0];
-            pq.add(new long[]{grid[0][0], 0, 0, d, 0});
+            pq.add(new int[]{grid[0][0], 0, 0, d, 0});
         }
         while (!pq.isEmpty()) {
-            long[] cur = pq.poll();
-            int cost = (int) cur[0];
-            int i = (int) cur[1], j = (int) cur[2], d = (int) cur[3], t = (int) cur[4];
+            int[] cur = pq.poll();
+            int cost = cur[0];
+            int i = cur[1], j = cur[2], d = cur[3], t = cur[4];
+            // 不是最优到达，跳过
             if (cost != memo[i][j][d][t]) {
                 continue;
             }
@@ -59,9 +60,9 @@ public class Solution_4 {
                 int nk = (nd == d) ? t : t + 1;
                 if (nk > k) continue;
                 int nc = cost + grid[ni][nj];
-                if (nc < memo[i][j][nd][nk]) {
+                if (nc < memo[ni][nj][nd][nk]) {
                     memo[ni][nj][nd][nk] = nc;
-                    pq.add(new long[]{nc, ni, nj, nd, nk});
+                    pq.add(new int[]{nc, ni, nj, nd, nk});
                 }
             }
         }
