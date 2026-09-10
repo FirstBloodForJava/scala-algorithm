@@ -22,7 +22,7 @@ public class Solution_3 {
         f[0][0] = 0;
 
         for (int i = 1; i <= n; i++) {
-            for (int j = 1; j < Math.min(i, k); j++) {
+            for (int j = 1; j <= Math.min(i, k); j++) {
                 for (int m = 0; m < i; m++) {
                     /*
                     [0, i) 分成 j 个子数组, 枚举 [0, i) 所有的分割位置
