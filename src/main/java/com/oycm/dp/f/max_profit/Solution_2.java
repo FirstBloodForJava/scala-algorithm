@@ -18,7 +18,7 @@ public class Solution_2 {
         返回 你能获得的 最大 利润。
          */
         /*
-        dfs(i, 0/1) 表示第 i 天结束是，未持有/持有 股票的最大利润。
+        dfs(i, 0/1) 表示第 i 天结束时，未持有/持有 股票的最大利润。
         第 i-1 天的结束，就是第 i 天的开始。
         dfs(i-1, *) 也表示第 i 天开始时的最大利润
          */
@@ -60,11 +60,15 @@ public class Solution_2 {
         f[i][1] = max( f[i-1][1], f[i-1][0] - prices[i] )
          */
         int n = prices.length;
+        // f[i+1][0] 第 i 天未持有股票的最大收益
+        // f[i+1][1] 第 i 天持有股票的最大收益
         int[][] f = new int[n + 1][2];
         f[0][1] = Integer.MIN_VALUE;
 
         for (int i = 0; i < n; i++) {
+            // 未持有 = max(前一天未持有, 前一天买入，今天卖出)
             f[i + 1][0] = Math.max(f[i][0], f[i][1] + prices[i]);
+            // 持有 = max(前一天持有，前一天卖出，今天买入)
             f[i + 1][1] = Math.max(f[i][1], f[i][0] - prices[i]);
         }
 
