@@ -21,6 +21,13 @@ public class Solution_4 {
          */
         /*
         nums[i] 有负数，不能直接使用滑动窗口计算
+        |s[j] - s[i] - goal| >= k, 记为 |s - goal| >= k
+            s - goal >= k
+            s - goal <= -k
+            s >= k + goal || s <= goal - k
+            那么不符合要求的前缀和值为 goal - k + 1 <= s[j] - s[i] <= goal + k - 1
+        枚举 s[j]，那么 s[i] 需要满足：
+            s[j] - goal - k + 1 <= s[i] <= g[j] - goal + k - 1
          */
         int n = nums.length;
         long[] sum = new long[n + 1];
@@ -28,38 +35,27 @@ public class Solution_4 {
             sum[i + 1] = sum[i] + nums[i];
         }
         // 离散化所有前缀和
-        long[] vals = sum.clone();
-        Arrays.sort(vals);
-        int m = 0;
-        for (int i = 0; i < vals.length; i++) {
-            if (i == 0 || vals[i] != vals[m - 1]) {
-                vals[m++] = vals[i];
-            }
+        long[] sorted = sum.clone();
+        Arrays.sort(sorted);
+        long ans = (long) n * (n + 1) / 2;
+        FenwickTree ft = new FenwickTree(sorted.length);
+        for (long s : sum) {
+
+            int l = search(sorted, s - goal - k + 1) + 1;
+            int r = search(sorted, s - goal + k);
+            ans -= ft.sumRange(l, r);
+            // 保存 s[i] 出现的次数
+            ft.update(search(sorted, s) + 1, 1);
         }
 
-        FenwickTree fw = new FenwickTree(m);
-        fw.update(search(vals, m, 0) + 1, 1);
-        long ans = 0;
-        for (int i = 0; i < n; i++) {
-            long s = sum[i + 1];
-            // vals 数组有序
-            long lo = s - goal - k;
-            long hi = s - goal + k;
-            // [l, r],
-            // l > lo 的第一个下标(>= lo + 1)；
-            // r 是小于等于 hi 的最后一个下标，等价 第一个大于等于 hi 下标减 1
-            long bad = fw.sumRange(search(vals, m, lo + 1), search(vals, m, hi) - 1);
-            ans += (i + 1) - bad;
-            fw.update(search(vals, m, sum[i + 1]) + 1, 1);
-        }
         return ans;
     }
 
-    private int search(long[] nums, int right, long target) {
+    private int search(long[] nums, long target) {
         // 搜索 nums 中第一个大于等于 target 的下标
-        int left = -1;
+        int left = -1, right = nums.length;
         while (left + 1 < right) {
-            int mid = left + (right - left) / 2;
+            int mid = (left + right) >>> 1;
             if (nums[mid] >= target) {
                 right = mid;
             } else {
@@ -71,10 +67,10 @@ public class Solution_4 {
 
 
     static class FenwickTree {
-        private long[] tree;
+        private int[] tree;
 
         public FenwickTree(int n) {
-            tree = new long[n + 1];
+            tree = new int[n + 1];
         }
 
         public void update(int index, int val) {
@@ -83,16 +79,20 @@ public class Solution_4 {
             }
         }
 
-        public long prefixSum(int i) {
-            long s = 0;
+        public int prefixSum(int i) {
+            int s = 0;
             for (; i > 0; i &= i - 1) {
                 s += tree[i];
             }
             return s;
         }
 
-        public long sumRange(int left, int right) {
-            return prefixSum(right + 1) - prefixSum(left);
+        // 求区间 [l, r]
+        public int sumRange(int left, int right) {
+            if (left > right) {
+                return 0;
+            }
+            return prefixSum(right) - prefixSum(left - 1);
         }
 
     }
