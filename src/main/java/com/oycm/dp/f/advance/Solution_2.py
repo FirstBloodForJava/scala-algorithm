@@ -8,7 +8,7 @@
 """
 
 
-class Solution:
+class Solution_2:
     def canMakeSubsequence(self, s: str, t: str) -> bool:
         """
         前后缀分解：枚举 t 前后缀匹配 s 的前后缀情况
