@@ -69,4 +69,35 @@ public class Solution_1 {
         return ans;
     }
 
+    public long numOfSubsequences_2(String s) {
+        /*
+        计算 CT, LC, LCT 子序列的 dp 合并到一个循环
+         */
+        int cntT = 0;
+        char[] cs = s.toCharArray();
+        for (char c : cs) {
+            if (c == 'T') {
+                cntT++;
+            }
+        }
+        long l = 0, lc = 0, lct = 0, c = 0, ct = 0, lt = 0;
+
+        for (char x : cs) {
+            if (x == 'L') {
+                l++;
+            } else if (x == 'C') {
+                lc += l;
+                c++;
+            } else if (x == 'T') {
+                lct += lc;
+                ct += c;
+                cntT--;
+            }
+
+            lt = Math.max(lt, l * cntT);
+        }
+
+        return Math.max(lt, Math.max(ct, lc)) + lct;
+    }
+
 }
