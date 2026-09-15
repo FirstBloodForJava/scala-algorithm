@@ -16,9 +16,57 @@ public class Solution_1 {
         子序列 是从另一个字符串中删除某些字符（可以不删除）且不改变剩余字符顺序后得到的一个 非空 字符串。
          */
         /*
-
+        分类讨论：
+        插入 L 字符，最左边插入最优，计算 s 的子序列 CT 出现的次数
+        插入 T 字符，最右边插入最优，计算 s 的子序列 LC 出现的次数
+        插入 C 前后缀分解计算（乘法）新形成的子序列数量
          */
-        return 0;
+        char[] cs = s.toCharArray();
+        return Math.max(calcInsertC(cs), Math.max(numDistinct(cs, "CT"), numDistinct(cs, "LC"))) + numDistinct(cs, "LCT");
+    }
+
+    public long numDistinct(char[] cs, String t) {
+        char[] ts = t.toCharArray();
+        if (cs.length < ts.length) {
+            return 0;
+        }
+
+        int n = cs.length;
+        int m = ts.length;
+        long[] f = new long[m + 1];
+        f[0] = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = Math.min(i, m - 1); j >= Math.max(0, m - n + i); j--) {
+                if (cs[i] == ts[j]) {
+                    f[j + 1] += f[j];
+                }
+            }
+        }
+
+        return f[m];
+    }
+
+    private long calcInsertC(char[] cs) {
+        int cntT = 0;
+        for (char c : cs) {
+            if (c == 'T') {
+                cntT++;
+            }
+        }
+        long ans = 0;
+        int cntL = 0;
+        for (char c : cs) {
+            if (c == 'L') {
+                cntL++;
+            }
+            if (c == 'T') {
+                cntT--;
+            }
+            ans = Math.max(ans, (long) cntL * cntT);
+        }
+
+
+        return ans;
     }
 
 }
