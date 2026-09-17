@@ -22,35 +22,27 @@ public class Solution_17 {
         后缀长度可以预处理，倒序枚举，枚举子数组的左端点 l = n-1, r = n-1, 如果 sum > target，右端点左移，遇到 sum = target，更新最短长度
          */
         int n = arr.length;
-
-        int[] sufMin = new int[n];
-        int minLen = n + 1;
-        int sum = 0;
-        int r = n - 1;
-        for (int l = n - 1; l > 0; l--) {
-            sum += arr[l];
-            while (sum > target) {
-                sum -= arr[r];
-                r--;
-            }
-            if (sum == target) {
-                minLen = Math.min(minLen, r - l + 1);
-            }
-            sufMin[l] = minLen;
-        }
         int ans = n + 1;
-        sum = 0;
-        int l = 0;
-        for (r = 0; r < n - 1; r++) {
+        // 第一个数组右点为 r+1 时的最短长度
+        int[] preMin = new int[n + 1];
+        preMin[0] = n + 1;
+        int minLen = n + 1;
+        int sum = 0, l = 0;
+        for (int r = 0; r < n; r++) {
             sum += arr[r];
             while (sum > target) {
                 sum -= arr[l];
                 l++;
             }
             if (sum == target) {
-                ans = Math.min(ans, r - l + 1 + sufMin[r + 1]);
+                // 当前第二个子数组，查找前面第一个子数组最短长度
+                ans = Math.min(ans, preMin[l] + r - l + 1);
+                // 当前数组作为第一个子数组更新
+                minLen = Math.min(minLen, r - l + 1);
             }
+            preMin[r + 1] = minLen;
         }
+
         return ans > n ? -1 : ans;
     }
 
