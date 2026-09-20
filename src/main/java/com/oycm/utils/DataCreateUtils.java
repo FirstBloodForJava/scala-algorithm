@@ -83,5 +83,7 @@ public class DataCreateUtils {
     }
 
     public static void main(String[] args) {
+        System.out.println((int) 'a');
+        System.out.println((char) ('z' + 1));
     }
 }
