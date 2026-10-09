@@ -22,23 +22,17 @@ public class Solution_9 {
          */
         int balance = 0;
         int ans = 0;
-
+        // 先计算补成连续括号需要的数量
         for (char c : s.toCharArray()) {
             if (c == '(') {
-                if (balance % 2 == 0) {
-                    if (balance < 0) {
-                        // 右括号多，左边需填好
-                        ans -= balance / 2;
-                        balance = 0;
-                    }
-
-                } else if (balance > 0) {
-                    // 左括号多，奇数个右括号
-                    ans += balance;
-                    balance = 0;
-                } else {
-                    // 左括号少，奇数个右括号
-                    ans -= balance / 2 - 2;
+                // 右括号不成对，先补右括号
+                if (balance % 2 != 0) {
+                    balance--;
+                    ans++;
+                }
+                if (balance < 0) {
+                    ans -= balance / 2;
+                    // 平衡了
                     balance = 0;
                 }
                 balance += 2;
@@ -50,7 +44,11 @@ public class Solution_9 {
         if (balance > 0) {
             ans += balance;
         } else if (balance % 2 != 0) {
-            ans -= balance / 2 - 2;
+            ans++;
+            balance--;
+            ans -= balance / 2;
+        } else {
+            ans -= balance / 2;
         }
 
         return ans;
