@@ -23,8 +23,8 @@ public class Solution_24 {
         /*
         怎么让日期开始和结束，落在一个一维的区间？
          */
-        int left = Math.max(calDays(arriveAlice), calDays(arriveBob));
-        int right = Math.min(calDays(leaveAlice), calDays(leaveBob));
+        int left = calDays(arriveAlice.compareTo(arriveBob) > 0 ? arriveAlice : arriveBob);
+        int right = calDays(leaveAlice.compareTo(leaveAlice) > 0 ? leaveAlice : leaveBob);
         return Math.max(right - left + 1, 0);
     }
 
